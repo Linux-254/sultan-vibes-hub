@@ -1,0 +1,13 @@
+{
+  "name": "Sultan Park & Puff",
+  "short_name": "Sultan",
+  "description": "Where Nairobi Comes to Breathe. Reserve your table, ride the Summer Tides.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0D0D0D",
+  "theme_color": "#0D0D0D",
+  "orientation": "portrait",
+  "icons": [
+    { "src": "/favicon.ico", "sizes": "any", "type": "image/x-icon" }
+  ]
+}
