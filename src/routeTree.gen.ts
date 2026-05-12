@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as SummerTidesRouteImport } from './routes/summer-tides'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as MilestonesRouteImport } from './routes/milestones'
 import { Route as EventsRouteImport } from './routes/events'
@@ -19,6 +20,11 @@ import { Route as IndexRouteImport } from './routes/index'
 const SummerTidesRoute = SummerTidesRouteImport.update({
   id: '/summer-tides',
   path: '/summer-tides',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ProfileRoute = ProfileRouteImport.update({
@@ -53,6 +59,7 @@ export interface FileRoutesByFullPath {
   '/events': typeof EventsRoute
   '/milestones': typeof MilestonesRoute
   '/profile': typeof ProfileRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/summer-tides': typeof SummerTidesRoute
 }
 export interface FileRoutesByTo {
@@ -61,6 +68,7 @@ export interface FileRoutesByTo {
   '/events': typeof EventsRoute
   '/milestones': typeof MilestonesRoute
   '/profile': typeof ProfileRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/summer-tides': typeof SummerTidesRoute
 }
 export interface FileRoutesById {
@@ -70,6 +78,7 @@ export interface FileRoutesById {
   '/events': typeof EventsRoute
   '/milestones': typeof MilestonesRoute
   '/profile': typeof ProfileRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/summer-tides': typeof SummerTidesRoute
 }
 export interface FileRouteTypes {
@@ -80,9 +89,17 @@ export interface FileRouteTypes {
     | '/events'
     | '/milestones'
     | '/profile'
+    | '/sitemap.xml'
     | '/summer-tides'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/about' | '/events' | '/milestones' | '/profile' | '/summer-tides'
+  to:
+    | '/'
+    | '/about'
+    | '/events'
+    | '/milestones'
+    | '/profile'
+    | '/sitemap.xml'
+    | '/summer-tides'
   id:
     | '__root__'
     | '/'
@@ -90,6 +107,7 @@ export interface FileRouteTypes {
     | '/events'
     | '/milestones'
     | '/profile'
+    | '/sitemap.xml'
     | '/summer-tides'
   fileRoutesById: FileRoutesById
 }
@@ -99,6 +117,7 @@ export interface RootRouteChildren {
   EventsRoute: typeof EventsRoute
   MilestonesRoute: typeof MilestonesRoute
   ProfileRoute: typeof ProfileRoute
+  SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   SummerTidesRoute: typeof SummerTidesRoute
 }
 
@@ -109,6 +128,13 @@ declare module '@tanstack/react-router' {
       path: '/summer-tides'
       fullPath: '/summer-tides'
       preLoaderRoute: typeof SummerTidesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/profile': {
@@ -155,6 +181,7 @@ const rootRouteChildren: RootRouteChildren = {
   EventsRoute: EventsRoute,
   MilestonesRoute: MilestonesRoute,
   ProfileRoute: ProfileRoute,
+  SitemapDotxmlRoute: SitemapDotxmlRoute,
   SummerTidesRoute: SummerTidesRoute,
 }
 export const routeTree = rootRouteImport

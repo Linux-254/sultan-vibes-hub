@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import summerImg from "@/assets/summer-tides.jpg";
 import event3 from "@/assets/event-3.jpg";
 import { Countdown } from "@/components/Countdown";
