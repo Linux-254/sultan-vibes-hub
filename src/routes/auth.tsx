@@ -104,7 +104,7 @@ function AuthPage() {
   );
 }
 
-function Field({ icon, label, children }: { icon: ReactNodeIcon; label: string; children: React.ReactNode }) {
+function Field({ icon, label, children }: { icon: React.ReactNode; label: string; children: React.ReactNode }) {
   return (
     <label className="block">
       <span className="eyebrow">{label}</span>
@@ -115,4 +115,3 @@ function Field({ icon, label, children }: { icon: ReactNodeIcon; label: string; 
     </label>
   );
 }
-type ReactNodeIcon = React.ReactNode;
