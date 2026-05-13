@@ -1,6 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { useState } from "react";
-import { Menu, X } from "lucide-react";
+import { Menu, X, Shield } from "lucide-react";
+import { useAuth } from "@/hooks/use-auth";
 
 const NAV = [
   { to: "/", label: "Home" },
@@ -13,6 +14,7 @@ const NAV = [
 
 export function SiteHeader() {
   const [open, setOpen] = useState(false);
+  const { user, isStaff } = useAuth();
   return (
     <header className="fixed top-0 inset-x-0 z-50">
       <div className="glass border-b border-border/50">
@@ -42,6 +44,14 @@ export function SiteHeader() {
           </nav>
 
           <div className="hidden lg:flex items-center gap-3">
+            {isStaff && (
+              <Link to="/admin" className="text-xs uppercase tracking-wider px-3 py-2 rounded-full bg-gold/10 text-gold hover:bg-gold/20 transition flex items-center gap-1.5">
+                <Shield size={14} /> Admin
+              </Link>
+            )}
+            {!user && (
+              <Link to="/auth" className="text-sm text-foreground/70 hover:text-gold">Sign in</Link>
+            )}
             <Link
               to="/events"
               className="text-sm font-medium px-4 py-2 rounded-full border border-gold/40 text-gold hover:bg-gold/10 transition"
