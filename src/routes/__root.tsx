@@ -12,6 +12,8 @@ import appCss from "../styles.css?url";
 import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
 import { WhatsAppFloat } from "@/components/WhatsAppFloat";
+import { AuthProvider } from "@/hooks/use-auth";
+import { Toaster } from "@/components/ui/sonner";
 
 function NotFoundComponent() {
   return (
@@ -95,12 +97,15 @@ function RootComponent() {
   const { queryClient } = Route.useRouteContext();
   return (
     <QueryClientProvider client={queryClient}>
-      <SiteHeader />
-      <main className="pt-16">
-        <Outlet />
-      </main>
-      <SiteFooter />
-      <WhatsAppFloat />
+      <AuthProvider>
+        <SiteHeader />
+        <main className="pt-16">
+          <Outlet />
+        </main>
+        <SiteFooter />
+        <WhatsAppFloat />
+        <Toaster />
+      </AuthProvider>
     </QueryClientProvider>
   );
 }
