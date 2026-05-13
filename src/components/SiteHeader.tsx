@@ -44,6 +44,14 @@ export function SiteHeader() {
           </nav>
 
           <div className="hidden lg:flex items-center gap-3">
+            {isStaff && (
+              <Link to="/admin" className="text-xs uppercase tracking-wider px-3 py-2 rounded-full bg-gold/10 text-gold hover:bg-gold/20 transition flex items-center gap-1.5">
+                <Shield size={14} /> Admin
+              </Link>
+            )}
+            {!user && (
+              <Link to="/auth" className="text-sm text-foreground/70 hover:text-gold">Sign in</Link>
+            )}
             <Link
               to="/events"
               className="text-sm font-medium px-4 py-2 rounded-full border border-gold/40 text-gold hover:bg-gold/10 transition"
