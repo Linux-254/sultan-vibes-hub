@@ -123,6 +123,7 @@ export type Database = {
           approved_at: string | null
           approved_by: string | null
           created_at: string
+          deposit_amount: number
           full_name: string
           id: string
           party_size: number
@@ -139,6 +140,7 @@ export type Database = {
           approved_at?: string | null
           approved_by?: string | null
           created_at?: string
+          deposit_amount?: number
           full_name: string
           id?: string
           party_size: number
@@ -155,6 +157,7 @@ export type Database = {
           approved_at?: string | null
           approved_by?: string | null
           created_at?: string
+          deposit_amount?: number
           full_name?: string
           id?: string
           party_size?: number
