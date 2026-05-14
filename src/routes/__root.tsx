@@ -12,6 +12,7 @@ import appCss from "../styles.css?url";
 import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
 import { WhatsAppFloat } from "@/components/WhatsAppFloat";
+import { SummerTidesPopup } from "@/components/SummerTidesPopup";
 import { AuthProvider } from "@/hooks/use-auth";
 import { Toaster } from "@/components/ui/sonner";
 
@@ -104,6 +105,7 @@ function RootComponent() {
         </main>
         <SiteFooter />
         <WhatsAppFloat />
+        <SummerTidesPopup />
         <Toaster />
       </AuthProvider>
     </QueryClientProvider>

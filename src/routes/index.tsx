@@ -98,10 +98,10 @@ function HomePage() {
               Six weeks. One island. The biggest sound system Sultan has ever assembled. Drop your number for early access — first 100 names get free entry.
             </p>
             <Link
-              to="/summer-tides"
+              to="/events"
               className="inline-flex mt-8 items-center gap-2 text-gold hover:gap-3 transition-all"
             >
-              See the campaign <ArrowRight size={16} />
+              See what's on <ArrowRight size={16} />
             </Link>
           </div>
 
