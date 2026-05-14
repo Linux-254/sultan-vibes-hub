@@ -9,7 +9,6 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as SummerTidesRouteImport } from './routes/summer-tides'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as MilestonesRouteImport } from './routes/milestones'
@@ -23,11 +22,6 @@ import { Route as AdminReservationsRouteImport } from './routes/admin.reservatio
 import { Route as AdminPaymentsRouteImport } from './routes/admin.payments'
 import { Route as AdminChatRouteImport } from './routes/admin.chat'
 
-const SummerTidesRoute = SummerTidesRouteImport.update({
-  id: '/summer-tides',
-  path: '/summer-tides',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
   id: '/sitemap.xml',
   path: '/sitemap.xml',
@@ -98,7 +92,6 @@ export interface FileRoutesByFullPath {
   '/milestones': typeof MilestonesRoute
   '/profile': typeof ProfileRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
-  '/summer-tides': typeof SummerTidesRoute
   '/admin/chat': typeof AdminChatRoute
   '/admin/payments': typeof AdminPaymentsRoute
   '/admin/reservations': typeof AdminReservationsRoute
@@ -112,7 +105,6 @@ export interface FileRoutesByTo {
   '/milestones': typeof MilestonesRoute
   '/profile': typeof ProfileRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
-  '/summer-tides': typeof SummerTidesRoute
   '/admin/chat': typeof AdminChatRoute
   '/admin/payments': typeof AdminPaymentsRoute
   '/admin/reservations': typeof AdminReservationsRoute
@@ -128,7 +120,6 @@ export interface FileRoutesById {
   '/milestones': typeof MilestonesRoute
   '/profile': typeof ProfileRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
-  '/summer-tides': typeof SummerTidesRoute
   '/admin/chat': typeof AdminChatRoute
   '/admin/payments': typeof AdminPaymentsRoute
   '/admin/reservations': typeof AdminReservationsRoute
@@ -145,7 +136,6 @@ export interface FileRouteTypes {
     | '/milestones'
     | '/profile'
     | '/sitemap.xml'
-    | '/summer-tides'
     | '/admin/chat'
     | '/admin/payments'
     | '/admin/reservations'
@@ -159,7 +149,6 @@ export interface FileRouteTypes {
     | '/milestones'
     | '/profile'
     | '/sitemap.xml'
-    | '/summer-tides'
     | '/admin/chat'
     | '/admin/payments'
     | '/admin/reservations'
@@ -174,7 +163,6 @@ export interface FileRouteTypes {
     | '/milestones'
     | '/profile'
     | '/sitemap.xml'
-    | '/summer-tides'
     | '/admin/chat'
     | '/admin/payments'
     | '/admin/reservations'
@@ -190,18 +178,10 @@ export interface RootRouteChildren {
   MilestonesRoute: typeof MilestonesRoute
   ProfileRoute: typeof ProfileRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
-  SummerTidesRoute: typeof SummerTidesRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/summer-tides': {
-      id: '/summer-tides'
-      path: '/summer-tides'
-      fullPath: '/summer-tides'
-      preLoaderRoute: typeof SummerTidesRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/sitemap.xml': {
       id: '/sitemap.xml'
       path: '/sitemap.xml'
@@ -314,8 +294,17 @@ const rootRouteChildren: RootRouteChildren = {
   MilestonesRoute: MilestonesRoute,
   ProfileRoute: ProfileRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
-  SummerTidesRoute: SummerTidesRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
