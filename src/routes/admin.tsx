@@ -1,7 +1,7 @@
 import { createFileRoute, Link, Outlet, useNavigate, useRouterState } from "@tanstack/react-router";
 import { useEffect } from "react";
 import { useAuth } from "@/hooks/use-auth";
-import { LayoutDashboard, CalendarCheck, CreditCard, MessagesSquare, LogOut } from "lucide-react";
+import { LayoutDashboard, CalendarCheck, CreditCard, MessagesSquare, LogOut, Siren } from "lucide-react";
 
 export const Route = createFileRoute("/admin")({
   head: () => ({ meta: [{ title: "Admin — Sultan" }, { name: "robots", content: "noindex" }] }),
@@ -12,6 +12,7 @@ const NAV = [
   { to: "/admin", label: "Dashboard", icon: LayoutDashboard, exact: true },
   { to: "/admin/reservations", label: "Reservations", icon: CalendarCheck, exact: false },
   { to: "/admin/payments", label: "Payments", icon: CreditCard, exact: false },
+  { to: "/admin/sos", label: "SOS", icon: Siren, exact: false },
   { to: "/admin/chat", label: "Crew Chat", icon: MessagesSquare, exact: false },
 ] as const;
 

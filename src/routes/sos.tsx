@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { Siren, MapPin, Check } from "lucide-react";
 import { toast } from "sonner";
+import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/sos")({
   head: () => ({
@@ -15,19 +16,44 @@ export const Route = createFileRoute("/sos")({
 });
 
 const LEVELS = [
-  { code: "YELLOW", label: "Uncomfortable situation", desc: "Someone making you uneasy. Low urgency.", color: "bg-yellow-400 text-night-deep" },
-  { code: "ORANGE", label: "Harassment", desc: "Verbal or physical harassment in progress.", color: "bg-orange-500 text-night-deep" },
-  { code: "RED", label: "Physical threat / fight", desc: "Immediate danger — silent alarm to security.", color: "bg-lava text-cream" },
+  { code: "YELLOW", label: "Uncomfortable situation", desc: "Someone making you uneasy. Low urgency.", dot: "bg-yellow-400" },
+  { code: "ORANGE", label: "Harassment", desc: "Verbal or physical harassment in progress.", dot: "bg-orange-500" },
+  { code: "RED", label: "Physical threat / fight", desc: "Immediate danger — silent alarm to security.", dot: "bg-lava" },
 ] as const;
 
+async function getCoords(): Promise<{ lat: number; lng: number } | null> {
+  if (typeof navigator === "undefined" || !navigator.geolocation) return null;
+  return new Promise((resolve) => {
+    navigator.geolocation.getCurrentPosition(
+      (p) => resolve({ lat: p.coords.latitude, lng: p.coords.longitude }),
+      () => resolve(null),
+      { timeout: 4000 },
+    );
+  });
+}
+
 function SosPage() {
-  const [code, setCode] = useState<string | null>(null);
+  const [code, setCode] = useState<"YELLOW" | "ORANGE" | "RED" | null>(null);
   const [note, setNote] = useState("");
   const [shareLoc, setShareLoc] = useState(true);
   const [submitted, setSubmitted] = useState(false);
+  const [busy, setBusy] = useState(false);
 
-  const trigger = () => {
+  const trigger = async () => {
     if (!code) return toast.error("Pick a level so we know how to respond.");
+    setBusy(true);
+    const { data: { user } } = await supabase.auth.getUser();
+    const coords = shareLoc ? await getCoords() : null;
+    const { error } = await supabase.from("sos_incidents").insert({
+      user_id: user?.id ?? null,
+      level: code,
+      note: note.trim() ? note.trim().slice(0, 140) : null,
+      share_location: shareLoc,
+      location_lat: coords?.lat ?? null,
+      location_lng: coords?.lng ?? null,
+    });
+    setBusy(false);
+    if (error) return toast.error(error.message);
     setSubmitted(true);
   };
 
@@ -68,7 +94,7 @@ function SosPage() {
               className={`w-full text-left rounded-3xl p-5 border transition ${active ? "border-gold bg-gold/5" : "border-border/40 hover:border-foreground/30"}`}
             >
               <div className="flex items-center gap-4">
-                <span className={`h-3 w-3 rounded-full ${l.color.split(" ")[0]} ${active ? "ring-4 ring-gold/30" : ""}`} />
+                <span className={`h-3 w-3 rounded-full ${l.dot} ${active ? "ring-4 ring-gold/30" : ""}`} />
                 <div className="flex-1">
                   <div className="font-display text-lg">{l.label}</div>
                   <div className="text-xs text-foreground/55 mt-0.5">{l.desc}</div>
@@ -97,9 +123,10 @@ function SosPage() {
 
       <button
         onClick={trigger}
-        className="mt-8 w-full rounded-2xl bg-lava px-5 py-4 text-sm font-semibold text-cream hover:shadow-[0_0_40px_-10px_oklch(0.62_0.21_38)] transition inline-flex items-center justify-center gap-2"
+        disabled={busy}
+        className="mt-8 w-full rounded-2xl bg-lava px-5 py-4 text-sm font-semibold text-cream hover:shadow-[0_0_40px_-10px_oklch(0.62_0.21_38)] transition inline-flex items-center justify-center gap-2 disabled:opacity-60"
       >
-        <Siren size={16} /> Trigger silent alert
+        <Siren size={16} /> {busy ? "Sending…" : "Trigger silent alert"}
       </button>
       <p className="mt-3 text-[11px] text-foreground/45 text-center">
         SOS works without a login. False alerts are logged.

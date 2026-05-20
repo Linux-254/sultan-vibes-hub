@@ -28,6 +28,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as TalentUsernameRouteImport } from './routes/talent.$username'
 import { Route as CollabsSlugRouteImport } from './routes/collabs.$slug'
+import { Route as AdminSosRouteImport } from './routes/admin.sos'
 import { Route as AdminReservationsRouteImport } from './routes/admin.reservations'
 import { Route as AdminPaymentsRouteImport } from './routes/admin.payments'
 import { Route as AdminChatRouteImport } from './routes/admin.chat'
@@ -127,6 +128,11 @@ const CollabsSlugRoute = CollabsSlugRouteImport.update({
   path: '/$slug',
   getParentRoute: () => CollabsRoute,
 } as any)
+const AdminSosRoute = AdminSosRouteImport.update({
+  id: '/sos',
+  path: '/sos',
+  getParentRoute: () => AdminRoute,
+} as any)
 const AdminReservationsRoute = AdminReservationsRouteImport.update({
   id: '/reservations',
   path: '/reservations',
@@ -163,6 +169,7 @@ export interface FileRoutesByFullPath {
   '/admin/chat': typeof AdminChatRoute
   '/admin/payments': typeof AdminPaymentsRoute
   '/admin/reservations': typeof AdminReservationsRoute
+  '/admin/sos': typeof AdminSosRoute
   '/collabs/$slug': typeof CollabsSlugRoute
   '/talent/$username': typeof TalentUsernameRoute
   '/admin/': typeof AdminIndexRoute
@@ -186,6 +193,7 @@ export interface FileRoutesByTo {
   '/admin/chat': typeof AdminChatRoute
   '/admin/payments': typeof AdminPaymentsRoute
   '/admin/reservations': typeof AdminReservationsRoute
+  '/admin/sos': typeof AdminSosRoute
   '/collabs/$slug': typeof CollabsSlugRoute
   '/talent/$username': typeof TalentUsernameRoute
   '/admin': typeof AdminIndexRoute
@@ -211,6 +219,7 @@ export interface FileRoutesById {
   '/admin/chat': typeof AdminChatRoute
   '/admin/payments': typeof AdminPaymentsRoute
   '/admin/reservations': typeof AdminReservationsRoute
+  '/admin/sos': typeof AdminSosRoute
   '/collabs/$slug': typeof CollabsSlugRoute
   '/talent/$username': typeof TalentUsernameRoute
   '/admin/': typeof AdminIndexRoute
@@ -237,6 +246,7 @@ export interface FileRouteTypes {
     | '/admin/chat'
     | '/admin/payments'
     | '/admin/reservations'
+    | '/admin/sos'
     | '/collabs/$slug'
     | '/talent/$username'
     | '/admin/'
@@ -260,6 +270,7 @@ export interface FileRouteTypes {
     | '/admin/chat'
     | '/admin/payments'
     | '/admin/reservations'
+    | '/admin/sos'
     | '/collabs/$slug'
     | '/talent/$username'
     | '/admin'
@@ -284,6 +295,7 @@ export interface FileRouteTypes {
     | '/admin/chat'
     | '/admin/payments'
     | '/admin/reservations'
+    | '/admin/sos'
     | '/collabs/$slug'
     | '/talent/$username'
     | '/admin/'
@@ -443,6 +455,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CollabsSlugRouteImport
       parentRoute: typeof CollabsRoute
     }
+    '/admin/sos': {
+      id: '/admin/sos'
+      path: '/sos'
+      fullPath: '/admin/sos'
+      preLoaderRoute: typeof AdminSosRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/admin/reservations': {
       id: '/admin/reservations'
       path: '/reservations'
@@ -471,6 +490,7 @@ interface AdminRouteChildren {
   AdminChatRoute: typeof AdminChatRoute
   AdminPaymentsRoute: typeof AdminPaymentsRoute
   AdminReservationsRoute: typeof AdminReservationsRoute
+  AdminSosRoute: typeof AdminSosRoute
   AdminIndexRoute: typeof AdminIndexRoute
 }
 
@@ -478,6 +498,7 @@ const AdminRouteChildren: AdminRouteChildren = {
   AdminChatRoute: AdminChatRoute,
   AdminPaymentsRoute: AdminPaymentsRoute,
   AdminReservationsRoute: AdminReservationsRoute,
+  AdminSosRoute: AdminSosRoute,
   AdminIndexRoute: AdminIndexRoute,
 }
 
@@ -526,13 +547,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
