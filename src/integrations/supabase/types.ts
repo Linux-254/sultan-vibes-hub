@@ -172,6 +172,60 @@ export type Database = {
         }
         Relationships: []
       }
+      sos_incidents: {
+        Row: {
+          acknowledged_at: string | null
+          acknowledged_by: string | null
+          created_at: string
+          id: string
+          level: Database["public"]["Enums"]["sos_level"]
+          location_lat: number | null
+          location_lng: number | null
+          note: string | null
+          resolution_note: string | null
+          resolved_at: string | null
+          resolved_by: string | null
+          share_location: boolean
+          status: Database["public"]["Enums"]["sos_status"]
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          acknowledged_at?: string | null
+          acknowledged_by?: string | null
+          created_at?: string
+          id?: string
+          level: Database["public"]["Enums"]["sos_level"]
+          location_lat?: number | null
+          location_lng?: number | null
+          note?: string | null
+          resolution_note?: string | null
+          resolved_at?: string | null
+          resolved_by?: string | null
+          share_location?: boolean
+          status?: Database["public"]["Enums"]["sos_status"]
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          acknowledged_at?: string | null
+          acknowledged_by?: string | null
+          created_at?: string
+          id?: string
+          level?: Database["public"]["Enums"]["sos_level"]
+          location_lat?: number | null
+          location_lng?: number | null
+          note?: string | null
+          resolution_note?: string | null
+          resolved_at?: string | null
+          resolved_by?: string | null
+          share_location?: boolean
+          status?: Database["public"]["Enums"]["sos_status"]
+          updated_at?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           created_at: string
@@ -216,6 +270,8 @@ export type Database = {
         | "seated"
         | "cancelled"
         | "no_show"
+      sos_level: "YELLOW" | "ORANGE" | "RED"
+      sos_status: "open" | "acknowledged" | "resolved" | "false_alarm"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -352,6 +408,8 @@ export const Constants = {
         "cancelled",
         "no_show",
       ],
+      sos_level: ["YELLOW", "ORANGE", "RED"],
+      sos_status: ["open", "acknowledged", "resolved", "false_alarm"],
     },
   },
 } as const
