@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowRight, Flame, Music, Users, Sparkles, Wine, Cigarette } from "lucide-react";
+import { ArrowRight, Flame, Music, Users, Crown, Wine, Cigarette } from "lucide-react";
 import event2 from "@/assets/event-2.jpg";
 
 export const Route = createFileRoute("/vibe")({
@@ -97,7 +97,7 @@ function VibePage() {
                 <ul className="mt-5 space-y-2 text-sm text-foreground/75">
                   {p.includes.map((inc) => (
                     <li key={inc} className="flex items-start gap-2">
-                      <Sparkles size={12} className="text-gold mt-1 shrink-0" /> {inc}
+                      <Crown size={12} className="text-gold mt-1 shrink-0" /> {inc}
                     </li>
                   ))}
                 </ul>

@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import event2 from "@/assets/event-2.jpg";
-import { MapPin, Clock, ShieldCheck, Heart, Sparkles, Users } from "lucide-react";
+import { MapPin, Clock, ShieldCheck, Heart, Crown, Users } from "lucide-react";
 
 export const Route = createFileRoute("/about")({
   head: () => ({
@@ -16,7 +16,7 @@ export const Route = createFileRoute("/about")({
 
 const VALUES = [
   { icon: Users, title: "Community", body: "Empire is a regulars-bar at heart. Names are remembered, drinks are remembered, you are remembered." },
-  { icon: Sparkles, title: "Culture", body: "Afro-Kenyan to the bone. The music, the design, the rituals — we make space for what we grew up around." },
+  { icon: Crown, title: "Culture", body: "Afro-Kenyan to the bone. The music, the design, the rituals — we make space for what we grew up around." },
   { icon: Heart, title: "Quality Vibes", body: "We say no to a lot of bookings. We protect the night for the people who love it." },
   { icon: ShieldCheck, title: "Safety", body: "An 18+ venue with trained door staff and a silent SOS system in development for every guest." },
 ];

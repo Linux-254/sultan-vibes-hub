@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { ShoppingBag, Sparkles } from "lucide-react";
+import { ShoppingBag, Crown } from "lucide-react";
 import { useState } from "react";
 
 export const Route = createFileRoute("/products")({
@@ -74,7 +74,7 @@ function ProductsPage() {
       </div>
 
       <div className="mt-16 glass rounded-3xl p-7 lg:p-10 kente-border max-w-3xl">
-        <Sparkles className="text-gold" />
+        <Crown className="text-gold" />
         <h3 className="font-display text-2xl mt-3">Want your brand here?</h3>
         <p className="mt-2 text-sm text-foreground/70">
           Approved collaborators sell their products through Empire's storefront — we handle checkout, M-Pesa and weekly payouts. Apply via the Collabs hub.

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "@tanstack/react-router";
-import { X, Sparkles, ArrowRight } from "lucide-react";
+import { X, Crown, ArrowRight } from "lucide-react";
 import { Countdown } from "@/components/Countdown";
 
 /**
@@ -95,7 +95,7 @@ export function SummerTidesPopup() {
 
         <div className="relative p-7 sm:p-9">
           <div className="inline-flex items-center gap-2 glass rounded-full px-3 py-1 border border-gold/30 gold-pulse">
-            <Sparkles size={12} className="text-gold" />
+            <Crown size={12} className="text-gold" />
             <span className="text-[10px] uppercase tracking-[0.32em] text-gold font-mono">
               {isPost ? "Tides · Memory Lane" : isLive ? "Tides · Live Now" : "Tides · Coming"}
             </span>

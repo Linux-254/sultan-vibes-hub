@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
-import { ArrowRight, Calendar, Car, Check, Flame, Minus, Plus, Wine, Sparkles } from "lucide-react";
+import { ArrowRight, Calendar, Car, Check, Flame, Minus, Plus, Wine, Crown } from "lucide-react";
 import { z } from "zod";
 import { toast } from "sonner";
 
@@ -252,7 +252,7 @@ function ReservePage() {
           </div>
 
           <Link to="/vibe" className="block text-xs text-foreground/55 hover:text-gold text-center">
-            <Sparkles size={12} className="inline mr-1" /> Compare packages first
+            <Crown size={12} className="inline mr-1" /> Compare packages first
           </Link>
         </aside>
       </div>

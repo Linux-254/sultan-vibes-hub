@@ -3,7 +3,7 @@ import heroImg from "@/assets/hero.jpg";
 import event1 from "@/assets/event-1.jpg";
 import { Countdown } from "@/components/Countdown";
 import { StatCounter } from "@/components/StatCounter";
-import { ArrowRight, Sparkles } from "lucide-react";
+import { ArrowRight, Crown } from "lucide-react";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -44,7 +44,7 @@ function HomePage() {
 
         <div className="relative mx-auto max-w-7xl px-5 lg:px-8 pt-32 pb-20 min-h-[100svh] flex flex-col justify-center">
           <div className="rise inline-flex items-center gap-2 self-start glass rounded-full px-4 py-1.5 border border-gold/30 gold-pulse mb-8">
-            <Sparkles size={14} className="text-gold" />
+            <Crown size={14} className="text-gold" />
             <span className="text-xs uppercase tracking-[0.32em] text-gold font-mono">
               Summer Tides 2025
             </span>
