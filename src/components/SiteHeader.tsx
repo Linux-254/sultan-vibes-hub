@@ -2,6 +2,7 @@ import { Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { Menu, X, Shield, Siren } from "lucide-react";
 import { useAuth } from "@/hooks/use-auth";
+import logo from "@/assets/empire-logo.png";
 
 const NAV = [
   { to: "/", label: "Home" },
@@ -22,15 +23,26 @@ export function SiteHeader() {
     <header className="fixed top-0 inset-x-0 z-50">
       <div className="glass border-b border-border/50">
         <div className="mx-auto max-w-7xl px-5 lg:px-8 h-16 flex items-center justify-between gap-4">
-          <Link to="/" className="flex items-center gap-2 group shrink-0">
-            <span className="h-9 w-9 rounded-full bg-gradient-to-br from-[oklch(0.85_0.13_80)] to-[oklch(0.55_0.14_60)] flex items-center justify-center text-night-deep font-display font-bold text-lg shadow-[var(--shadow-glow)]">
-              S
-            </span>
-            <span className="font-display text-lg tracking-tight hidden sm:inline">
-              <span className="text-gold-gradient">EMPIRE</span>
-              <span className="text-foreground/70 font-light"> · Park & Puff</span>
+          <Link
+            to="/"
+            aria-label="Empire — home"
+            className="flex items-center gap-2.5 group shrink-0 transition-all duration-500"
+          >
+            <img
+              src={logo}
+              alt=""
+              width={36}
+              height={36}
+              className="h-9 w-9 object-contain drop-shadow-[0_0_12px_rgba(212,175,55,0.35)] transition-all duration-500 group-hover:rotate-[8deg] group-hover:drop-shadow-[0_0_18px_rgba(212,175,55,0.6)]"
+            />
+            <span className="font-display text-lg tracking-[0.22em] hidden sm:inline">
+              <span className="bg-gradient-to-r from-[oklch(0.9_0.13_85)] via-[oklch(0.75_0.16_60)] to-[oklch(0.55_0.14_40)] bg-clip-text text-transparent transition-all duration-700 group-hover:from-[oklch(0.55_0.14_40)] group-hover:via-[oklch(0.9_0.13_85)] group-hover:to-[oklch(0.75_0.16_60)]">
+                EMPIRE
+              </span>
+              <span className="text-foreground/60 font-light text-sm tracking-normal"> · Park &amp; Puff</span>
             </span>
           </Link>
+
 
           <nav className="hidden xl:flex items-center gap-6">
             {NAV.map((n) => (
