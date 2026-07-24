@@ -17,7 +17,7 @@ export function SiteFooter() {
           <div className="eyebrow mb-4">Explore</div>
           <ul className="space-y-2 text-sm">
             <li><Link to="/events" className="hover:text-gold">Upcoming Events</Link></li>
-            <li><Link to="/summer-tides" className="hover:text-gold">Summer Tides</Link></li>
+            <li><Link to="/recap" className="hover:text-gold">Recap</Link></li>
             <li><Link to="/milestones" className="hover:text-gold">Milestones</Link></li>
             <li><Link to="/about" className="hover:text-gold">About</Link></li>
           </ul>
