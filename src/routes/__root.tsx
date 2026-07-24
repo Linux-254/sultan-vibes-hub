@@ -26,7 +26,7 @@ function NotFoundComponent() {
           This page slipped out the back door. Let's get you home.
         </p>
         <Link to="/" className="mt-6 inline-flex items-center rounded-full bg-gold px-5 py-2.5 text-sm font-medium text-night-deep">
-          Back to Sultan
+          Back to Empire
         </Link>
       </div>
     </div>
@@ -58,9 +58,9 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { name: "theme-color", content: "#0D0D0D" },
-      { title: "Sultan Park & Puff — Where Nairobi Comes to Breathe" },
+      { title: "Empire Park Empire Park & Puff Puff — Where Nairobi Comes to Breathe" },
       { name: "description", content: "Afro-Kenyan lifestyle lounge & events venue on USIU Road. Reserve a table, catch the vibe, ride the Summer Tides." },
-      { property: "og:title", content: "Sultan Park & Puff" },
+      { property: "og:title", content: "Empire Park Empire Park & Puff Puff" },
       { property: "og:description", content: "Where Nairobi Comes to Breathe." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },

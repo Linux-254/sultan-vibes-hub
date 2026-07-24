@@ -48,7 +48,7 @@ function Dashboard() {
     <div className="space-y-8">
       <header>
         <div className="eyebrow">Live</div>
-        <h1 className="font-display text-4xl mt-1">Tonight at <span className="text-gold-gradient">Sultan</span></h1>
+        <h1 className="font-display text-4xl mt-1">Tonight at <span className="text-gold-gradient">Empire</span></h1>
         <p className="text-sm text-foreground/60 mt-1">Realtime — updates as bookings and payments come in.</p>
       </header>
       <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">

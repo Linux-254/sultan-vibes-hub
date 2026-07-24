@@ -4,7 +4,7 @@ import { useAuth } from "@/hooks/use-auth";
 import { LayoutDashboard, CalendarCheck, CreditCard, MessagesSquare, LogOut, Siren } from "lucide-react";
 
 export const Route = createFileRoute("/admin")({
-  head: () => ({ meta: [{ title: "Admin — Sultan" }, { name: "robots", content: "noindex" }] }),
+  head: () => ({ meta: [{ title: "Admin — Empire" }, { name: "robots", content: "noindex" }] }),
   component: AdminLayout,
 });
 
@@ -35,7 +35,7 @@ function AdminLayout() {
     <div className="min-h-screen grid lg:grid-cols-[260px_1fr]">
       <aside className="border-r border-border/40 bg-night/40 lg:sticky lg:top-16 lg:h-[calc(100vh-4rem)] p-4 flex lg:flex-col gap-1 overflow-x-auto lg:overflow-y-auto">
         <div className="hidden lg:block px-3 py-4">
-          <div className="eyebrow">Sultan</div>
+          <div className="eyebrow">Empire</div>
           <div className="font-display text-2xl text-gold-gradient">Control Room</div>
         </div>
         {NAV.map((n) => {

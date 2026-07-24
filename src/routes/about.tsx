@@ -5,9 +5,9 @@ import { MapPin, Clock, ShieldCheck, Heart, Sparkles, Users } from "lucide-react
 export const Route = createFileRoute("/about")({
   head: () => ({
     meta: [
-      { title: "About — Sultan Park & Puff" },
-      { name: "description", content: "Sultan Park & Puff is a chill-out lounge and events venue on USIU Road, Nairobi. Our story, our values, our team." },
-      { property: "og:title", content: "About Sultan Park & Puff" },
+      { title: "About — Empire Park Empire Park & Puff Puff" },
+      { name: "description", content: "Empire Park Empire Park & Puff Puff is a chill-out lounge and events venue on USIU Road, Nairobi. Our story, our values, our team." },
+      { property: "og:title", content: "About Empire Park Empire Park & Puff Puff" },
       { property: "og:description", content: "A chill-out lounge & events venue on USIU Road, Nairobi." },
     ],
   }),
@@ -15,7 +15,7 @@ export const Route = createFileRoute("/about")({
 });
 
 const VALUES = [
-  { icon: Users, title: "Community", body: "Sultan is a regulars-bar at heart. Names are remembered, drinks are remembered, you are remembered." },
+  { icon: Users, title: "Community", body: "Empire is a regulars-bar at heart. Names are remembered, drinks are remembered, you are remembered." },
   { icon: Sparkles, title: "Culture", body: "Afro-Kenyan to the bone. The music, the design, the rituals — we make space for what we grew up around." },
   { icon: Heart, title: "Quality Vibes", body: "We say no to a lot of bookings. We protect the night for the people who love it." },
   { icon: ShieldCheck, title: "Safety", body: "An 18+ venue with trained door staff and a silent SOS system in development for every guest." },
@@ -25,8 +25,8 @@ const FAQ = [
   { q: "Do you take reservations?", a: "Yes — and we recommend it. Saturdays sell out by Wednesday. Reserve via WhatsApp or our /events page." },
   { q: "Is there parking?", a: "Yes, secure parking on-site. Standard, SUV, premium and group convoy spots — all bookable in advance." },
   { q: "What's the age policy?", a: "Strictly 18+. ID at the door, every time, no exceptions." },
-  { q: "Do you serve food?", a: "Sultan is a lounge & shisha venue, not a restaurant. We have light bites, mixers, and the bar you'd expect." },
-  { q: "Can I host a private event?", a: "Yes. The Sultan Package books out our premium section for 10+ guests with a dedicated attendant. WhatsApp us." },
+  { q: "Do you serve food?", a: "Empire is a lounge & shisha venue, not a restaurant. We have light bites, mixers, and the bar you'd expect." },
+  { q: "Can I host a private event?", a: "Yes. The Empire Package books out our premium section for 10+ guests with a dedicated attendant. WhatsApp us." },
 ];
 
 function AboutPage() {
@@ -44,7 +44,7 @@ function AboutPage() {
             <span className="font-italic italic font-normal">for the night to <span className="text-gold-gradient">slow down</span>.</span>
           </h1>
           <p className="mt-8 max-w-xl text-foreground/75 text-lg">
-            Sultan started in 2022 as a Saturday-night experiment between friends. Today it's where Nairobi comes when the week has been too much and the night needs to be enough.
+            Empire started in 2022 as a Saturday-night experiment between friends. Today it's where Nairobi comes when the week has been too much and the night needs to be enough.
           </p>
         </div>
       </section>

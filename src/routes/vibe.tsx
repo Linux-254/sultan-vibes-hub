@@ -5,9 +5,9 @@ import event2 from "@/assets/event-2.jpg";
 export const Route = createFileRoute("/vibe")({
   head: () => ({
     meta: [
-      { title: "Vibe With Us — Sultan Park & Puff" },
-      { name: "description", content: "Shisha, sound, sections — the full Sultan experience. Pick your package and meet us at Park Hotel." },
-      { property: "og:title", content: "Vibe With Us — Sultan Park & Puff" },
+      { title: "Vibe With Us — Empire Park Empire Park & Puff Puff" },
+      { name: "description", content: "Shisha, sound, sections — the full Empire experience. Pick your package and meet us at Park Hotel." },
+      { property: "og:title", content: "Vibe With Us — Empire Park Empire Park & Puff Puff" },
       { property: "og:description", content: "Pick your package and meet us at Park Hotel." },
     ],
   }),
@@ -19,7 +19,7 @@ const PACKAGES = [
   { id: "duo", name: "Duo Pack", capacity: "2", price: 1200, includes: ["2 seats", "Shisha", "2 sodas"] },
   { id: "squad", name: "Squad", capacity: "4–6", price: 4500, includes: ["Reserved section", "Shisha × 2", "1 crate of choice"] },
   { id: "vip", name: "VIP Table", capacity: "6–10", price: 9000, includes: ["Premium section", "Shisha × 3", "Captain Morgan bottle", "Mixers"] },
-  { id: "sultan", name: "The Sultan", capacity: "10+", price: 18000, includes: ["Entire section", "Premium shisha × 4", "Kenya Cane + Captain Morgan", "Cigars", "Personal attendant"] },
+  { id: "sultan", name: "The Empire", capacity: "10+", price: 18000, includes: ["Entire section", "Premium shisha × 4", "Kenya Cane + Captain Morgan", "Cigars", "Personal attendant"] },
 ];
 
 const PILLARS = [
@@ -45,7 +45,7 @@ function VibePage() {
             Meet us at the <em className="font-italic italic font-normal text-gold">door</em>.
           </h1>
           <p className="mt-6 max-w-xl text-lg text-foreground/75">
-            Five ways to spend a night at Sultan — from a single seat and a shisha to the entire lounge with a personal attendant.
+            Five ways to spend a night at Empire — from a single seat and a shisha to the entire lounge with a personal attendant.
           </p>
           <div className="mt-10 flex flex-wrap gap-3">
             <Link to="/reserve" className="inline-flex items-center gap-2 rounded-full bg-gold px-7 py-3.5 text-sm font-semibold text-night-deep hover:shadow-[var(--shadow-glow)] transition">

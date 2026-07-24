@@ -8,7 +8,7 @@ import { toast } from "sonner";
 export const Route = createFileRoute("/profile")({
   head: () => ({
     meta: [
-      { title: "Profile — Sultan Park & Puff" },
+      { title: "Profile — Empire Park Empire Park & Puff Puff" },
       { name: "robots", content: "noindex" },
     ],
   }),

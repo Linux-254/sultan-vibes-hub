@@ -6,7 +6,7 @@ import { Send, ShieldAlert } from "lucide-react";
 export const Route = createFileRoute("/chat")({
   head: () => ({
     meta: [
-      { title: "Chat with Sultan — direct line to admin" },
+      { title: "Chat with Empire — direct line to admin" },
       { name: "robots", content: "noindex" },
     ],
   }),
@@ -19,7 +19,7 @@ function UserChatPage() {
   const { user, loading } = useAuth();
   const navigate = useNavigate();
   const [msgs, setMsgs] = useState<Msg[]>([
-    { id: "1", from: "admin", body: "Karibu Sultan. This line goes straight to admin — bookings, collabs, anything.", at: new Date().toISOString() },
+    { id: "1", from: "admin", body: "Karibu Empire. This line goes straight to admin — bookings, collabs, anything.", at: new Date().toISOString() },
   ]);
   const [text, setText] = useState("");
   const bottom = useRef<HTMLDivElement>(null);
@@ -58,7 +58,7 @@ function UserChatPage() {
             return (
               <div key={m.id} className={`flex ${mine ? "justify-end" : "justify-start"}`}>
                 <div className={`max-w-[80%] rounded-2xl px-4 py-2.5 text-sm ${mine ? "bg-gold text-night-deep" : "bg-white/[0.06]"}`}>
-                  {!mine && <div className="text-[10px] uppercase tracking-wider text-gold mb-0.5">Sultan Admin</div>}
+                  {!mine && <div className="text-[10px] uppercase tracking-wider text-gold mb-0.5">Empire Admin</div>}
                   <div className="whitespace-pre-wrap break-words">{m.body}</div>
                   <div className={`text-[10px] mt-1 ${mine ? "text-night-deep/60" : "text-foreground/50"}`}>
                     {new Date(m.at).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}

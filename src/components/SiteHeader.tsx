@@ -27,7 +27,7 @@ export function SiteHeader() {
               S
             </span>
             <span className="font-display text-lg tracking-tight hidden sm:inline">
-              <span className="text-gold-gradient">SULTAN</span>
+              <span className="text-gold-gradient">EMPIRE</span>
               <span className="text-foreground/70 font-light"> · Park & Puff</span>
             </span>
           </Link>

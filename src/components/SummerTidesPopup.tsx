@@ -18,7 +18,7 @@ const EVENT_START = new Date("2025-12-15T18:00:00+03:00"); // Summer Tides launc
 const EVENT_END = new Date("2026-01-26T03:00:00+03:00");   // Last night of the campaign
 const GRACE_DAYS = 30;                                      // keep the photo/video window open
 
-const DISMISS_KEY = "sultan_st_popup_dismissed_at";
+const DISMISS_KEY = "empire_st_popup_dismissed_at";
 const DISMISS_HOURS = 24;
 
 function isCampaignWindowOpen(now = Date.now()) {
@@ -114,8 +114,8 @@ export function SummerTidesPopup() {
             {isPost
               ? "The wave has rolled out — but the photos and videos are still rolling in. Find your night, claim your moment."
               : isLive
-                ? "Six weeks. One island. The biggest sound system Sultan has ever assembled — happening right now."
-                : "Six weeks. One island. The biggest sound system Sultan has ever assembled. Doors open in:"}
+                ? "Six weeks. One island. The biggest sound system Empire has ever assembled — happening right now."
+                : "Six weeks. One island. The biggest sound system Empire has ever assembled. Doors open in:"}
           </p>
 
           {!isPost && !isLive && (

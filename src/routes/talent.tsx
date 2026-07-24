@@ -5,9 +5,9 @@ import { ArrowRight, Music2, Mic2, Camera, Headphones, User2 } from "lucide-reac
 export const Route = createFileRoute("/talent")({
   head: () => ({
     meta: [
-      { title: "Talent — Sultan Park & Puff" },
-      { name: "description", content: "Sultan scouts and books DJs, artists, MCs, dancers, photographers and videographers across Nairobi." },
-      { property: "og:title", content: "Sultan Talent Hub" },
+      { title: "Talent — Empire Park Empire Park & Puff Puff" },
+      { name: "description", content: "Empire scouts and books DJs, artists, MCs, dancers, photographers and videographers across Nairobi." },
+      { property: "og:title", content: "Empire Talent Hub" },
       { property: "og:description", content: "Get scouted. Get booked. Get featured." },
     ],
   }),
@@ -50,7 +50,7 @@ function TalentPage() {
           Get <em className="font-italic italic font-normal">booked</em>.
         </h1>
         <p className="mt-5 max-w-xl text-foreground/70">
-          DJs, artists, MCs, dancers, photographers and videographers — Sultan books fresh talent every week. Submit your work, we review and respond.
+          DJs, artists, MCs, dancers, photographers and videographers — Empire books fresh talent every week. Submit your work, we review and respond.
         </p>
 
         <div className="mt-10 flex flex-wrap gap-2">
@@ -110,7 +110,7 @@ function TalentPage() {
       <section className="mx-auto max-w-4xl px-5 lg:px-8 pb-32">
         <div className="glass rounded-3xl p-7 lg:p-10">
           <div className="eyebrow">Submit your portfolio</div>
-          <h3 className="font-display text-3xl mt-3">Tell us why <span className="text-gold-gradient">Sultan</span>.</h3>
+          <h3 className="font-display text-3xl mt-3">Tell us why <span className="text-gold-gradient">Empire</span>.</h3>
           <form onSubmit={(e) => e.preventDefault()} className="mt-8 grid sm:grid-cols-2 gap-3">
             <I label="Stage name" />
             <S label="Talent type" options={TYPES.filter((t) => t !== "All") as unknown as string[]} />
@@ -120,7 +120,7 @@ function TalentPage() {
             <I label="TikTok" placeholder="@handle" />
             <div className="sm:col-span-2">
               <label className="block">
-                <span className="text-xs text-foreground/60">Why Sultan? (200 chars)</span>
+                <span className="text-xs text-foreground/60">Why Empire? (200 chars)</span>
                 <textarea maxLength={200} rows={3} className="mt-1.5 w-full bg-night/60 border border-border/50 rounded-2xl px-4 py-3 text-sm focus:outline-none focus:border-gold resize-none" />
               </label>
             </div>

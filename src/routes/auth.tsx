@@ -8,8 +8,8 @@ import { Mail, Lock, ArrowRight, User as UserIcon } from "lucide-react";
 export const Route = createFileRoute("/auth")({
   head: () => ({
     meta: [
-      { title: "Sign in — Sultan Park & Puff" },
-      { name: "description", content: "Sign in or create an account to manage reservations at Sultan Park & Puff." },
+      { title: "Sign in — Empire Park Empire Park & Puff Puff" },
+      { name: "description", content: "Sign in or create an account to manage reservations at Empire Park Empire Park & Puff Puff." },
       { name: "robots", content: "noindex" },
     ],
   }),
@@ -64,7 +64,7 @@ function AuthPage() {
       <div className="text-center">
         <div className="eyebrow">Members & Crew</div>
         <h1 className="font-display text-5xl mt-3">
-          {mode === "signin" ? <>Welcome <span className="text-gold-gradient">back.</span></> : <>Join <span className="text-gold-gradient">Sultan.</span></>}
+          {mode === "signin" ? <>Welcome <span className="text-gold-gradient">back.</span></> : <>Join <span className="text-gold-gradient">Empire.</span></>}
         </h1>
         <p className="text-foreground/70 mt-3 text-sm">
           {mode === "signin" ? "Sign in to manage bookings and access the admin panel." : "Create your account to reserve and ride the vibe."}
@@ -98,7 +98,7 @@ function AuthPage() {
       </form>
 
       <div className="mt-8 text-center text-sm text-foreground/60">
-        <Link to="/" className="hover:text-gold">← Back to Sultan</Link>
+        <Link to="/" className="hover:text-gold">← Back to Empire</Link>
       </div>
     </section>
   );
