@@ -48,7 +48,7 @@ export function SiteFooter() {
         </div>
       </div>
       <div className="border-t border-border/40 py-5 text-center text-xs text-muted-foreground">
-        © {new Date().getFullYear()} Empire Park Empire Park & Puff Puff · Crafted in Nairobi
+        © {new Date().getFullYear()} Empire Park & Puff · Crafted in Nairobi
       </div>
     </footer>
   );

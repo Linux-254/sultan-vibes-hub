@@ -5,9 +5,9 @@ import { MapPin, Clock, ShieldCheck, Heart, Sparkles, Users } from "lucide-react
 export const Route = createFileRoute("/about")({
   head: () => ({
     meta: [
-      { title: "About — Empire Park Empire Park & Puff Puff" },
-      { name: "description", content: "Empire Park Empire Park & Puff Puff is a chill-out lounge and events venue on USIU Road, Nairobi. Our story, our values, our team." },
-      { property: "og:title", content: "About Empire Park Empire Park & Puff Puff" },
+      { title: "About — Empire Park & Puff" },
+      { name: "description", content: "Empire Park & Puff is a chill-out lounge and events venue on USIU Road, Nairobi. Our story, our values, our team." },
+      { property: "og:title", content: "About Empire Park & Puff" },
       { property: "og:description", content: "A chill-out lounge & events venue on USIU Road, Nairobi." },
     ],
   }),

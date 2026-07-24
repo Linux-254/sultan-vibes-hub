@@ -5,9 +5,9 @@ import event2 from "@/assets/event-2.jpg";
 export const Route = createFileRoute("/vibe")({
   head: () => ({
     meta: [
-      { title: "Vibe With Us — Empire Park Empire Park & Puff Puff" },
+      { title: "Vibe With Us — Empire Park & Puff" },
       { name: "description", content: "Shisha, sound, sections — the full Empire experience. Pick your package and meet us at Park Hotel." },
-      { property: "og:title", content: "Vibe With Us — Empire Park Empire Park & Puff Puff" },
+      { property: "og:title", content: "Vibe With Us — Empire Park & Puff" },
       { property: "og:description", content: "Pick your package and meet us at Park Hotel." },
     ],
   }),

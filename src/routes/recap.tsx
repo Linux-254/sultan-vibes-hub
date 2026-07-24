@@ -8,7 +8,7 @@ import event3 from "@/assets/event-3.jpg";
 export const Route = createFileRoute("/recap")({
   head: () => ({
     meta: [
-      { title: "Recap — Empire Park Empire Park & Puff Puff" },
+      { title: "Recap — Empire Park & Puff" },
       { name: "description", content: "Find your night at Empire. Photos and videos from past events — preview free, download via M-Pesa." },
       { property: "og:title", content: "Recap — find your night" },
       { property: "og:description", content: "Photos and videos from past events. Preview free, download via M-Pesa." },

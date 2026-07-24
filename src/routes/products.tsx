@@ -5,7 +5,7 @@ import { useState } from "react";
 export const Route = createFileRoute("/products")({
   head: () => ({
     meta: [
-      { title: "Shop — Empire Park Empire Park & Puff Puff" },
+      { title: "Shop — Empire Park & Puff" },
       { name: "description", content: "Empire-branded merch, custom shisha flavour packs, gift vouchers, and capsules from our collab partners." },
       { property: "og:title", content: "Empire Shop" },
       { property: "og:description", content: "Merch, flavour packs, gift vouchers and collab capsules." },

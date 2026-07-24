@@ -5,7 +5,7 @@ import { useState } from "react";
 export const Route = createFileRoute("/collabs")({
   head: () => ({
     meta: [
-      { title: "Collaborations — Empire Park Empire Park & Puff Puff" },
+      { title: "Collaborations — Empire Park & Puff" },
       { name: "description", content: "Brands, artists, agencies — partner with Empire. Product listings, event sponsorships, media partnerships, talent deals." },
       { property: "og:title", content: "Empire Collaborations" },
       { property: "og:description", content: "Partner with Nairobi's most talked-about lounge." },

@@ -8,9 +8,9 @@ import { ArrowRight, Sparkles } from "lucide-react";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Empire Park Empire Park & Puff Puff — Where Nairobi Comes to Breathe" },
+      { title: "Empire Park & Puff — Where Nairobi Comes to Breathe" },
       { name: "description", content: "Reserve your table, ride the Summer Tides 2025, and catch the vibe at Nairobi's premier shisha lounge & events venue." },
-      { property: "og:title", content: "Empire Park Empire Park & Puff Puff" },
+      { property: "og:title", content: "Empire Park & Puff" },
       { property: "og:description", content: "Where Nairobi Comes to Breathe." },
     ],
   }),
@@ -33,7 +33,7 @@ function HomePage() {
         <div className="absolute inset-0">
           <img
             src={heroImg}
-            alt="Empire Park Empire Park & Puff Puff lounge at night"
+            alt="Empire Park & Puff lounge at night"
             className="h-full w-full object-cover kenburns"
             width={1920}
             height={1280}

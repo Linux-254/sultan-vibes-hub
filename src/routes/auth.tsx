@@ -8,8 +8,8 @@ import { Mail, Lock, ArrowRight, User as UserIcon } from "lucide-react";
 export const Route = createFileRoute("/auth")({
   head: () => ({
     meta: [
-      { title: "Sign in — Empire Park Empire Park & Puff Puff" },
-      { name: "description", content: "Sign in or create an account to manage reservations at Empire Park Empire Park & Puff Puff." },
+      { title: "Sign in — Empire Park & Puff" },
+      { name: "description", content: "Sign in or create an account to manage reservations at Empire Park & Puff." },
       { name: "robots", content: "noindex" },
     ],
   }),

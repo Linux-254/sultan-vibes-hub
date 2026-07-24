@@ -5,7 +5,7 @@ export const Route = createFileRoute("/collabs/$slug")({
   head: ({ params }) => ({
     meta: [
       { title: `${prettify(params.slug)} × Empire — Collab` },
-      { name: "description", content: `${prettify(params.slug)} is a Empire Park Empire Park & Puff Puff collaboration partner.` },
+      { name: "description", content: `${prettify(params.slug)} is a Empire Park & Puff collaboration partner.` },
     ],
   }),
   component: CollabPage,

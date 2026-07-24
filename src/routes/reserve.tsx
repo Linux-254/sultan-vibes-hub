@@ -11,7 +11,7 @@ const packageSchema = z
 export const Route = createFileRoute("/reserve")({
   head: () => ({
     meta: [
-      { title: "Reserve a Table — Empire Park Empire Park & Puff Puff" },
+      { title: "Reserve a Table — Empire Park & Puff" },
       { name: "description", content: "Lock in your section, parking and shisha for the night. Pay via M-Pesa, get a QR confirmation on WhatsApp." },
       { name: "robots", content: "noindex" },
     ],

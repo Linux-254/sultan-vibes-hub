@@ -5,7 +5,7 @@ import { ArrowRight, Music2, Mic2, Camera, Headphones, User2 } from "lucide-reac
 export const Route = createFileRoute("/talent")({
   head: () => ({
     meta: [
-      { title: "Talent — Empire Park Empire Park & Puff Puff" },
+      { title: "Talent — Empire Park & Puff" },
       { name: "description", content: "Empire scouts and books DJs, artists, MCs, dancers, photographers and videographers across Nairobi." },
       { property: "og:title", content: "Empire Talent Hub" },
       { property: "og:description", content: "Get scouted. Get booked. Get featured." },

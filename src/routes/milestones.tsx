@@ -3,7 +3,7 @@ import { createFileRoute } from "@tanstack/react-router";
 export const Route = createFileRoute("/milestones")({
   head: () => ({
     meta: [
-      { title: "Milestones — Empire Park Empire Park & Puff Puff" },
+      { title: "Milestones — Empire Park & Puff" },
       { name: "description", content: "The story of Empire, told in moments. From the first night to the biggest summer campaign in our history." },
       { property: "og:title", content: "Empire Milestones" },
       { property: "og:description", content: "The story of Empire, told in moments." },

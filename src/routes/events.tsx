@@ -7,8 +7,8 @@ import { Calendar, Users } from "lucide-react";
 export const Route = createFileRoute("/events")({
   head: () => ({
     meta: [
-      { title: "Upcoming Events — Empire Park Empire Park & Puff Puff" },
-      { name: "description", content: "Afro House, Amapiano, live sax sessions and more. Browse upcoming nights at Empire Park Empire Park & Puff Puff in Nairobi." },
+      { title: "Upcoming Events — Empire Park & Puff" },
+      { name: "description", content: "Afro House, Amapiano, live sax sessions and more. Browse upcoming nights at Empire Park & Puff in Nairobi." },
       { property: "og:title", content: "Upcoming Events at Empire" },
       { property: "og:description", content: "Browse upcoming nights and reserve your table." },
     ],

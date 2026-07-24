@@ -5,7 +5,7 @@ export const Route = createFileRoute("/talent/$username")({
   head: ({ params }) => ({
     meta: [
       { title: `${prettify(params.username)} — Empire Talent` },
-      { name: "description", content: `${prettify(params.username)} on the Empire Park Empire Park & Puff Puff talent roster.` },
+      { name: "description", content: `${prettify(params.username)} on the Empire Park & Puff talent roster.` },
     ],
   }),
   component: TalentProfile,
