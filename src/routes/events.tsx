@@ -7,9 +7,9 @@ import { Calendar, Users } from "lucide-react";
 export const Route = createFileRoute("/events")({
   head: () => ({
     meta: [
-      { title: "Upcoming Events — Sultan Park & Puff" },
-      { name: "description", content: "Afro House, Amapiano, live sax sessions and more. Browse upcoming nights at Sultan Park & Puff in Nairobi." },
-      { property: "og:title", content: "Upcoming Events at Sultan" },
+      { title: "Upcoming Events — Empire Park & Puff" },
+      { name: "description", content: "Afro House, Amapiano, live sax sessions and more. Browse upcoming nights at Empire Park & Puff in Nairobi." },
+      { property: "og:title", content: "Upcoming Events at Empire" },
       { property: "og:description", content: "Browse upcoming nights and reserve your table." },
     ],
   }),
@@ -64,7 +64,7 @@ function EventsPage() {
           Upcoming <span className="text-gold-gradient">Nights.</span>
         </h1>
         <p className="mt-4 text-foreground/70 max-w-xl">
-          Reserve early — Saturdays at Sultan sell out by Wednesday.
+          Reserve early — Saturdays at Empire sell out by Wednesday.
         </p>
       </section>
 

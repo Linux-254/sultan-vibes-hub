@@ -4,8 +4,8 @@ import { ArrowLeft, MessageCircle, Music2 } from "lucide-react";
 export const Route = createFileRoute("/talent/$username")({
   head: ({ params }) => ({
     meta: [
-      { title: `${prettify(params.username)} — Sultan Talent` },
-      { name: "description", content: `${prettify(params.username)} on the Sultan Park & Puff talent roster.` },
+      { title: `${prettify(params.username)} — Empire Talent` },
+      { name: "description", content: `${prettify(params.username)} on the Empire Park & Puff talent roster.` },
     ],
   }),
   component: TalentProfile,
@@ -32,7 +32,7 @@ function TalentProfile() {
           <span className="text-[11px] uppercase tracking-wider text-savanna">Available</span>
           <h1 className="font-display text-5xl md:text-6xl mt-2">{name}</h1>
           <p className="mt-4 text-foreground/70 max-w-xl">
-            Resident sound. Catch their next set on the Sultan calendar or book them direct via admin.
+            Resident sound. Catch their next set on the Empire calendar or book them direct via admin.
           </p>
           <div className="mt-6 flex flex-wrap gap-3">
             <Link to="/chat" className="rounded-full bg-gold px-5 py-2.5 text-sm font-semibold text-night-deep inline-flex items-center gap-1.5">

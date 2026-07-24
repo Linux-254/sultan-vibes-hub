@@ -3,10 +3,10 @@ import { createFileRoute } from "@tanstack/react-router";
 export const Route = createFileRoute("/milestones")({
   head: () => ({
     meta: [
-      { title: "Milestones — Sultan Park & Puff" },
-      { name: "description", content: "The story of Sultan, told in moments. From the first night to the biggest summer campaign in our history." },
-      { property: "og:title", content: "Sultan Milestones" },
-      { property: "og:description", content: "The story of Sultan, told in moments." },
+      { title: "Milestones — Empire Park & Puff" },
+      { name: "description", content: "The story of Empire, told in moments. From the first night to the biggest summer campaign in our history." },
+      { property: "og:title", content: "Empire Milestones" },
+      { property: "og:description", content: "The story of Empire, told in moments." },
     ],
   }),
   component: MilestonesPage,
@@ -17,7 +17,7 @@ const MILESTONES = [
   { date: "Aug 2022", title: "Park Hotel · USIU Road", body: "We took the rooftop. We never gave it back." },
   { date: "Dec 2022", title: "First Sold-Out Saturday", body: "We turned 80 people away. That was the night we knew." },
   { date: "May 2023", title: "Tusker Partnership", body: "Our first major collab. The bar got bigger, the crowd got louder." },
-  { date: "Oct 2023", title: "Sultan Talks Launch", body: "A Sunday series of intimate sets, panel chats and acoustic nights." },
+  { date: "Oct 2023", title: "Empire Talks Launch", body: "A Sunday series of intimate sets, panel chats and acoustic nights." },
   { date: "Feb 2024", title: "10,000 Vibers", body: "Ten thousand people through the door in a single year." },
   { date: "Jan 2025", title: "Summer Tides Announced", body: "The biggest campaign in our history. Six weeks. One ocean. Coming summer 2025." },
 ];
@@ -28,7 +28,7 @@ function MilestonesPage() {
       <section className="mx-auto max-w-7xl px-5 lg:px-8 pt-16 pb-12">
         <div className="eyebrow">The Story</div>
         <h1 className="font-display text-5xl md:text-7xl mt-3">
-          How Sultan <span className="text-gold-gradient">became Sultan.</span>
+          How Empire <span className="text-gold-gradient">became Empire.</span>
         </h1>
       </section>
 

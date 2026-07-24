@@ -1,30 +1,30 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { ShoppingBag, Sparkles } from "lucide-react";
+import { ShoppingBag, Crown } from "lucide-react";
 import { useState } from "react";
 
 export const Route = createFileRoute("/products")({
   head: () => ({
     meta: [
-      { title: "Shop — Sultan Park & Puff" },
-      { name: "description", content: "Sultan-branded merch, custom shisha flavour packs, gift vouchers, and capsules from our collab partners." },
-      { property: "og:title", content: "Sultan Shop" },
+      { title: "Shop — Empire Park & Puff" },
+      { name: "description", content: "Empire-branded merch, custom shisha flavour packs, gift vouchers, and capsules from our collab partners." },
+      { property: "og:title", content: "Empire Shop" },
       { property: "og:description", content: "Merch, flavour packs, gift vouchers and collab capsules." },
     ],
   }),
   component: ProductsPage,
 });
 
-const TABS = ["All", "Sultan", "Collabs", "Vouchers", "Tickets"] as const;
+const TABS = ["All", "Empire", "Collabs", "Vouchers", "Tickets"] as const;
 
 const PRODUCTS = [
-  { id: "1", name: "Sultan Embroidered Hoodie", brand: "Sultan", price: 4500, tag: "Sultan" },
-  { id: "2", name: "Park & Puff Cap", brand: "Sultan", price: 1500, tag: "Sultan" },
-  { id: "3", name: "Double Apple Flavour Pack (3×)", brand: "Sultan", price: 1200, tag: "Sultan" },
-  { id: "4", name: "KES 5,000 Gift Voucher", brand: "Sultan", price: 5000, tag: "Vouchers" },
+  { id: "1", name: "Empire Embroidered Hoodie", brand: "Empire", price: 4500, tag: "Empire" },
+  { id: "2", name: "Park & Puff Cap", brand: "Empire", price: 1500, tag: "Empire" },
+  { id: "3", name: "Double Apple Flavour Pack (3×)", brand: "Empire", price: 1200, tag: "Empire" },
+  { id: "4", name: "KES 5,000 Gift Voucher", brand: "Empire", price: 5000, tag: "Vouchers" },
   { id: "5", name: "Kanyali — Tides Mix Vinyl", brand: "Kanyali Records", price: 3500, tag: "Collabs" },
   { id: "6", name: "Lava Streetwear · Tee", brand: "Lava Lab", price: 2200, tag: "Collabs" },
-  { id: "7", name: "Summer Tides · Opening Night Ticket", brand: "Sultan", price: 2500, tag: "Tickets" },
-  { id: "8", name: "Premium Shisha Bowl Refill", brand: "Sultan", price: 550, tag: "Sultan" },
+  { id: "7", name: "Summer Tides · Opening Night Ticket", brand: "Empire", price: 2500, tag: "Tickets" },
+  { id: "8", name: "Premium Shisha Bowl Refill", brand: "Empire", price: 550, tag: "Empire" },
 ];
 
 function ProductsPage() {
@@ -74,10 +74,10 @@ function ProductsPage() {
       </div>
 
       <div className="mt-16 glass rounded-3xl p-7 lg:p-10 kente-border max-w-3xl">
-        <Sparkles className="text-gold" />
+        <Crown className="text-gold" />
         <h3 className="font-display text-2xl mt-3">Want your brand here?</h3>
         <p className="mt-2 text-sm text-foreground/70">
-          Approved collaborators sell their products through Sultan's storefront — we handle checkout, M-Pesa and weekly payouts. Apply via the Collabs hub.
+          Approved collaborators sell their products through Empire's storefront — we handle checkout, M-Pesa and weekly payouts. Apply via the Collabs hub.
         </p>
       </div>
     </section>

@@ -7,8 +7,8 @@ import { supabase } from "@/integrations/supabase/client";
 export const Route = createFileRoute("/sos")({
   head: () => ({
     meta: [
-      { title: "SOS — Silent help at Sultan" },
-      { name: "description", content: "Feel unsafe at Sultan? Trigger a silent alert. Admin and security respond in minutes." },
+      { title: "SOS — Silent help at Empire" },
+      { name: "description", content: "Feel unsafe at Empire? Trigger a silent alert. Admin and security respond in minutes." },
       { name: "robots", content: "noindex" },
     ],
   }),

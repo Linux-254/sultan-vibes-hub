@@ -8,8 +8,8 @@ import event3 from "@/assets/event-3.jpg";
 export const Route = createFileRoute("/recap")({
   head: () => ({
     meta: [
-      { title: "Recap — Sultan Park & Puff" },
-      { name: "description", content: "Find your night at Sultan. Photos and videos from past events — preview free, download via M-Pesa." },
+      { title: "Recap — Empire Park & Puff" },
+      { name: "description", content: "Find your night at Empire. Photos and videos from past events — preview free, download via M-Pesa." },
       { property: "og:title", content: "Recap — find your night" },
       { property: "og:description", content: "Photos and videos from past events. Preview free, download via M-Pesa." },
     ],
@@ -71,7 +71,7 @@ function RecapPage() {
         <Lock className="text-gold" />
         <h3 className="font-display text-2xl mt-3">Find My Photos · <span className="text-foreground/60 font-italic italic font-normal">coming soon</span></h3>
         <p className="mt-2 text-sm text-foreground/65 max-w-xl">
-          Upload a selfie, we'll surface every shot you're in across every Sultan event. Strictly opt-in. Compliant with Kenya Data Protection Act 2019.
+          Upload a selfie, we'll surface every shot you're in across every Empire event. Strictly opt-in. Compliant with Kenya Data Protection Act 2019.
         </p>
       </div>
     </section>

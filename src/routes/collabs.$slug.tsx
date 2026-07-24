@@ -4,8 +4,8 @@ import { ArrowLeft, MessageCircle } from "lucide-react";
 export const Route = createFileRoute("/collabs/$slug")({
   head: ({ params }) => ({
     meta: [
-      { title: `${prettify(params.slug)} × Sultan — Collab` },
-      { name: "description", content: `${prettify(params.slug)} is a Sultan Park & Puff collaboration partner.` },
+      { title: `${prettify(params.slug)} × Empire — Collab` },
+      { name: "description", content: `${prettify(params.slug)} is a Empire Park & Puff collaboration partner.` },
     ],
   }),
   component: CollabPage,
@@ -33,7 +33,7 @@ function CollabPage() {
           <div className="eyebrow">Collab partner</div>
           <h1 className="font-display text-5xl md:text-6xl mt-2">{name}</h1>
           <p className="mt-4 text-foreground/70 max-w-xl">
-            Working with Sultan since 2024. Catch their drops in the shop and look out for activations on event nights.
+            Working with Empire since 2024. Catch their drops in the shop and look out for activations on event nights.
           </p>
           <div className="mt-6 flex flex-wrap gap-3">
             <Link to="/products" className="rounded-full bg-gold px-5 py-2.5 text-sm font-semibold text-night-deep">Shop their products</Link>
@@ -43,7 +43,7 @@ function CollabPage() {
           </div>
           <div className="mt-6 inline-flex items-center gap-2 text-xs text-foreground/55">
             <span className="h-1.5 w-1.5 rounded-full bg-savanna" />
-            A share of every sale supports Sultan's room.
+            A share of every sale supports Empire's room.
           </div>
         </div>
       </div>

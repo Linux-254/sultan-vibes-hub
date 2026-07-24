@@ -3,14 +3,14 @@ import heroImg from "@/assets/hero.jpg";
 import event1 from "@/assets/event-1.jpg";
 import { Countdown } from "@/components/Countdown";
 import { StatCounter } from "@/components/StatCounter";
-import { ArrowRight, Sparkles } from "lucide-react";
+import { ArrowRight, Crown } from "lucide-react";
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Sultan Park & Puff — Where Nairobi Comes to Breathe" },
+      { title: "Empire Park & Puff — Where Nairobi Comes to Breathe" },
       { name: "description", content: "Reserve your table, ride the Summer Tides 2025, and catch the vibe at Nairobi's premier shisha lounge & events venue." },
-      { property: "og:title", content: "Sultan Park & Puff" },
+      { property: "og:title", content: "Empire Park & Puff" },
       { property: "og:description", content: "Where Nairobi Comes to Breathe." },
     ],
   }),
@@ -33,7 +33,7 @@ function HomePage() {
         <div className="absolute inset-0">
           <img
             src={heroImg}
-            alt="Sultan Park & Puff lounge at night"
+            alt="Empire Park & Puff lounge at night"
             className="h-full w-full object-cover kenburns"
             width={1920}
             height={1280}
@@ -44,7 +44,7 @@ function HomePage() {
 
         <div className="relative mx-auto max-w-7xl px-5 lg:px-8 pt-32 pb-20 min-h-[100svh] flex flex-col justify-center">
           <div className="rise inline-flex items-center gap-2 self-start glass rounded-full px-4 py-1.5 border border-gold/30 gold-pulse mb-8">
-            <Sparkles size={14} className="text-gold" />
+            <Crown size={14} className="text-gold" />
             <span className="text-xs uppercase tracking-[0.32em] text-gold font-mono">
               Summer Tides 2025
             </span>
@@ -95,7 +95,7 @@ function HomePage() {
               <span className="font-italic italic font-normal text-foreground/90">is rising.</span>
             </h2>
             <p className="mt-5 text-foreground/70 max-w-md">
-              Six weeks. One island. The biggest sound system Sultan has ever assembled. Drop your number for early access — first 100 names get free entry.
+              Six weeks. One island. The biggest sound system Empire has ever assembled. Drop your number for early access — first 100 names get free entry.
             </p>
             <Link
               to="/events"
@@ -155,7 +155,7 @@ function HomePage() {
             <div className="relative aspect-[5/3] lg:aspect-auto overflow-hidden">
               <img
                 src={event1}
-                alt="DJ booth at Sultan"
+                alt="DJ booth at Empire"
                 className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
                 loading="lazy"
               />

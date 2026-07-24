@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
-import { ArrowRight, Calendar, Car, Check, Flame, Minus, Plus, Wine, Sparkles } from "lucide-react";
+import { ArrowRight, Calendar, Car, Check, Flame, Minus, Plus, Wine, Crown } from "lucide-react";
 import { z } from "zod";
 import { toast } from "sonner";
 
@@ -11,7 +11,7 @@ const packageSchema = z
 export const Route = createFileRoute("/reserve")({
   head: () => ({
     meta: [
-      { title: "Reserve a Table — Sultan Park & Puff" },
+      { title: "Reserve a Table — Empire Park & Puff" },
       { name: "description", content: "Lock in your section, parking and shisha for the night. Pay via M-Pesa, get a QR confirmation on WhatsApp." },
       { name: "robots", content: "noindex" },
     ],
@@ -27,7 +27,7 @@ const PACKAGES = {
   duo: { name: "Duo Pack", capacity: "2", price: 1200 },
   squad: { name: "Squad", capacity: "4–6", price: 4500 },
   vip: { name: "VIP Table", capacity: "6–10", price: 9000 },
-  sultan: { name: "The Sultan", capacity: "10+", price: 18000 },
+  sultan: { name: "The Empire", capacity: "10+", price: 18000 },
 } as const;
 
 // SHISHA / POT / BONG line items — all capped at KES 550 each
@@ -252,7 +252,7 @@ function ReservePage() {
           </div>
 
           <Link to="/vibe" className="block text-xs text-foreground/55 hover:text-gold text-center">
-            <Sparkles size={12} className="inline mr-1" /> Compare packages first
+            <Crown size={12} className="inline mr-1" /> Compare packages first
           </Link>
         </aside>
       </div>

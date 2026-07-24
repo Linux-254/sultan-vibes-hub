@@ -5,9 +5,9 @@ import { useState } from "react";
 export const Route = createFileRoute("/collabs")({
   head: () => ({
     meta: [
-      { title: "Collaborations — Sultan Park & Puff" },
-      { name: "description", content: "Brands, artists, agencies — partner with Sultan. Product listings, event sponsorships, media partnerships, talent deals." },
-      { property: "og:title", content: "Sultan Collaborations" },
+      { title: "Collaborations — Empire Park & Puff" },
+      { name: "description", content: "Brands, artists, agencies — partner with Empire. Product listings, event sponsorships, media partnerships, talent deals." },
+      { property: "og:title", content: "Empire Collaborations" },
       { property: "og:description", content: "Partner with Nairobi's most talked-about lounge." },
     ],
   }),
@@ -45,7 +45,7 @@ function CollabsPage() {
             Build the <span className="text-gold-gradient">vibe</span> with us.
           </h1>
           <p className="mt-6 max-w-xl text-lg text-foreground/80">
-            Sultan is where Nairobi's nights start. Plug in your brand, your artists, or your agency — we handle the room, you handle the magic.
+            Empire is where Nairobi's nights start. Plug in your brand, your artists, or your agency — we handle the room, you handle the magic.
           </p>
         </div>
       </section>

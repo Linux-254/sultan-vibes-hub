@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "@tanstack/react-router";
-import { X, Sparkles, ArrowRight } from "lucide-react";
+import { X, Crown, ArrowRight } from "lucide-react";
 import { Countdown } from "@/components/Countdown";
 
 /**
@@ -18,7 +18,7 @@ const EVENT_START = new Date("2025-12-15T18:00:00+03:00"); // Summer Tides launc
 const EVENT_END = new Date("2026-01-26T03:00:00+03:00");   // Last night of the campaign
 const GRACE_DAYS = 30;                                      // keep the photo/video window open
 
-const DISMISS_KEY = "sultan_st_popup_dismissed_at";
+const DISMISS_KEY = "empire_st_popup_dismissed_at";
 const DISMISS_HOURS = 24;
 
 function isCampaignWindowOpen(now = Date.now()) {
@@ -95,7 +95,7 @@ export function SummerTidesPopup() {
 
         <div className="relative p-7 sm:p-9">
           <div className="inline-flex items-center gap-2 glass rounded-full px-3 py-1 border border-gold/30 gold-pulse">
-            <Sparkles size={12} className="text-gold" />
+            <Crown size={12} className="text-gold" />
             <span className="text-[10px] uppercase tracking-[0.32em] text-gold font-mono">
               {isPost ? "Tides · Memory Lane" : isLive ? "Tides · Live Now" : "Tides · Coming"}
             </span>
@@ -114,8 +114,8 @@ export function SummerTidesPopup() {
             {isPost
               ? "The wave has rolled out — but the photos and videos are still rolling in. Find your night, claim your moment."
               : isLive
-                ? "Six weeks. One island. The biggest sound system Sultan has ever assembled — happening right now."
-                : "Six weeks. One island. The biggest sound system Sultan has ever assembled. Doors open in:"}
+                ? "Six weeks. One island. The biggest sound system Empire has ever assembled — happening right now."
+                : "Six weeks. One island. The biggest sound system Empire has ever assembled. Doors open in:"}
           </p>
 
           {!isPost && !isLive && (
