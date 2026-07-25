@@ -29,6 +29,7 @@ import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as TalentUsernameRouteImport } from './routes/talent.$username'
 import { Route as CollabsSlugRouteImport } from './routes/collabs.$slug'
 import { Route as AdminSosRouteImport } from './routes/admin.sos'
+import { Route as AdminRolesRouteImport } from './routes/admin.roles'
 import { Route as AdminReservationsRouteImport } from './routes/admin.reservations'
 import { Route as AdminPaymentsRouteImport } from './routes/admin.payments'
 import { Route as AdminChatRouteImport } from './routes/admin.chat'
@@ -133,6 +134,11 @@ const AdminSosRoute = AdminSosRouteImport.update({
   path: '/sos',
   getParentRoute: () => AdminRoute,
 } as any)
+const AdminRolesRoute = AdminRolesRouteImport.update({
+  id: '/roles',
+  path: '/roles',
+  getParentRoute: () => AdminRoute,
+} as any)
 const AdminReservationsRoute = AdminReservationsRouteImport.update({
   id: '/reservations',
   path: '/reservations',
@@ -169,6 +175,7 @@ export interface FileRoutesByFullPath {
   '/admin/chat': typeof AdminChatRoute
   '/admin/payments': typeof AdminPaymentsRoute
   '/admin/reservations': typeof AdminReservationsRoute
+  '/admin/roles': typeof AdminRolesRoute
   '/admin/sos': typeof AdminSosRoute
   '/collabs/$slug': typeof CollabsSlugRoute
   '/talent/$username': typeof TalentUsernameRoute
@@ -193,6 +200,7 @@ export interface FileRoutesByTo {
   '/admin/chat': typeof AdminChatRoute
   '/admin/payments': typeof AdminPaymentsRoute
   '/admin/reservations': typeof AdminReservationsRoute
+  '/admin/roles': typeof AdminRolesRoute
   '/admin/sos': typeof AdminSosRoute
   '/collabs/$slug': typeof CollabsSlugRoute
   '/talent/$username': typeof TalentUsernameRoute
@@ -219,6 +227,7 @@ export interface FileRoutesById {
   '/admin/chat': typeof AdminChatRoute
   '/admin/payments': typeof AdminPaymentsRoute
   '/admin/reservations': typeof AdminReservationsRoute
+  '/admin/roles': typeof AdminRolesRoute
   '/admin/sos': typeof AdminSosRoute
   '/collabs/$slug': typeof CollabsSlugRoute
   '/talent/$username': typeof TalentUsernameRoute
@@ -246,6 +255,7 @@ export interface FileRouteTypes {
     | '/admin/chat'
     | '/admin/payments'
     | '/admin/reservations'
+    | '/admin/roles'
     | '/admin/sos'
     | '/collabs/$slug'
     | '/talent/$username'
@@ -270,6 +280,7 @@ export interface FileRouteTypes {
     | '/admin/chat'
     | '/admin/payments'
     | '/admin/reservations'
+    | '/admin/roles'
     | '/admin/sos'
     | '/collabs/$slug'
     | '/talent/$username'
@@ -295,6 +306,7 @@ export interface FileRouteTypes {
     | '/admin/chat'
     | '/admin/payments'
     | '/admin/reservations'
+    | '/admin/roles'
     | '/admin/sos'
     | '/collabs/$slug'
     | '/talent/$username'
@@ -462,6 +474,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminSosRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/admin/roles': {
+      id: '/admin/roles'
+      path: '/roles'
+      fullPath: '/admin/roles'
+      preLoaderRoute: typeof AdminRolesRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/admin/reservations': {
       id: '/admin/reservations'
       path: '/reservations'
@@ -490,6 +509,7 @@ interface AdminRouteChildren {
   AdminChatRoute: typeof AdminChatRoute
   AdminPaymentsRoute: typeof AdminPaymentsRoute
   AdminReservationsRoute: typeof AdminReservationsRoute
+  AdminRolesRoute: typeof AdminRolesRoute
   AdminSosRoute: typeof AdminSosRoute
   AdminIndexRoute: typeof AdminIndexRoute
 }
@@ -498,6 +518,7 @@ const AdminRouteChildren: AdminRouteChildren = {
   AdminChatRoute: AdminChatRoute,
   AdminPaymentsRoute: AdminPaymentsRoute,
   AdminReservationsRoute: AdminReservationsRoute,
+  AdminRolesRoute: AdminRolesRoute,
   AdminSosRoute: AdminSosRoute,
   AdminIndexRoute: AdminIndexRoute,
 }
