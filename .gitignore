@@ -24,11 +24,6 @@ supabase/.temp/
 .wrangler/
 .dev.vars
 
-
-
-# Lovable
-.lovable/
-
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
