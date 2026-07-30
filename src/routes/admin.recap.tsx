@@ -21,7 +21,7 @@ import {
 import { ImageUpload } from "@/components/ImageUpload";
 
 export const Route = createFileRoute("/admin/recap")({
-  head: { title: "Recap — Empire Admin", name: "robots", content: "noindex" },
+  head: () => ({ meta: [{ title: "Recap — Empire Admin" }, { name: "robots", content: "noindex" }] }),
   component: AdminRecap,
 });
 

@@ -5,7 +5,7 @@ import { toast } from "sonner";
 import { Save, FileText, Plus, Trash2, GripVertical, Users, Crown, Heart, ShieldCheck } from "lucide-react";
 
 export const Route = createFileRoute("/admin/pages")({
-  head: { title: "Site Pages — Empire Admin", name: "robots", content: "noindex" },
+  head: () => ({ meta: [{ title: "Site Pages — Empire Admin" }, { name: "robots", content: "noindex" }] }),
   component: AdminPages,
 });
 
