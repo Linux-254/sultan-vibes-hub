@@ -60,27 +60,24 @@ function ProductsPage() {
 
   useEffect(() => {
     const fetchAll = async () => {
-      const DRINK_CATEGORIES = ["Cocktails", "Liquor", "Beer", "Whisky", "Shisha", "CGS"];
       const [prodRes, catRes] = await Promise.all([
         supabase.from("products").select("*").eq("active", true).order("sort_order"),
         supabase.from("product_categories").select("*").eq("active", true).order("sort_order"),
       ]);
       if (!prodRes.error && prodRes.data) setProducts(prodRes.data);
-      if (!catRes.error && catRes.data)
-        setCategories(catRes.data.filter((c) => DRINK_CATEGORIES.includes(c.name)));
+      if (!catRes.error && catRes.data) setCategories(catRes.data);
       setLoading(false);
     };
     fetchAll();
   }, []);
 
   const tabNames = ["All", ...categories.map((c) => c.name)];
-  const visible =
-    tab === "All"
-      ? products.filter((p) => categories.some((c) => c.id === p.category_id))
-      : products.filter((p) => {
-          const cat = categories.find((c) => c.name === tab);
-          return cat && p.category_id === cat.id;
-        });
+  const visible = tab === "All"
+    ? products
+    : products.filter((p) => {
+        const cat = categories.find((c) => c.name === tab);
+        return cat && p.category_id === cat.id;
+      });
 
   const getCatSubtitle = (name: string) => categories.find((c) => c.name === name)?.subtitle;
 
