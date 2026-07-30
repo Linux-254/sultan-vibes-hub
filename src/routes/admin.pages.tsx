@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import { Save, FileText } from "lucide-react";
+import { Save, FileText, Plus, Trash2, GripVertical, Users, Crown, Heart, ShieldCheck } from "lucide-react";
 
 export const Route = createFileRoute("/admin/pages")({
   head: { title: "Site Pages — Empire Admin", name: "robots", content: "noindex" },
@@ -78,17 +78,10 @@ function AdminPages() {
                 </span>
               </div>
               {p.slug === "about-values" ? (
-                <div>
-                  <textarea
-                    value={p.content}
-                    onChange={(e) => updateContent(p.slug, e.target.value)}
-                    rows={10}
-                    className="w-full bg-night/60 border border-border/60 rounded-2xl px-4 py-3 text-sm font-mono focus:outline-none focus:border-gold resize-y"
-                  />
-                  <p className="text-[10px] text-foreground/40 mt-1">
-                    JSON array of value objects with icon, title, body fields.
-                  </p>
-                </div>
+                <AboutValuesEditor
+                  value={p.content}
+                  onChange={(val) => updateContent(p.slug, val)}
+                />
               ) : (
                 <input
                   value={p.content}
@@ -112,6 +105,85 @@ function AdminPages() {
           ))}
         </div>
       )}
+    </div>
+  );
+}
+
+const VALUE_ICONS = [
+  { value: "Users", label: "Users", icon: Users },
+  { value: "Crown", label: "Crown", icon: Crown },
+  { value: "Heart", label: "Heart", icon: Heart },
+  { value: "ShieldCheck", label: "Shield", icon: ShieldCheck },
+];
+
+type ValueItem = { icon: string; title: string; body: string };
+
+function AboutValuesEditor({ value, onChange }: { value: string; onChange: (v: string) => void }) {
+  let items: ValueItem[] = [];
+  try { const p = JSON.parse(value); if (Array.isArray(p)) items = p; } catch {}
+  if (!items.length) items = [{ icon: "Users", title: "", body: "" }];
+
+  const setItems = (next: ValueItem[]) => onChange(JSON.stringify(next, null, 2));
+
+  const updateItem = (i: number, field: keyof ValueItem, val: string) => {
+    const copy = [...items];
+    copy[i] = { ...copy[i], [field]: val };
+    setItems(copy);
+  };
+
+  const removeItem = (i: number) => {
+    if (items.length <= 1) return;
+    setItems(items.filter((_, idx) => idx !== i));
+  };
+
+  const addItem = () => setItems([...items, { icon: "Users", title: "", body: "" }]);
+
+  return (
+    <div className="space-y-3">
+      {items.map((item, i) => (
+        <div key={i} className="flex items-start gap-2">
+          <div className="flex-1 space-y-2">
+            <div className="flex items-center gap-2">
+              <GripVertical size={14} className="text-foreground/30 shrink-0" />
+              <select
+                value={item.icon}
+                onChange={(e) => updateItem(i, "icon", e.target.value)}
+                className="bg-night/60 border border-border/60 rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-gold"
+              >
+                {VALUE_ICONS.map((ic) => (
+                  <option key={ic.value} value={ic.value}>{ic.label}</option>
+                ))}
+              </select>
+              <input
+                value={item.title}
+                onChange={(e) => updateItem(i, "title", e.target.value)}
+                placeholder="Title"
+                className="flex-1 bg-night/60 border border-border/60 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-gold"
+              />
+            </div>
+            <textarea
+              value={item.body}
+              onChange={(e) => updateItem(i, "body", e.target.value)}
+              rows={2}
+              placeholder="Description"
+              className="w-full bg-night/60 border border-border/60 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-gold resize-y"
+            />
+          </div>
+          <button
+            onClick={() => removeItem(i)}
+            className="mt-1 p-2 text-foreground/40 hover:text-lava transition"
+            title="Remove"
+          >
+            <Trash2 size={14} />
+          </button>
+        </div>
+      ))}
+      <button
+        onClick={addItem}
+        className="inline-flex items-center gap-1.5 rounded-xl border border-dashed border-border/60 px-4 py-2 text-xs text-foreground/50 hover:text-gold hover:border-gold/50 transition"
+      >
+        <Plus size={12} /> Add value
+      </button>
     </div>
   );
 }
