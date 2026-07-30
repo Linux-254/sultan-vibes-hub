@@ -209,6 +209,7 @@ function AdminPricing() {
               <div key={key} className="glass rounded-2xl p-4 border border-border/30 overflow-hidden">
                 <div className="text-xs uppercase tracking-wider text-gold/70 mb-1">{key}</div>
                 <input
+                  name={`pkg-name-${key}`}
                   value={pkg.name}
                   onChange={(e) => {
                     const next = { ...packages, [key]: { ...pkg, name: e.target.value } };
@@ -219,6 +220,7 @@ function AdminPricing() {
                 />
                 <div className="flex gap-2 mb-2 min-w-0">
                   <input
+                    name={`pkg-capacity-${key}`}
                     value={pkg.capacity}
                     onChange={(e) => {
                       const next = { ...packages, [key]: { ...pkg, capacity: e.target.value } };
@@ -228,6 +230,7 @@ function AdminPricing() {
                     placeholder="Capacity"
                   />
                   <input
+                    name={`pkg-price-${key}`}
                     inputMode="numeric"
                     value={pkg.price}
                     onChange={(e) => {
@@ -275,6 +278,7 @@ function AdminPricing() {
                   </button>
                 </div>
                 <input
+                  name={`parking-name-${idx}`}
                   value={opt.name}
                   onChange={(e) => {
                     const next = [...parkingOptions];
@@ -285,6 +289,7 @@ function AdminPricing() {
                   placeholder="Name"
                 />
                 <input
+                  name={`parking-price-${idx}`}
                   inputMode="numeric"
                   value={opt.price}
                   onChange={(e) => {
@@ -328,6 +333,7 @@ function AdminPricing() {
             <label className="block">
               <span className="eyebrow">Deposit type</span>
               <select
+                name="deposit-type"
                 value={depositCfg.type}
                 onChange={(e) => setConfig((s) => ({ ...s, deposit: { ...depositCfg, type: e.target.value } }))}
                 className="mt-2 w-full bg-night/60 border border-border/60 rounded-2xl px-4 py-3 text-sm focus:outline-none focus:border-gold"
@@ -339,6 +345,7 @@ function AdminPricing() {
             <label className="block">
               <span className="eyebrow">{depositCfg.type === "percentage" ? "Percentage (%)" : "Amount (KES)"}</span>
               <input
+                name="deposit-value"
                 inputMode="numeric"
                 value={depositCfg.value}
                 onChange={(e) => setConfig((s) => ({ ...s, deposit: { ...depositCfg, value: Number(e.target.value) } }))}
@@ -348,6 +355,7 @@ function AdminPricing() {
             <label className="block">
               <span className="eyebrow">Minimum deposit (KES)</span>
               <input
+                name="deposit-min-amount"
                 inputMode="numeric"
                 value={depositCfg.min_amount}
                 onChange={(e) => setConfig((s) => ({ ...s, deposit: { ...depositCfg, min_amount: Number(e.target.value) } }))}
@@ -384,26 +392,26 @@ function AdminPricing() {
               <div className="grid sm:grid-cols-2 gap-3">
                 <label className="block">
                   <span className="eyebrow">Name *</span>
-                  <input value={discountForm.name} onChange={(e) => setDiscountForm((s) => ({ ...s, name: e.target.value }))} className="mt-2 w-full bg-night/60 border border-border/60 rounded-2xl px-4 py-3 text-sm focus:outline-none focus:border-gold" />
+                  <input name="discount-name" value={discountForm.name} onChange={(e) => setDiscountForm((s) => ({ ...s, name: e.target.value }))} className="mt-2 w-full bg-night/60 border border-border/60 rounded-2xl px-4 py-3 text-sm focus:outline-none focus:border-gold" />
                 </label>
                 <label className="block">
                   <span className="eyebrow">Promo code (optional)</span>
-                  <input value={discountForm.code} onChange={(e) => setDiscountForm((s) => ({ ...s, code: e.target.value.toUpperCase() }))} placeholder="EMPIRE20" className="mt-2 w-full bg-night/60 border border-border/60 rounded-2xl px-4 py-3 text-sm focus:outline-none focus:border-gold uppercase tracking-wider" />
+                  <input name="discount-code" value={discountForm.code} onChange={(e) => setDiscountForm((s) => ({ ...s, code: e.target.value.toUpperCase() }))} placeholder="EMPIRE20" className="mt-2 w-full bg-night/60 border border-border/60 rounded-2xl px-4 py-3 text-sm focus:outline-none focus:border-gold uppercase tracking-wider" />
                 </label>
                 <label className="block">
                   <span className="eyebrow">Type</span>
-                  <select value={discountForm.type} onChange={(e) => setDiscountForm((s) => ({ ...s, type: e.target.value as any }))} className="mt-2 w-full bg-night/60 border border-border/60 rounded-2xl px-4 py-3 text-sm focus:outline-none focus:border-gold">
+                  <select name="discount-type" value={discountForm.type} onChange={(e) => setDiscountForm((s) => ({ ...s, type: e.target.value as any }))} className="mt-2 w-full bg-night/60 border border-border/60 rounded-2xl px-4 py-3 text-sm focus:outline-none focus:border-gold">
                     <option value="percentage">Percentage (%)</option>
                     <option value="flat">Flat (KES)</option>
                   </select>
                 </label>
                 <label className="block">
                   <span className="eyebrow">{discountForm.type === "percentage" ? "Percentage off" : "Amount off (KES)"}</span>
-                  <input inputMode="numeric" value={discountForm.value} onChange={(e) => setDiscountForm((s) => ({ ...s, value: Number(e.target.value) }))} className="mt-2 w-full bg-night/60 border border-border/60 rounded-2xl px-4 py-3 text-sm focus:outline-none focus:border-gold" />
+                  <input name="discount-value" inputMode="numeric" value={discountForm.value} onChange={(e) => setDiscountForm((s) => ({ ...s, value: Number(e.target.value) }))} className="mt-2 w-full bg-night/60 border border-border/60 rounded-2xl px-4 py-3 text-sm focus:outline-none focus:border-gold" />
                 </label>
                 <label className="block">
                   <span className="eyebrow">Applies to</span>
-                  <select value={discountForm.applicable_to} onChange={(e) => setDiscountForm((s) => ({ ...s, applicable_to: e.target.value as any }))} className="mt-2 w-full bg-night/60 border border-border/60 rounded-2xl px-4 py-3 text-sm focus:outline-none focus:border-gold">
+                  <select name="discount-applies-to" value={discountForm.applicable_to} onChange={(e) => setDiscountForm((s) => ({ ...s, applicable_to: e.target.value as any }))} className="mt-2 w-full bg-night/60 border border-border/60 rounded-2xl px-4 py-3 text-sm focus:outline-none focus:border-gold">
                     <option value="all">All items</option>
                     <option value="product">Products only</option>
                     <option value="event">Events only</option>
@@ -412,18 +420,18 @@ function AdminPricing() {
                 </label>
                 <label className="block">
                   <span className="eyebrow">Max uses (0 = unlimited)</span>
-                  <input inputMode="numeric" value={discountForm.max_uses} onChange={(e) => setDiscountForm((s) => ({ ...s, max_uses: Number(e.target.value) }))} className="mt-2 w-full bg-night/60 border border-border/60 rounded-2xl px-4 py-3 text-sm focus:outline-none focus:border-gold" />
+                  <input name="discount-max-uses" inputMode="numeric" value={discountForm.max_uses} onChange={(e) => setDiscountForm((s) => ({ ...s, max_uses: Number(e.target.value) }))} className="mt-2 w-full bg-night/60 border border-border/60 rounded-2xl px-4 py-3 text-sm focus:outline-none focus:border-gold" />
                 </label>
                 <label className="block">
                   <span className="eyebrow">Start date</span>
-                  <input type="datetime-local" value={discountForm.starts_at} onChange={(e) => setDiscountForm((s) => ({ ...s, starts_at: e.target.value }))} className="mt-2 w-full bg-night/60 border border-border/60 rounded-2xl px-4 py-3 text-sm focus:outline-none focus:border-gold" />
+                  <input name="discount-starts-at" type="datetime-local" value={discountForm.starts_at} onChange={(e) => setDiscountForm((s) => ({ ...s, starts_at: e.target.value }))} className="mt-2 w-full bg-night/60 border border-border/60 rounded-2xl px-4 py-3 text-sm focus:outline-none focus:border-gold" />
                 </label>
                 <label className="block">
                   <span className="eyebrow">End date</span>
-                  <input type="datetime-local" value={discountForm.ends_at} onChange={(e) => setDiscountForm((s) => ({ ...s, ends_at: e.target.value }))} className="mt-2 w-full bg-night/60 border border-border/60 rounded-2xl px-4 py-3 text-sm focus:outline-none focus:border-gold" />
+                  <input name="discount-ends-at" type="datetime-local" value={discountForm.ends_at} onChange={(e) => setDiscountForm((s) => ({ ...s, ends_at: e.target.value }))} className="mt-2 w-full bg-night/60 border border-border/60 rounded-2xl px-4 py-3 text-sm focus:outline-none focus:border-gold" />
                 </label>
                 <label className="flex items-center gap-2 text-sm text-foreground/70 sm:col-span-2">
-                  <input type="checkbox" checked={discountForm.active} onChange={(e) => setDiscountForm((s) => ({ ...s, active: e.target.checked }))} className="accent-[var(--gold)]" />
+                  <input name="discount-active" type="checkbox" checked={discountForm.active} onChange={(e) => setDiscountForm((s) => ({ ...s, active: e.target.checked }))} className="accent-[var(--gold)]" />
                   Active
                 </label>
                 <button onClick={saveDiscount} disabled={saving || !discountForm.name} className="sm:col-span-2 rounded-2xl bg-gold px-6 py-3 text-sm font-semibold text-night-deep hover:shadow-[var(--shadow-glow)] transition disabled:opacity-50">
