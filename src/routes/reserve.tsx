@@ -151,7 +151,7 @@ function ReservePageInner() {
   };
 
   return (
-    <section className="mx-auto max-w-6xl px-5 lg:px-8 py-20 lg:py-28">
+    <section className="mx-auto max-w-6xl px-5 lg:px-8 py-20 lg:py-28 min-w-0">
       <MpesaPayment
         amount={deposit}
         reference={`RES-${pkg.toUpperCase()}`}
@@ -169,7 +169,7 @@ function ReservePageInner() {
         you.
       </p>
 
-      <div className="mt-12 grid lg:grid-cols-[1fr_380px] gap-8 items-start">
+      <div className="mt-12 grid grid-cols-1 lg:grid-cols-[1fr_380px] gap-8 items-start min-w-0">
         {/* FORM */}
         <div className="space-y-6">
           {/* Package */}
