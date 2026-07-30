@@ -7,7 +7,7 @@ import {
   HeadContent,
   Scripts,
 } from "@tanstack/react-router";
-import { useState, useEffect } from "react";
+import { useState, useEffect, Fragment } from "react";
 
 import appCss from "../styles.css?url";
 import { SiteHeader } from "@/components/SiteHeader";
@@ -116,17 +116,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 });
 
 function RootShell({ children }: { children: React.ReactNode }) {
-  return (
-    <html lang="en" className="dark">
-      <head>
-        <HeadContent />
-      </head>
-      <body>
-        {children}
-        <Scripts />
-      </body>
-    </html>
-  );
+  return <>{children}</>;
 }
 
 function RootComponent() {
@@ -141,7 +131,9 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <AuthProvider>
+      <HeadContent />
+      <div className="dark">
+        <AuthProvider>
         <div style={{ display: ageConfirmed ? "none" : "flex" }} className="fixed inset-0 z-[999] items-center justify-center bg-night-deep/95 backdrop-blur-md">
           <div className="glass rounded-3xl p-8 sm:p-10 kente-border max-w-sm mx-4 text-center shadow-[var(--shadow-elevated)]">
             <div className="text-5xl mb-4">🔞</div>
@@ -172,8 +164,10 @@ function RootComponent() {
         <MobileBottomNav />
         <SiteFooter />
         <EventNotificationBar />
+        <Scripts />
         <Toaster />
       </AuthProvider>
+    </div>
     </QueryClientProvider>
   );
 }
