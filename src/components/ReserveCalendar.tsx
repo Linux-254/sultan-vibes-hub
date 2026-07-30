@@ -225,6 +225,7 @@ export function ReserveCalendar({ date, onDateChange, time, onTimeChange }: Rese
               ))}
             </div>
             <input
+              name="arrival-time"
               type="time"
               value={time}
               onChange={(e) => onTimeChange(e.target.value)}

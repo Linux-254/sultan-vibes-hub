@@ -244,18 +244,21 @@ function ReservePageInner() {
             {parking && (
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-4">
                 <input
+                  name="car-model"
                   value={carModel}
                   onChange={(e) => setCarModel(e.target.value)}
                   placeholder="Car model"
                   className="bg-night/50 border border-border/50 rounded-2xl px-4 py-3 text-sm focus:outline-none focus:border-gold"
                 />
                 <input
+                  name="plate"
                   value={plate}
                   onChange={(e) => setPlate(e.target.value.toUpperCase())}
                   placeholder="KAA 123A"
                   className="bg-night/50 border border-border/50 rounded-2xl px-4 py-3 text-sm uppercase tracking-wider focus:outline-none focus:border-gold"
                 />
                 <input
+                  name="arrival-time"
                   value={arrival}
                   onChange={(e) => setArrival(e.target.value)}
                   type="time"
@@ -269,6 +272,7 @@ function ReservePageInner() {
           <div className="glass rounded-3xl p-5 sm:p-6">
             <div className="eyebrow">6 · Special requests</div>
             <textarea
+              name="special-requests"
               value={special}
               onChange={(e) => setSpecial(e.target.value)}
               maxLength={400}

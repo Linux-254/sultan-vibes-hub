@@ -100,6 +100,7 @@ export function MpesaPayment({ amount, reference, description, onSuccess, onClos
             <div>
               <label className="eyeblock">M-Pesa phone number</label>
               <input
+                name="mpesa-phone"
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
                 placeholder="e.g. 0712345678"
