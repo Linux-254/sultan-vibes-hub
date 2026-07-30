@@ -175,7 +175,16 @@ export default {
       const handler = await getServerEntry();
       const response = await handler.fetch(request, env, ctx);
       const secure = addSecurityHeaders(response);
-      return await normalizeCatastrophicSsrResponse(secure);
+      const normalized = await normalizeCatastrophicSsrResponse(secure);
+      // TanStack Start streaming handler omits <!DOCTYPE html>, which puts the page in Quirks Mode.
+      // React 19's hydrateRoot(document) then chokes on the implicit <html> in Quirks Mode (error #418).
+      if (normalized.headers.get("content-type")?.includes("text/html") && normalized.body) {
+        const body = await normalized.text();
+        if (!body.startsWith("<!doctype") && !body.startsWith("<!DOCTYPE")) {
+          return new Response("<!DOCTYPE html>\n" + body, normalized);
+        }
+      }
+      return normalized;
     } catch (error) {
       console.error(error);
       return brandedErrorResponse();
