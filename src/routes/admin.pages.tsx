@@ -84,6 +84,7 @@ function AdminPages() {
                 />
               ) : (
                 <input
+                  name={`page-${p.slug}`}
                   value={p.content}
                   onChange={(e) => updateContent(p.slug, e.target.value)}
                   className="w-full bg-night/60 border border-border/60 rounded-2xl px-4 py-3 text-sm focus:outline-none focus:border-gold"
@@ -146,6 +147,7 @@ function AboutValuesEditor({ value, onChange }: { value: string; onChange: (v: s
             <div className="flex items-center gap-2">
               <GripVertical size={14} className="text-foreground/30 shrink-0" />
               <select
+                name={`value-icon-${i}`}
                 value={item.icon}
                 onChange={(e) => updateItem(i, "icon", e.target.value)}
                 className="bg-night/60 border border-border/60 rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-gold"
@@ -155,6 +157,7 @@ function AboutValuesEditor({ value, onChange }: { value: string; onChange: (v: s
                 ))}
               </select>
               <input
+                name={`value-title-${i}`}
                 value={item.title}
                 onChange={(e) => updateItem(i, "title", e.target.value)}
                 placeholder="Title"
@@ -162,6 +165,7 @@ function AboutValuesEditor({ value, onChange }: { value: string; onChange: (v: s
               />
             </div>
             <textarea
+              name={`value-body-${i}`}
               value={item.body}
               onChange={(e) => updateItem(i, "body", e.target.value)}
               rows={2}

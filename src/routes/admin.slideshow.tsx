@@ -145,6 +145,7 @@ function AdminSlideshow() {
             <div className="p-2 flex items-center gap-2">
               <GripVertical size={12} className="text-neutral-500" />
               <input
+                name={`sort-order-${img.id}`}
                 type="number"
                 value={img.sort_order}
                 onChange={(e) => updateSortOrder(img.id, parseInt(e.target.value) || 0)}
@@ -189,6 +190,7 @@ function AdminSlideshow() {
         <div className="flex-1">
           <label className="block text-xs mb-1 text-neutral-400">Alt Text</label>
           <input
+            name="slideshow-alt"
             value={alt}
             onChange={(e) => setAlt(e.target.value)}
             placeholder="Describe image"
@@ -198,6 +200,7 @@ function AdminSlideshow() {
         <div>
           <label className="block text-xs mb-1 text-neutral-400">Slot</label>
           <select
+            name="slideshow-slot"
             value={slot}
             onChange={(e) => setSlot(e.target.value as "hero" | "auth")}
             className="bg-neutral-800 border border-neutral-700 rounded-xl px-3 py-2 text-sm"
@@ -209,6 +212,7 @@ function AdminSlideshow() {
         <div>
           <label className="block text-xs mb-1 text-neutral-400">Sort Order</label>
           <input
+            name="slideshow-sort-order"
             type="number"
             value={sortOrder}
             onChange={(e) => setSortOrder(parseInt(e.target.value) || 0)}
