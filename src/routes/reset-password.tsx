@@ -24,20 +24,25 @@ function ResetPasswordPage() {
 
   useEffect(() => {
     const check = async () => {
-      const hash = window.location.hash;
-      if (hash.includes("access_token")) {
-        const { error } = await supabase.auth.getSession();
-        if (error) {
-          toast.error("Invalid or expired reset link. Request a new one.");
-          navigate({ to: "/auth" });
-          return;
-        }
+      const { data: { session } } = await supabase.auth.getSession();
+      if (session) {
         setValid(true);
-      } else {
-        toast.error("No reset token found. Request a new link.");
-        navigate({ to: "/auth" });
+        setValidating(false);
         return;
       }
+      const hash = window.location.hash;
+      if (!hash.includes("access_token")) {
+        toast.error("No reset token found. Request a new link.");
+        navigate({ to: "/auth" });
+        setValidating(false);
+        return;
+      }
+      const { error } = await supabase.auth.getSession();
+      if (error) {
+        toast.error("Invalid or expired reset link. Request a new one.");
+        navigate({ to: "/auth" });
+      }
+      setValid(true);
       setValidating(false);
     };
     check();
