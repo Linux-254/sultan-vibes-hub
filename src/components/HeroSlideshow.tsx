@@ -1,5 +1,9 @@
 import { useState, useEffect, useCallback } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import heroImg from "@/assets/hero.webp";
+import event1Img from "@/assets/event-1.webp";
+import event2Img from "@/assets/event-2.webp";
+import event3Img from "@/assets/event-3.webp";
 
 interface SlideImage {
   url: string;
@@ -7,10 +11,10 @@ interface SlideImage {
 }
 
 const FALLBACK: SlideImage[] = [
-  { url: "/src/assets/hero.webp", alt: "Empire Kwa Sultan lounge at night" },
-  { url: "/src/assets/event-1.webp", alt: "DJ booth at Empire Kwa Sultan" },
-  { url: "/src/assets/event-2.webp", alt: "Cocktails and shisha at Empire" },
-  { url: "/src/assets/event-3.webp", alt: "Empire Kwa Sultan nightlife" },
+  { url: heroImg, alt: "Empire Kwa Sultan lounge at night" },
+  { url: event1Img, alt: "DJ booth at Empire Kwa Sultan" },
+  { url: event2Img, alt: "Cocktails and shisha at Empire" },
+  { url: event3Img, alt: "Empire Kwa Sultan nightlife" },
 ];
 
 interface HeroSlideshowProps {
