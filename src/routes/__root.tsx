@@ -7,7 +7,7 @@ import {
   HeadContent,
   Scripts,
 } from "@tanstack/react-router";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import appCss from "../styles.css?url";
 import { SiteHeader } from "@/components/SiteHeader";
@@ -131,45 +131,40 @@ function RootShell({ children }: { children: React.ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
-  const [ageConfirmed, setAgeConfirmed] = useState(() => {
-    if (typeof window !== "undefined")
-      return sessionStorage.getItem("empire_age_confirmed") === "true";
-    return false;
-  });
+  const [ageConfirmed, setAgeConfirmed] = useState(false);
+
+  useEffect(() => {
+    if (sessionStorage.getItem("empire_age_confirmed") === "true") {
+      setAgeConfirmed(true);
+    }
+  }, []);
 
   return (
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
-        {!ageConfirmed && (
-          <div className="fixed inset-0 z-[999] flex items-center justify-center bg-night-deep/95 backdrop-blur-md">
-            <div className="glass rounded-3xl p-8 sm:p-10 kente-border max-w-sm mx-4 text-center shadow-[var(--shadow-elevated)]">
-              <div className="text-5xl mb-4">🔞</div>
-              <h2 className="font-display text-2xl sm:text-3xl">
-                Are you <span className="text-gold-gradient">18+</span>?
-              </h2>
-              <p className="text-foreground/60 text-sm mt-2">
-                Empire Kwa Sultan is an 18+ venue. You must be of legal age to enter.
-              </p>
-              <div className="mt-6 space-y-2">
-                <button
-                  onClick={() => {
-                    setAgeConfirmed(true);
-                    sessionStorage.setItem("empire_age_confirmed", "true");
-                  }}
-                  className="w-full rounded-2xl bg-gold px-6 py-3 text-sm font-semibold text-night-deep hover:shadow-[var(--shadow-glow)] transition"
-                >
-                  Yes, I'm 18+
-                </button>
-                <button
-                  onClick={() => alert("You must be 18+ to access this site.")}
-                  className="block w-full rounded-2xl border border-foreground/20 px-6 py-3 text-sm text-foreground/60 hover:border-lava hover:text-lava transition"
-                >
-                  No, I'm under 18
-                </button>
-              </div>
+        <div style={{ display: ageConfirmed ? "none" : "flex" }} className="fixed inset-0 z-[999] items-center justify-center bg-night-deep/95 backdrop-blur-md">
+          <div className="glass rounded-3xl p-8 sm:p-10 kente-border max-w-sm mx-4 text-center shadow-[var(--shadow-elevated)]">
+            <div className="text-5xl mb-4">🔞</div>
+            <h2 className="font-display text-2xl sm:text-3xl">
+              Are you <span className="text-gold-gradient">18+</span>?
+            </h2>
+            <p className="text-foreground/60 text-sm mt-2">
+              Empire Kwa Sultan is an 18+ venue. You must be of legal age to enter.
+            </p>
+            <div className="mt-6 space-y-2">
+              <button
+                onClick={() => {
+                  setAgeConfirmed(true);
+                  try { sessionStorage.setItem("empire_age_confirmed", "true"); } catch {}
+                }}
+                className="w-full rounded-2xl bg-gold px-6 py-3 text-sm font-semibold text-night-deep hover:shadow-[var(--shadow-glow)] transition"
+              >
+                Yes, I'm 18+
+              </button>
+              <p className="text-xs text-foreground/50">You must be 18+ to access this site.</p>
             </div>
           </div>
-        )}
+        </div>
         <SiteHeader />
         <main className="pt-16">
           <Outlet />
