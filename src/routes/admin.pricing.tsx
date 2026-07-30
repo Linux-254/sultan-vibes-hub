@@ -206,7 +206,7 @@ function AdminPricing() {
           <p className="text-xs text-foreground/50 mb-5">Edit the names, capacities, and prices of reservation packages shown on the /reserve page.</p>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {Object.entries(packages).map(([key, pkg]) => (
-              <div key={key} className="glass rounded-2xl p-4 border border-border/30">
+              <div key={key} className="glass rounded-2xl p-4 border border-border/30 overflow-hidden">
                 <div className="text-xs uppercase tracking-wider text-gold/70 mb-1">{key}</div>
                 <input
                   value={pkg.name}
@@ -217,28 +217,28 @@ function AdminPricing() {
                   className="w-full bg-night/60 border border-border/60 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-gold mb-2"
                   placeholder="Name"
                 />
-                <div className="flex gap-2 mb-2">
+                <div className="flex gap-2 mb-2 min-w-0">
                   <input
                     value={pkg.capacity}
                     onChange={(e) => {
                       const next = { ...packages, [key]: { ...pkg, capacity: e.target.value } };
                       setConfig((s) => ({ ...s, packages: next }));
                     }}
-                    className="flex-1 bg-night/60 border border-border/60 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-gold"
+                    className="min-w-0 flex-1 bg-night/60 border border-border/60 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-gold"
                     placeholder="Capacity"
                   />
                   <input
-                    type="number"
+                    inputMode="numeric"
                     value={pkg.price}
                     onChange={(e) => {
                       const next = { ...packages, [key]: { ...pkg, price: Number(e.target.value) } };
                       setConfig((s) => ({ ...s, packages: next }));
                     }}
-                    className="flex-1 bg-night/60 border border-border/60 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-gold font-mono"
+                    className="min-w-0 flex-1 bg-night/60 border border-border/60 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-gold font-mono"
                     placeholder="Price"
                   />
                 </div>
-                <div className="text-xs text-foreground/50">KES {pkg.price.toLocaleString()}</div>
+                <div className="text-xs text-foreground/50 truncate">KES {pkg.price.toLocaleString()}</div>
               </div>
             ))}
           </div>
@@ -261,15 +261,15 @@ function AdminPricing() {
           <p className="text-xs text-foreground/50 mb-5">Edit parking option names and prices shown on the /reserve page.</p>
           <div className="grid gap-4 sm:grid-cols-2">
             {parkingOptions.map((opt, idx) => (
-              <div key={opt.id} className="glass rounded-2xl p-4 border border-border/30">
+              <div key={opt.id} className="glass rounded-2xl p-4 border border-border/30 overflow-hidden">
                 <div className="flex items-center justify-between mb-2">
-                  <div className="text-xs uppercase tracking-wider text-gold/70">{opt.id}</div>
+                  <div className="text-xs uppercase tracking-wider text-gold/70 truncate">{opt.id}</div>
                   <button
                     onClick={() => {
                       const next = parkingOptions.filter((_, i) => i !== idx);
                       saveConfig("parking_options", next);
                     }}
-                    className="text-xs text-lava/70 hover:text-lava"
+                    className="text-xs text-lava/70 hover:text-lava shrink-0 ml-2"
                   >
                     Remove
                   </button>
@@ -285,7 +285,7 @@ function AdminPricing() {
                   placeholder="Name"
                 />
                 <input
-                  type="number"
+                  inputMode="numeric"
                   value={opt.price}
                   onChange={(e) => {
                     const next = [...parkingOptions];
@@ -339,7 +339,7 @@ function AdminPricing() {
             <label className="block">
               <span className="eyebrow">{depositCfg.type === "percentage" ? "Percentage (%)" : "Amount (KES)"}</span>
               <input
-                type="number"
+                inputMode="numeric"
                 value={depositCfg.value}
                 onChange={(e) => setConfig((s) => ({ ...s, deposit: { ...depositCfg, value: Number(e.target.value) } }))}
                 className="mt-2 w-full bg-night/60 border border-border/60 rounded-2xl px-4 py-3 text-sm focus:outline-none focus:border-gold"
@@ -348,7 +348,7 @@ function AdminPricing() {
             <label className="block">
               <span className="eyebrow">Minimum deposit (KES)</span>
               <input
-                type="number"
+                inputMode="numeric"
                 value={depositCfg.min_amount}
                 onChange={(e) => setConfig((s) => ({ ...s, deposit: { ...depositCfg, min_amount: Number(e.target.value) } }))}
                 className="mt-2 w-full bg-night/60 border border-border/60 rounded-2xl px-4 py-3 text-sm focus:outline-none focus:border-gold"
@@ -399,7 +399,7 @@ function AdminPricing() {
                 </label>
                 <label className="block">
                   <span className="eyebrow">{discountForm.type === "percentage" ? "Percentage off" : "Amount off (KES)"}</span>
-                  <input type="number" value={discountForm.value} onChange={(e) => setDiscountForm((s) => ({ ...s, value: Number(e.target.value) }))} className="mt-2 w-full bg-night/60 border border-border/60 rounded-2xl px-4 py-3 text-sm focus:outline-none focus:border-gold" />
+                  <input inputMode="numeric" value={discountForm.value} onChange={(e) => setDiscountForm((s) => ({ ...s, value: Number(e.target.value) }))} className="mt-2 w-full bg-night/60 border border-border/60 rounded-2xl px-4 py-3 text-sm focus:outline-none focus:border-gold" />
                 </label>
                 <label className="block">
                   <span className="eyebrow">Applies to</span>
@@ -412,7 +412,7 @@ function AdminPricing() {
                 </label>
                 <label className="block">
                   <span className="eyebrow">Max uses (0 = unlimited)</span>
-                  <input type="number" value={discountForm.max_uses} onChange={(e) => setDiscountForm((s) => ({ ...s, max_uses: Number(e.target.value) }))} className="mt-2 w-full bg-night/60 border border-border/60 rounded-2xl px-4 py-3 text-sm focus:outline-none focus:border-gold" />
+                  <input inputMode="numeric" value={discountForm.max_uses} onChange={(e) => setDiscountForm((s) => ({ ...s, max_uses: Number(e.target.value) }))} className="mt-2 w-full bg-night/60 border border-border/60 rounded-2xl px-4 py-3 text-sm focus:outline-none focus:border-gold" />
                 </label>
                 <label className="block">
                   <span className="eyebrow">Start date</span>
