@@ -17,6 +17,7 @@ dist-ssr
 *.local
 dev.err
 dev.log
+supabase/.temp/
 
 # Wrangler / Cloudflare
 .wrangler/
