@@ -2,7 +2,7 @@ import { Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { Menu, X, Siren } from "lucide-react";
 import { useAuth } from "@/hooks/use-auth";
-import logo from "@/assets/empire-logo.png";
+import logo from "@/assets/empire-logo.webp";
 
 const NAV = [
   { to: "/", label: "Home" },

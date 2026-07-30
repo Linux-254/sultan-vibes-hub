@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import heroImg from "@/assets/hero.jpg";
-import event1 from "@/assets/event-1.jpg";
+import heroImg from "@/assets/hero.webp";
+import event1 from "@/assets/event-1.webp";
 import { Countdown } from "@/components/Countdown";
 import { StatCounter } from "@/components/StatCounter";
 import { HeroSlideshow } from "@/components/HeroSlideshow";

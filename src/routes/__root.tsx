@@ -96,6 +96,8 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { rel: "manifest", href: "/manifest.webmanifest" },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
+      { rel: "dns-prefetch", href: "https://rhdhaptcdjgnsbamgxyv.supabase.co" },
+      { rel: "preconnect", href: "https://rhdhaptcdjgnsbamgxyv.supabase.co" },
       {
         rel: "stylesheet",
         href: "https://api.fontshare.com/v2/css?f[]=clash-display@600,500,700&display=swap",

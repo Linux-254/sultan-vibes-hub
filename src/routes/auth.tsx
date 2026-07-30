@@ -15,7 +15,7 @@ import {
 } from "lucide-react";
 import { PasswordField } from "@/components/PasswordField";
 import { HeroSlideshow } from "@/components/HeroSlideshow";
-import logo from "@/assets/empire-logo.png";
+import logo from "@/assets/empire-logo.webp";
 
 export const Route = createFileRoute("/auth")({
   head: () => ({
@@ -59,20 +59,6 @@ function AuthPage() {
 
   const isEmail = (v: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
 
-  const resolveEmail = async (input: string): Promise<string> => {
-    if (isEmail(input)) return input;
-    const { data } = await supabase
-      .from("profiles")
-      .select("id")
-      .ilike("display_name", input)
-      .limit(1)
-      .maybeSingle();
-    if (!data) throw new Error("No account found with that display name.");
-    const { data: userData } = await supabase.auth.admin.getUserById(data.id);
-    if (userData?.user?.email) return userData.user.email;
-    throw new Error("Could not resolve display name to an account.");
-  };
-
   const submit = async (e: FormEvent) => {
     e.preventDefault();
     setBusy(true);
@@ -98,16 +84,12 @@ function AuthPage() {
         toast.success("Password reset link sent. Check your email.");
         setMode("signin");
       } else {
-        setResolving(true);
-        let email: string;
-        try {
-          email = await resolveEmail(identifier);
-        } catch {
-          toast.error("No account found. Try your email address instead.");
-          setResolving(false);
+        if (!isEmail(identifier)) {
+          toast.error("Please enter your email address to sign in.");
+          setBusy(false);
           return;
         }
-        const { error } = await supabase.auth.signInWithPassword({ email, password });
+        const { error } = await supabase.auth.signInWithPassword({ email: identifier, password });
         if (error) throw error;
         toast.success("Welcome back.");
         navigate({ to: "/profile" });
@@ -116,7 +98,6 @@ function AuthPage() {
       toast.error((err as Error).message);
     } finally {
       setBusy(false);
-      setResolving(false);
     }
   };
 

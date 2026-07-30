@@ -1,9 +1,9 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Camera, Download, Lock, Search, Video } from "lucide-react";
 import { useState } from "react";
-import event1 from "@/assets/event-1.jpg";
-import event2 from "@/assets/event-2.jpg";
-import event3 from "@/assets/event-3.jpg";
+import event1 from "@/assets/event-1.webp";
+import event2 from "@/assets/event-2.webp";
+import event3 from "@/assets/event-3.webp";
 
 export const Route = createFileRoute("/recap")({
   head: () => ({

@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight, Flame, Music, Users, Crown, Wine, Cigarette } from "lucide-react";
-import event2 from "@/assets/event-2.jpg";
+import event2 from "@/assets/event-2.webp";
 
 export const Route = createFileRoute("/vibe")({
   head: () => ({

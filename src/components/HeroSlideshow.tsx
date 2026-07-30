@@ -7,10 +7,10 @@ interface SlideImage {
 }
 
 const FALLBACK: SlideImage[] = [
-  { url: "/src/assets/hero.jpg", alt: "Empire Kwa Sultan lounge at night" },
-  { url: "/src/assets/event-1.jpg", alt: "DJ booth at Empire Kwa Sultan" },
-  { url: "/src/assets/event-2.jpg", alt: "Cocktails and shisha at Empire" },
-  { url: "/src/assets/event-3.jpg", alt: "Empire Kwa Sultan nightlife" },
+  { url: "/src/assets/hero.webp", alt: "Empire Kwa Sultan lounge at night" },
+  { url: "/src/assets/event-1.webp", alt: "DJ booth at Empire Kwa Sultan" },
+  { url: "/src/assets/event-2.webp", alt: "Cocktails and shisha at Empire" },
+  { url: "/src/assets/event-3.webp", alt: "Empire Kwa Sultan nightlife" },
 ];
 
 interface HeroSlideshowProps {

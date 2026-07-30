@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import event2 from "@/assets/event-2.jpg";
+import event2 from "@/assets/event-2.webp";
 import { MapPin, Clock, ShieldCheck, Heart, Crown, Users } from "lucide-react";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";

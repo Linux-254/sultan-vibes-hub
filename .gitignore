@@ -23,6 +23,7 @@ supabase/.temp/
 # Wrangler / Cloudflare
 .wrangler/
 .dev.vars
+.claude/
 
 # Editor directories and files
 .vscode/*
