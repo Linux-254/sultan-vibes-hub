@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import event2 from "@/assets/event-2.webp";
-import { MapPin, Clock, ShieldCheck, Heart, Crown, Users } from "lucide-react";
+import { MapPin, Clock, ShieldCheck, Heart, Crown, Users, MessageCircle } from "lucide-react";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -133,6 +133,14 @@ function AboutPage() {
             <div className="flex items-center gap-3">
               <ShieldCheck size={16} className="text-gold" /> 18+ · ID required
             </div>
+            <a
+              href="https://wa.me/254700000000?text=Hi%20Empire%2C%20I%27d%20like%20to%20book%20a%20table"
+              target="_blank"
+              rel="noreferrer"
+              className="flex items-center gap-3 text-gold hover:underline mt-2"
+            >
+              <MessageCircle size={16} /> Chat on WhatsApp
+            </a>
           </div>
           <div className="mt-6 rounded-2xl overflow-hidden border border-border/30">
             <iframe

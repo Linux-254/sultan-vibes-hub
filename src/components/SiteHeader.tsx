@@ -113,7 +113,7 @@ export function SiteHeader() {
         </div>
 
         {open && (
-          <div className="xl:hidden border-t border-border/40 px-4 sm:px-5 pb-5 pt-3 flex flex-col gap-2">
+          <div className="xl:hidden bg-night-deep/95 backdrop-blur-xl border-t border-border/40 px-4 sm:px-5 pb-5 pt-3 flex flex-col gap-2 shadow-xl">
             {NAV.map((n) => (
               <Link
                 key={n.to}

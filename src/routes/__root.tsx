@@ -12,7 +12,6 @@ import { useState, useEffect } from "react";
 import appCss from "../styles.css?url";
 import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
-import { WhatsAppFloat } from "@/components/WhatsAppFloat";
 import { MobileBottomNav } from "@/components/MobileBottomNav";
 import { AuthProvider } from "@/hooks/use-auth";
 import { Toaster } from "@/components/ui/sonner";
@@ -172,7 +171,6 @@ function RootComponent() {
         </main>
         <MobileBottomNav />
         <SiteFooter />
-        <WhatsAppFloat />
         <EventNotificationBar />
         <Toaster />
       </AuthProvider>
