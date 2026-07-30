@@ -15,10 +15,15 @@ dist-ssr
 .tanstack/**
 .nitro
 *.local
+dev.err
+dev.log
 
 # Wrangler / Cloudflare
 .wrangler/
 .dev.vars
+
+# Lovable
+.lovable/
 
 # Editor directories and files
 .vscode/*
@@ -30,3 +35,5 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+/src/generated/prisma

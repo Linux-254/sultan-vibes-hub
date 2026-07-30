@@ -2,7 +2,7 @@ import { createContext, useContext, useEffect, useState, type ReactNode } from "
 import type { Session, User } from "@supabase/supabase-js";
 import { supabase } from "@/integrations/supabase/client";
 
-type Role = "admin" | "crew" | "user";
+type Role = "admin" | "crew" | "user" | "bartender" | "waitress" | "shisha_distributor" | "content_manager" | "security";
 
 interface AuthCtx {
   user: User | null;
@@ -10,6 +10,7 @@ interface AuthCtx {
   roles: Role[];
   isStaff: boolean;
   isAdmin: boolean;
+  isContentManager: boolean;
   loading: boolean;
   signOut: () => Promise<void>;
 }
@@ -22,7 +23,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_e, s) => {
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_e, s) => {
       setSession(s);
       if (s?.user) {
         // defer to avoid recursive auth calls
@@ -48,10 +51,20 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     user: session?.user ?? null,
     session,
     roles,
-    isStaff: roles.includes("admin") || roles.includes("crew"),
+    isStaff:
+      roles.includes("admin") ||
+      roles.includes("crew") ||
+      roles.includes("bartender") ||
+      roles.includes("waitress") ||
+      roles.includes("shisha_distributor") ||
+      roles.includes("content_manager") ||
+      roles.includes("security"),
     isAdmin: roles.includes("admin"),
+    isContentManager: roles.includes("content_manager"),
     loading,
-    signOut: async () => { await supabase.auth.signOut(); },
+    signOut: async () => {
+      await supabase.auth.signOut();
+    },
   };
   return <Ctx.Provider value={value}>{children}</Ctx.Provider>;
 }

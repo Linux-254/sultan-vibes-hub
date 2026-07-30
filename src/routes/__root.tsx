@@ -12,9 +12,9 @@ import appCss from "../styles.css?url";
 import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
 import { WhatsAppFloat } from "@/components/WhatsAppFloat";
-import { SummerTidesPopup } from "@/components/SummerTidesPopup";
 import { AuthProvider } from "@/hooks/use-auth";
 import { Toaster } from "@/components/ui/sonner";
+import { EventNotificationBar } from "@/components/EventNotificationBar";
 
 function NotFoundComponent() {
   return (
@@ -25,7 +25,10 @@ function NotFoundComponent() {
         <p className="mt-2 text-sm text-muted-foreground">
           This page slipped out the back door. Let's get you home.
         </p>
-        <Link to="/" className="mt-6 inline-flex items-center rounded-full bg-gold px-5 py-2.5 text-sm font-medium text-night-deep">
+        <Link
+          to="/"
+          className="mt-6 inline-flex items-center rounded-full bg-gold px-5 py-2.5 text-sm font-medium text-night-deep"
+        >
           Back to Empire
         </Link>
       </div>
@@ -42,7 +45,10 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
         <h1 className="font-display text-2xl">Something stalled the vibe</h1>
         <p className="mt-2 text-sm text-muted-foreground">{error.message}</p>
         <button
-          onClick={() => { router.invalidate(); reset(); }}
+          onClick={() => {
+            router.invalidate();
+            reset();
+          }}
           className="mt-6 rounded-full bg-gold px-5 py-2.5 text-sm font-medium text-night-deep"
         >
           Try again
@@ -58,12 +64,30 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { name: "theme-color", content: "#0D0D0D" },
-      { title: "Empire Park & Puff — Where Nairobi Comes to Breathe" },
-      { name: "description", content: "Afro-Kenyan lifestyle lounge & events venue on USIU Road. Reserve a table, catch the vibe, ride the Summer Tides." },
-      { property: "og:title", content: "Empire Park & Puff" },
-      { property: "og:description", content: "Where Nairobi Comes to Breathe." },
+      { title: "Empire Kwa Sultan — Where Nairobi Comes to Breathe" },
+      {
+        name: "description",
+        content:
+          "Afro-Kenyan lifestyle lounge & events venue on USIU Road, Nairobi. Shisha, cocktails, liquor, events, and Nairobi's best nightlife experience. Reserve your table today.",
+      },
+      {
+        name: "keywords",
+        content:
+          "shisha lounge Nairobi, cocktail bar Kenya, nightlife USIU Road, shisha Nairobi, Empire Kwa Sultan, hookah lounge Nairobi, events venue Nairobi, VIP lounge Nairobi, bar Nairobi, rooftop lounge, Afro house music, DJ Nairobi",
+      },
+      { property: "og:title", content: "Empire Kwa Sultan — Where Nairobi Comes to Breathe" },
+      {
+        property: "og:description",
+        content: "Shisha. Cocktails. Sound. Nairobi's premier lounge & events venue on USIU Road.",
+      },
       { property: "og:type", content: "website" },
+      { property: "og:site_name", content: "Empire Kwa Sultan" },
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "Empire Kwa Sultan — Where Nairobi Comes to Breathe" },
+      {
+        name: "twitter:description",
+        content: "Shisha. Cocktails. Sound. Nairobi's premier lounge & events venue.",
+      },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
@@ -72,8 +96,14 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { rel: "manifest", href: "/manifest.webmanifest" },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
-      { rel: "stylesheet", href: "https://api.fontshare.com/v2/css?f[]=clash-display@600,500,700&display=swap" },
-      { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600&family=Playfair+Display:ital,wght@1,500&family=JetBrains+Mono:wght@400;500&display=swap" },
+      {
+        rel: "stylesheet",
+        href: "https://api.fontshare.com/v2/css?f[]=clash-display@600,500,700&display=swap",
+      },
+      {
+        rel: "stylesheet",
+        href: "https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600&family=Playfair+Display:ital,wght@1,500&family=JetBrains+Mono:wght@400;500&display=swap",
+      },
     ],
   }),
   shellComponent: RootShell,
@@ -107,7 +137,7 @@ function RootComponent() {
         </main>
         <SiteFooter />
         <WhatsAppFloat />
-        <SummerTidesPopup />
+        <EventNotificationBar />
         <Toaster />
       </AuthProvider>
     </QueryClientProvider>

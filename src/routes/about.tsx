@@ -1,50 +1,99 @@
 import { createFileRoute } from "@tanstack/react-router";
 import event2 from "@/assets/event-2.jpg";
 import { MapPin, Clock, ShieldCheck, Heart, Crown, Users } from "lucide-react";
+import { useEffect, useState } from "react";
+import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/about")({
   head: () => ({
     meta: [
-      { title: "About — Empire Park & Puff" },
-      { name: "description", content: "Empire Park & Puff is a chill-out lounge and events venue on USIU Road, Nairobi. Our story, our values, our team." },
-      { property: "og:title", content: "About Empire Park & Puff" },
-      { property: "og:description", content: "A chill-out lounge & events venue on USIU Road, Nairobi." },
+      { title: "About — Empire Kwa Sultan" },
+      {
+        name: "description",
+        content:
+          "Empire Kwa Sultan is a chill-out lounge and events venue on USIU Road, Nairobi. Shisha, cocktails, liquor, and the best nightlife experience in Kenya.",
+      },
+      {
+        name: "keywords",
+        content:
+          "Empire Kwa Sultan, about, shisha lounge Nairobi, cocktail bar Kenya, nightlife USIU Road, hookah lounge, events venue Nairobi",
+      },
+      { property: "og:title", content: "About Empire Kwa Sultan" },
+      {
+        property: "og:description",
+        content:
+          "A chill-out lounge & events venue on USIU Road, Nairobi. Shisha, cocktails, and the best nights.",
+      },
     ],
   }),
   component: AboutPage,
 });
 
-const VALUES = [
-  { icon: Users, title: "Community", body: "Empire is a regulars-bar at heart. Names are remembered, drinks are remembered, you are remembered." },
-  { icon: Crown, title: "Culture", body: "Afro-Kenyan to the bone. The music, the design, the rituals — we make space for what we grew up around." },
-  { icon: Heart, title: "Quality Vibes", body: "We say no to a lot of bookings. We protect the night for the people who love it." },
-  { icon: ShieldCheck, title: "Safety", body: "An 18+ venue with trained door staff and a silent SOS system in development for every guest." },
+const ICON_MAP: Record<string, React.ElementType> = { Users, Crown, Heart, ShieldCheck };
+
+const DEFAULT_VALUES = [
+  { icon: "Users", title: "Community", body: "Empire is a regulars-bar at heart. Names are remembered, drinks are remembered, you are remembered." },
+  { icon: "Crown", title: "Culture", body: "Afro-Kenyan to the bone. The music, the design, the rituals — we make space for what we grew up around." },
+  { icon: "Heart", title: "Quality Vibes", body: "We say no to a lot of bookings. We protect the night for the people who love it." },
+  { icon: "ShieldCheck", title: "Safety", body: "An 18+ venue with trained door staff and a silent SOS system for every guest." },
 ];
 
-const FAQ = [
-  { q: "Do you take reservations?", a: "Yes — and we recommend it. Saturdays sell out by Wednesday. Reserve via WhatsApp or our /events page." },
-  { q: "Is there parking?", a: "Yes, secure parking on-site. Standard, SUV, premium and group convoy spots — all bookable in advance." },
-  { q: "What's the age policy?", a: "Strictly 18+. ID at the door, every time, no exceptions." },
-  { q: "Do you serve food?", a: "Empire is a lounge & shisha venue, not a restaurant. We have light bites, mixers, and the bar you'd expect." },
-  { q: "Can I host a private event?", a: "Yes. The Empire Package books out our premium section for 10+ guests with a dedicated attendant. WhatsApp us." },
-];
+type Faq = { id: string; question: string; answer: string; sort_order: number };
+type SiteContent = { slug: string; content: string };
 
 function AboutPage() {
+  const [faqs, setFaqs] = useState<Faq[]>([]);
+  const [content, setContent] = useState<Record<string, string>>({});
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const load = async () => {
+      const [faqRes, contentRes] = await Promise.all([
+        supabase.from("faqs").select("*").eq("active", true).order("sort_order", { ascending: true }),
+        supabase.from("site_content").select("slug, content"),
+      ]);
+      if (faqRes.data) setFaqs(faqRes.data);
+      if (contentRes.data) {
+        const map: Record<string, string> = {};
+        for (const c of contentRes.data) map[c.slug] = c.content;
+        setContent(map);
+      }
+      setLoading(false);
+    };
+    load();
+  }, []);
+
+  const heroHeadline = content["about-hero"] ?? "We built a place for the night to slow down.";
+  const heroDesc =
+    content["about-description"] ??
+    "Empire started in 2022 as a Saturday-night experiment between friends. Today it's where Nairobi comes when the week has been too much and the night needs to be enough.";
+  let values = DEFAULT_VALUES;
+  try {
+    if (content["about-values"]) {
+      const parsed = JSON.parse(content["about-values"]);
+      if (Array.isArray(parsed) && parsed.length) values = parsed;
+    }
+  } catch {}
+
   return (
     <>
       <section className="relative overflow-hidden">
         <div className="absolute inset-0">
-          <img src={event2} alt="" className="h-full w-full object-cover opacity-40" loading="eager" />
+          <img
+            src={event2}
+            alt=""
+            className="h-full w-full object-cover opacity-40"
+            loading="eager"
+          />
           <div className="absolute inset-0 bg-gradient-to-b from-night-deep/40 via-night-deep/70 to-night-deep" />
         </div>
         <div className="relative mx-auto max-w-5xl px-5 lg:px-8 py-32 lg:py-40">
           <div className="eyebrow">About</div>
           <h1 className="font-display text-5xl md:text-7xl lg:text-8xl mt-3 leading-[0.95]">
-            We built a place <br/>
-            <span className="font-italic italic font-normal">for the night to <span className="text-gold-gradient">slow down</span>.</span>
+            {heroHeadline}
           </h1>
           <p className="mt-8 max-w-xl text-foreground/75 text-lg">
-            Empire started in 2022 as a Saturday-night experiment between friends. Today it's where Nairobi comes when the week has been too much and the night needs to be enough.
+            {heroDesc}
           </p>
         </div>
       </section>
@@ -54,15 +103,18 @@ function AboutPage() {
         <h2 className="font-display text-4xl md:text-5xl mt-3">Four things, always.</h2>
 
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5 mt-12">
-          {VALUES.map((v) => (
-            <div key={v.title} className="glass rounded-2xl p-6 kente-border">
+          {values.map((v) => {
+            const Icon = ICON_MAP[v.icon] ?? Users;
+            return (
+            <div key={v.title} className="glass rounded-2xl p-6">
               <div className="h-10 w-10 rounded-full bg-gold/15 text-gold flex items-center justify-center">
-                <v.icon size={18} />
+                <Icon size={18} />
               </div>
               <h3 className="font-display text-xl mt-4">{v.title}</h3>
               <p className="text-sm text-foreground/70 mt-2">{v.body}</p>
             </div>
-          ))}
+            );
+          })}
         </div>
       </section>
 
@@ -72,25 +124,39 @@ function AboutPage() {
           <h3 className="font-display text-3xl mt-3">Park Hotel · USIU Road</h3>
           <p className="text-foreground/70 mt-2">Nairobi, Kenya</p>
           <div className="mt-6 space-y-3 text-sm text-foreground/80">
-            <div className="flex items-center gap-3"><MapPin size={16} className="text-gold" /> 5 mins from USIU main gate</div>
-            <div className="flex items-center gap-3"><Clock size={16} className="text-gold" /> Wed – Sun · 5pm – Late</div>
-            <div className="flex items-center gap-3"><ShieldCheck size={16} className="text-gold" /> 18+ · ID required</div>
+            <div className="flex items-center gap-3">
+              <MapPin size={16} className="text-gold" /> 5 mins from USIU main gate
+            </div>
+            <div className="flex items-center gap-3">
+              <Clock size={16} className="text-gold" /> Mon – Sun · 5pm – Late
+            </div>
+            <div className="flex items-center gap-3">
+              <ShieldCheck size={16} className="text-gold" /> 18+ · ID required
+            </div>
           </div>
         </div>
 
         <div className="glass rounded-3xl p-8 kente-border">
           <div className="eyebrow">FAQ</div>
-          <div className="mt-4 divide-y divide-border/50">
-            {FAQ.map((f) => (
-              <details key={f.q} className="group py-4">
-                <summary className="cursor-pointer list-none flex items-start justify-between gap-4">
-                  <span className="font-medium">{f.q}</span>
-                  <span className="text-gold font-mono text-lg leading-none transition-transform group-open:rotate-45">+</span>
-                </summary>
-                <p className="mt-2 text-sm text-foreground/70">{f.a}</p>
-              </details>
-            ))}
-          </div>
+          {loading ? (
+            <div className="mt-4 text-sm text-foreground/50">Loading FAQs...</div>
+          ) : faqs.length === 0 ? (
+            <div className="mt-4 text-sm text-foreground/50">No FAQs yet.</div>
+          ) : (
+            <div className="mt-4 divide-y divide-border/50">
+              {faqs.map((f) => (
+                <details key={f.id} className="group py-4">
+                  <summary className="cursor-pointer list-none flex items-start justify-between gap-4">
+                    <span className="font-medium">{f.question}</span>
+                    <span className="text-gold font-mono text-lg leading-none transition-transform group-open:rotate-45">
+                      +
+                    </span>
+                  </summary>
+                  <p className="mt-2 text-sm text-foreground/70">{f.answer}</p>
+                </details>
+              ))}
+            </div>
+          )}
         </div>
       </section>
     </>

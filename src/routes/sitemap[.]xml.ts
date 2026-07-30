@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import type {} from "@tanstack/react-start";
 
-const BASE_URL = "";
+const BASE_URL = "https://empirekwasultan.co.ke";
 
 export const Route = createFileRoute("/sitemap.xml")({
   server: {
@@ -11,9 +11,9 @@ export const Route = createFileRoute("/sitemap.xml")({
           { path: "/", priority: "1.0", changefreq: "weekly" },
           { path: "/vibe", priority: "0.9", changefreq: "weekly" },
           { path: "/events", priority: "0.9", changefreq: "daily" },
+          { path: "/products", priority: "0.8", changefreq: "weekly" },
           { path: "/recap", priority: "0.7", changefreq: "weekly" },
           { path: "/reserve", priority: "0.9", changefreq: "weekly" },
-          { path: "/products", priority: "0.7", changefreq: "weekly" },
           { path: "/collabs", priority: "0.6", changefreq: "weekly" },
           { path: "/talent", priority: "0.6", changefreq: "weekly" },
           { path: "/milestones", priority: "0.5", changefreq: "monthly" },

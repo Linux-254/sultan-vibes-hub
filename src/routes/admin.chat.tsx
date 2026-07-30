@@ -60,7 +60,10 @@ function CrewChat() {
       .select("*")
       .order("created_at", { ascending: true })
       .limit(500);
-    if (error) { toast.error(error.message); return; }
+    if (error) {
+      toast.error(error.message);
+      return;
+    }
     setMsgs(data ?? []);
     enrich((data ?? []).map((m) => m.user_id));
   };
@@ -70,16 +73,26 @@ function CrewChat() {
     load();
     const ch = supabase
       .channel("crew-chat")
-      .on("postgres_changes", { event: "INSERT", schema: "public", table: "chat_messages" }, (payload) => {
-        const m = payload.new as Msg;
-        setMsgs((prev) => (prev.some((x) => x.id === m.id) ? prev : [...prev, m]));
-        enrich([m.user_id]);
-      })
-      .on("postgres_changes", { event: "DELETE", schema: "public", table: "chat_messages" }, (payload) => {
-        setMsgs((prev) => prev.filter((m) => m.id !== (payload.old as Msg).id));
-      })
+      .on(
+        "postgres_changes",
+        { event: "INSERT", schema: "public", table: "chat_messages" },
+        (payload) => {
+          const m = payload.new as Msg;
+          setMsgs((prev) => (prev.some((x) => x.id === m.id) ? prev : [...prev, m]));
+          enrich([m.user_id]);
+        },
+      )
+      .on(
+        "postgres_changes",
+        { event: "DELETE", schema: "public", table: "chat_messages" },
+        (payload) => {
+          setMsgs((prev) => prev.filter((m) => m.id !== (payload.old as Msg).id));
+        },
+      )
       .subscribe();
-    return () => { supabase.removeChannel(ch); };
+    return () => {
+      supabase.removeChannel(ch);
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -111,7 +124,10 @@ function CrewChat() {
   };
 
   const memberList = useMemo(
-    () => Object.values(members).sort((a, b) => (a.display_name ?? "").localeCompare(b.display_name ?? "")),
+    () =>
+      Object.values(members).sort((a, b) =>
+        (a.display_name ?? "").localeCompare(b.display_name ?? ""),
+      ),
     [members],
   );
 
@@ -125,7 +141,10 @@ function CrewChat() {
 
       <div className="glass rounded-3xl p-3 flex flex-wrap items-center gap-2">
         <div className="relative flex-1 min-w-[200px]">
-          <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-foreground/40" />
+          <Search
+            size={14}
+            className="absolute left-3 top-1/2 -translate-y-1/2 text-foreground/40"
+          />
           <input
             value={q}
             onChange={(e) => setQ(e.target.value)}
@@ -133,7 +152,10 @@ function CrewChat() {
             className="w-full bg-night/60 border border-border/50 rounded-xl pl-9 pr-9 py-2.5 text-sm focus:outline-none focus:border-gold"
           />
           {q && (
-            <button onClick={() => setQ("")} className="absolute right-2 top-1/2 -translate-y-1/2 text-foreground/40 hover:text-foreground">
+            <button
+              onClick={() => setQ("")}
+              className="absolute right-2 top-1/2 -translate-y-1/2 text-foreground/40 hover:text-foreground"
+            >
               <X size={14} />
             </button>
           )}
@@ -145,17 +167,24 @@ function CrewChat() {
         >
           <option value="all">All crew</option>
           {memberList.map((m) => (
-            <option key={m.id} value={m.id}>{m.display_name ?? "Crew"}{m.phone ? ` · ${m.phone}` : ""}</option>
+            <option key={m.id} value={m.id}>
+              {m.display_name ?? "Crew"}
+              {m.phone ? ` · ${m.phone}` : ""}
+            </option>
           ))}
         </select>
-        <div className="text-xs text-foreground/50 px-2">{filtered.length}/{msgs.length}</div>
+        <div className="text-xs text-foreground/50 px-2">
+          {filtered.length}/{msgs.length}
+        </div>
       </div>
 
       <div className="glass rounded-3xl flex-1 flex flex-col overflow-hidden">
         <div className="flex-1 overflow-y-auto p-5 space-y-3">
           {filtered.length === 0 && (
             <div className="text-center text-foreground/50 text-sm py-12">
-              {msgs.length === 0 ? "No messages yet. Say something." : "No messages match your search."}
+              {msgs.length === 0
+                ? "No messages yet. Say something."
+                : "No messages match your search."}
             </div>
           )}
           {filtered.map((m) => {
@@ -164,13 +193,24 @@ function CrewChat() {
             const name = p?.display_name ?? "Crew";
             return (
               <div key={m.id} className={`flex ${mine ? "justify-end" : "justify-start"}`}>
-                <div className={`max-w-[80%] rounded-2xl px-4 py-2.5 text-sm ${
-                  mine ? "bg-gold text-night-deep" : "bg-white/[0.06] text-foreground"
-                }`}>
-                  {!mine && <div className="text-[10px] uppercase tracking-wider text-gold mb-0.5">{name}</div>}
+                <div
+                  className={`max-w-[80%] rounded-2xl px-4 py-2.5 text-sm ${
+                    mine ? "bg-gold text-night-deep" : "bg-white/[0.06] text-foreground"
+                  }`}
+                >
+                  {!mine && (
+                    <div className="text-[10px] uppercase tracking-wider text-gold mb-0.5">
+                      {name}
+                    </div>
+                  )}
                   <div className="whitespace-pre-wrap break-words">{m.body}</div>
-                  <div className={`text-[10px] mt-1 ${mine ? "text-night-deep/60" : "text-foreground/50"}`}>
-                    {new Date(m.created_at).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
+                  <div
+                    className={`text-[10px] mt-1 ${mine ? "text-night-deep/60" : "text-foreground/50"}`}
+                  >
+                    {new Date(m.created_at).toLocaleTimeString([], {
+                      hour: "2-digit",
+                      minute: "2-digit",
+                    })}
                   </div>
                 </div>
               </div>
@@ -186,7 +226,11 @@ function CrewChat() {
             maxLength={2000}
             className="flex-1 bg-night/60 border border-border/50 rounded-2xl px-4 py-3 text-sm focus:outline-none focus:border-gold"
           />
-          <button type="submit" disabled={!text.trim()} className="rounded-2xl bg-gold px-4 py-3 text-night-deep disabled:opacity-50">
+          <button
+            type="submit"
+            disabled={!text.trim()}
+            className="rounded-2xl bg-gold px-4 py-3 text-night-deep disabled:opacity-50"
+          >
             <Send size={16} />
           </button>
         </form>

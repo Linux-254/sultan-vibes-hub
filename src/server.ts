@@ -2,6 +2,7 @@ import "./lib/error-capture";
 
 import { consumeLastCapturedError } from "./lib/error-capture";
 import { renderErrorPage } from "./lib/error-page";
+import { rateLimit, LIMITS } from "./lib/rate-limit";
 
 type ServerEntry = {
   fetch: (request: Request, env: unknown, ctx: unknown) => Promise<Response> | Response;
@@ -12,7 +13,7 @@ let serverEntryPromise: Promise<ServerEntry> | undefined;
 async function getServerEntry(): Promise<ServerEntry> {
   if (!serverEntryPromise) {
     serverEntryPromise = import("@tanstack/react-start/server-entry").then(
-      (m) => ((m as { default?: ServerEntry }).default ?? (m as unknown as ServerEntry)),
+      (m) => (m as { default?: ServerEntry }).default ?? (m as unknown as ServerEntry),
     );
   }
   return serverEntryPromise;
@@ -23,6 +24,69 @@ function brandedErrorResponse(): Response {
     status: 500,
     headers: { "content-type": "text/html; charset=utf-8" },
   });
+}
+
+function getClientIp(request: Request): string {
+  return (
+    request.headers.get("cf-connecting-ip") ||
+    request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
+    request.headers.get("x-real-ip") ||
+    "unknown"
+  );
+}
+
+function rateLimitResponse(retryAfterMs: number): Response {
+  const retryAfterSec = Math.ceil(retryAfterMs / 1000);
+  return new Response(JSON.stringify({ error: "Too many requests. Please try again later." }), {
+    status: 429,
+    headers: {
+      "content-type": "application/json",
+      "retry-after": String(retryAfterSec),
+      "X-RateLimit-Limit": "slow down",
+    },
+  });
+}
+
+function applyRateLimit(request: Request): Response | null {
+  const url = new URL(request.url);
+  const path = url.pathname;
+  const ip = getClientIp(request);
+
+  // Auth routes
+  if (path === "/api/auth" || path.startsWith("/auth")) {
+    const r = rateLimit(`auth:${ip}`, LIMITS.auth.limit, LIMITS.auth.windowMs);
+    if (!r.allowed) return rateLimitResponse(r.retryAfterMs);
+  }
+
+  // Password reset
+  if (path.includes("resetPassword") || path.includes("reset-password")) {
+    const r = rateLimit(
+      `pwdreset:${ip}`,
+      LIMITS.passwordReset.limit,
+      LIMITS.passwordReset.windowMs,
+    );
+    if (!r.allowed) return rateLimitResponse(r.retryAfterMs);
+  }
+
+  // SOS
+  if (path === "/api/sos" || path === "/sos") {
+    const r = rateLimit(`sos:${ip}`, LIMITS.sos.limit, LIMITS.sos.windowMs);
+    if (!r.allowed) return rateLimitResponse(r.retryAfterMs);
+  }
+
+  // Chat
+  if (path === "/api/chat" || path === "/chat") {
+    const r = rateLimit(`chat:${ip}`, LIMITS.chat.limit, LIMITS.chat.windowMs);
+    if (!r.allowed) return rateLimitResponse(r.retryAfterMs);
+  }
+
+  // General API catch-all
+  if (path.startsWith("/api/")) {
+    const r = rateLimit(`api:${ip}:${path}`, LIMITS.api.limit, LIMITS.api.windowMs);
+    if (!r.allowed) return rateLimitResponse(r.retryAfterMs);
+  }
+
+  return null;
 }
 
 function isCatastrophicSsrErrorBody(body: string, responseStatus: number): boolean {
@@ -66,12 +130,31 @@ async function normalizeCatastrophicSsrResponse(response: Response): Promise<Res
   return brandedErrorResponse();
 }
 
+function addSecurityHeaders(response: Response): Response {
+  const headers = new Headers(response.headers);
+  headers.set("X-Content-Type-Options", "nosniff");
+  headers.set("X-Frame-Options", "DENY");
+  headers.set("X-XSS-Protection", "1; mode=block");
+  headers.set("Referrer-Policy", "strict-origin-when-cross-origin");
+  headers.set("Permissions-Policy", "camera=(), microphone=(), geolocation=(self)");
+  return new Response(response.body, {
+    status: response.status,
+    statusText: response.statusText,
+    headers,
+  });
+}
+
 export default {
   async fetch(request: Request, env: unknown, ctx: unknown) {
     try {
+      // Rate limiting
+      const blocked = applyRateLimit(request);
+      if (blocked) return blocked;
+
       const handler = await getServerEntry();
       const response = await handler.fetch(request, env, ctx);
-      return await normalizeCatastrophicSsrResponse(response);
+      const secure = addSecurityHeaders(response);
+      return await normalizeCatastrophicSsrResponse(secure);
     } catch (error) {
       console.error(error);
       return brandedErrorResponse();

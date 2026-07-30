@@ -15,8 +15,8 @@ import { Countdown } from "@/components/Countdown";
 
 // Campaign config — change these dates to control the popup lifecycle.
 const EVENT_START = new Date("2025-12-15T18:00:00+03:00"); // Summer Tides launch
-const EVENT_END = new Date("2026-01-26T03:00:00+03:00");   // Last night of the campaign
-const GRACE_DAYS = 30;                                      // keep the photo/video window open
+const EVENT_END = new Date("2026-01-26T03:00:00+03:00"); // Last night of the campaign
+const GRACE_DAYS = 30; // keep the photo/video window open
 
 const DISMISS_KEY = "empire_st_popup_dismissed_at";
 const DISMISS_HOURS = 24;

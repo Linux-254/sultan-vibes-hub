@@ -3,7 +3,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/use-auth";
 import { toast } from "sonner";
-import { Siren, Search, MapPin, Check, X, BellRing, BellOff } from "lucide-react";
+import { Siren, Search, MapPin, Check, X, BellRing, BellOff, UserCheck } from "lucide-react";
 
 export const Route = createFileRoute("/admin/sos")({
   component: AdminSos,
@@ -26,7 +26,14 @@ interface Incident {
   resolved_by: string | null;
   resolved_at: string | null;
   resolution_note: string | null;
+  responder_id: string | null;
+  responder_note: string | null;
   created_at: string;
+}
+
+interface StaffMember {
+  id: string;
+  display_name: string;
 }
 
 const LEVEL_STYLES: Record<Level, string> = {
@@ -47,23 +54,32 @@ function beep() {
     const ctx = new (window.AudioContext || (window as any).webkitAudioContext)();
     const o = ctx.createOscillator();
     const g = ctx.createGain();
-    o.connect(g); g.connect(ctx.destination);
-    o.type = "square"; o.frequency.value = 880;
+    o.connect(g);
+    g.connect(ctx.destination);
+    o.type = "square";
+    o.frequency.value = 880;
     g.gain.setValueAtTime(0.0001, ctx.currentTime);
     g.gain.exponentialRampToValueAtTime(0.25, ctx.currentTime + 0.01);
     g.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.4);
-    o.start(); o.stop(ctx.currentTime + 0.42);
+    o.start();
+    o.stop(ctx.currentTime + 0.42);
   } catch {}
 }
 
 function AdminSos() {
   const { user } = useAuth();
   const [rows, setRows] = useState<Incident[]>([]);
-  const [profiles, setProfiles] = useState<Record<string, { name: string; phone: string | null }>>({});
+  const [profiles, setProfiles] = useState<Record<string, { name: string; phone: string | null }>>(
+    {},
+  );
   const [statusFilter, setStatusFilter] = useState<Status | "all">("open");
   const [levelFilter, setLevelFilter] = useState<Level | "all">("all");
   const [q, setQ] = useState("");
   const [notify, setNotify] = useState(true);
+  const [resolvingId, setResolvingId] = useState<string | null>(null);
+  const [resolutionNote, setResolutionNote] = useState("");
+  const [staffList, setStaffList] = useState<StaffMember[]>([]);
+  const [assigningId, setAssigningId] = useState<string | null>(null);
   const seenIds = useRef<Set<string>>(new Set());
 
   const enrich = async (ids: string[]) => {
@@ -79,13 +95,35 @@ function AdminSos() {
     }
   };
 
+  const loadStaff = async () => {
+    const { data } = await supabase
+      .from("user_roles")
+      .select("user_id, role")
+      .in("role", ["admin", "crew", "bartender", "waitress", "shisha_distributor", "content_manager", "security"]);
+    if (!data) return;
+    const ids = [...new Set(data.map((r: any) => r.user_id))];
+    if (ids.length === 0) return;
+    const { data: profiles } = await supabase
+      .from("profiles")
+      .select("id, display_name")
+      .in("id", ids);
+    if (profiles) {
+      setStaffList(
+        profiles.map((p: any) => ({ id: p.id, display_name: p.display_name ?? "Staff" })),
+      );
+    }
+  };
+
   const load = async () => {
     const { data, error } = await supabase
       .from("sos_incidents")
       .select("*")
       .order("created_at", { ascending: false })
       .limit(500);
-    if (error) { toast.error(error.message); return; }
+    if (error) {
+      toast.error(error.message);
+      return;
+    }
     setRows((data ?? []) as Incident[]);
     for (const r of data ?? []) seenIds.current.add(r.id);
     enrich((data ?? []).map((r) => r.user_id).filter(Boolean) as string[]);
@@ -93,37 +131,56 @@ function AdminSos() {
 
   useEffect(() => {
     load();
+    loadStaff();
     if (notify && typeof Notification !== "undefined" && Notification.permission === "default") {
       Notification.requestPermission().catch(() => {});
     }
     const ch = supabase
       .channel("sos-admin")
-      .on("postgres_changes", { event: "INSERT", schema: "public", table: "sos_incidents" }, (payload) => {
-        const row = payload.new as Incident;
-        if (seenIds.current.has(row.id)) return;
-        seenIds.current.add(row.id);
-        setRows((prev) => [row, ...prev]);
-        if (row.user_id) enrich([row.user_id]);
-        if (notify) {
-          beep();
-          toast.error(`🚨 ${row.level} SOS — respond now`, { duration: 10_000 });
-          if (typeof Notification !== "undefined" && Notification.permission === "granted") {
-            new Notification(`SOS ${row.level}`, { body: row.note ?? "Silent alert from a guest", tag: row.id });
+      .on(
+        "postgres_changes",
+        { event: "INSERT", schema: "public", table: "sos_incidents" },
+        (payload) => {
+          const row = payload.new as Incident;
+          if (seenIds.current.has(row.id)) return;
+          seenIds.current.add(row.id);
+          setRows((prev) => [row, ...prev]);
+          if (row.user_id) enrich([row.user_id]);
+          if (notify) {
+            beep();
+            toast.error(`🚨 ${row.level} SOS — respond now`, { duration: 10_000 });
+            if (typeof Notification !== "undefined" && Notification.permission === "granted") {
+              new Notification(`SOS ${row.level}`, {
+                body: row.note ?? "Silent alert from a guest",
+                tag: row.id,
+              });
+            }
           }
-        }
-      })
-      .on("postgres_changes", { event: "UPDATE", schema: "public", table: "sos_incidents" }, (payload) => {
-        const row = payload.new as Incident;
-        setRows((prev) => prev.map((r) => (r.id === row.id ? row : r)));
-      })
-      .on("postgres_changes", { event: "DELETE", schema: "public", table: "sos_incidents" }, (payload) => {
-        setRows((prev) => prev.filter((r) => r.id !== (payload.old as Incident).id));
-      })
+        },
+      )
+      .on(
+        "postgres_changes",
+        { event: "UPDATE", schema: "public", table: "sos_incidents" },
+        (payload) => {
+          const row = payload.new as Incident;
+          setRows((prev) => prev.map((r) => (r.id === row.id ? row : r)));
+        },
+      )
+      .on(
+        "postgres_changes",
+        { event: "DELETE", schema: "public", table: "sos_incidents" },
+        (payload) => {
+          setRows((prev) => prev.filter((r) => r.id !== (payload.old as Incident).id));
+        },
+      )
       .subscribe();
 
     // Safety net auto-refresh every 30s in case the websocket drops
     const poll = window.setInterval(load, 30_000);
-    return () => { supabase.removeChannel(ch); window.clearInterval(poll); };
+    return () => {
+      supabase.removeChannel(ch);
+      window.clearInterval(poll);
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [notify]);
 
@@ -148,17 +205,44 @@ function AdminSos() {
     if (error) toast.error(error.message);
   };
 
+  const assignResponder = (r: Incident, responderId: string) =>
+    update(r.id, {
+      responder_id: responderId,
+      responder_note: null,
+    });
+
   const ack = (r: Incident) =>
-    update(r.id, { status: "acknowledged", acknowledged_by: user?.id ?? null, acknowledged_at: new Date().toISOString() });
-  const resolve = (r: Incident) =>
-    update(r.id, { status: "resolved", resolved_by: user?.id ?? null, resolved_at: new Date().toISOString() });
+    update(r.id, {
+      status: "acknowledged",
+      acknowledged_by: user?.id ?? null,
+      acknowledged_at: new Date().toISOString(),
+    });
+  const resolve = (r: Incident) => {
+    if (resolvingId === r.id) {
+      update(r.id, {
+        status: "resolved",
+        resolved_by: user?.id ?? null,
+        resolved_at: new Date().toISOString(),
+        resolution_note: resolutionNote.trim() || null,
+      });
+      setResolvingId(null);
+      setResolutionNote("");
+    } else {
+      setResolvingId(r.id);
+      setResolutionNote("");
+    }
+  };
   const dismiss = (r: Incident) => update(r.id, { status: "false_alarm" });
 
-  const counts = useMemo(() => ({
-    open: rows.filter((r) => r.status === "open").length,
-    ack: rows.filter((r) => r.status === "acknowledged").length,
-    today: rows.filter((r) => new Date(r.created_at).toDateString() === new Date().toDateString()).length,
-  }), [rows]);
+  const counts = useMemo(
+    () => ({
+      open: rows.filter((r) => r.status === "open").length,
+      ack: rows.filter((r) => r.status === "acknowledged").length,
+      today: rows.filter((r) => new Date(r.created_at).toDateString() === new Date().toDateString())
+        .length,
+    }),
+    [rows],
+  );
 
   return (
     <div className="space-y-6">
@@ -183,7 +267,10 @@ function AdminSos() {
 
       <div className="glass rounded-3xl p-4 flex flex-wrap items-center gap-3">
         <div className="relative flex-1 min-w-[220px]">
-          <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-foreground/40" />
+          <Search
+            size={14}
+            className="absolute left-3 top-1/2 -translate-y-1/2 text-foreground/40"
+          />
           <input
             value={q}
             onChange={(e) => setQ(e.target.value)}
@@ -191,16 +278,22 @@ function AdminSos() {
             className="w-full bg-night/60 border border-border/50 rounded-xl pl-9 pr-3 py-2.5 text-sm focus:outline-none focus:border-gold"
           />
         </div>
-        <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value as Status | "all")}
-          className="bg-night/60 border border-border/50 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-gold">
+        <select
+          value={statusFilter}
+          onChange={(e) => setStatusFilter(e.target.value as Status | "all")}
+          className="bg-night/60 border border-border/50 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-gold"
+        >
           <option value="all">All statuses</option>
           <option value="open">Open</option>
           <option value="acknowledged">Acknowledged</option>
           <option value="resolved">Resolved</option>
           <option value="false_alarm">False alarm</option>
         </select>
-        <select value={levelFilter} onChange={(e) => setLevelFilter(e.target.value as Level | "all")}
-          className="bg-night/60 border border-border/50 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-gold">
+        <select
+          value={levelFilter}
+          onChange={(e) => setLevelFilter(e.target.value as Level | "all")}
+          className="bg-night/60 border border-border/50 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-gold"
+        >
           <option value="all">All levels</option>
           <option value="RED">Red</option>
           <option value="ORANGE">Orange</option>
@@ -210,15 +303,28 @@ function AdminSos() {
 
       <div className="space-y-3">
         {filtered.length === 0 && (
-          <div className="glass rounded-3xl p-10 text-center text-sm text-foreground/55">No incidents match.</div>
+          <div className="glass rounded-3xl p-10 text-center text-sm text-foreground/55">
+            No incidents match.
+          </div>
         )}
         {filtered.map((r) => {
           const p = r.user_id ? profiles[r.user_id] : null;
+          const responder = r.responder_id
+            ? staffList.find((s) => s.id === r.responder_id)
+            : null;
+          const responseTime =
+            r.acknowledged_at &&
+            `+${Math.round((new Date(r.acknowledged_at).getTime() - new Date(r.created_at).getTime()) / 1000)}s`;
           return (
-            <article key={r.id} className={`glass rounded-3xl p-5 border ${r.status === "open" ? "border-lava/40 animate-pulse-slow" : "border-border/40"}`}>
+            <article
+              key={r.id}
+              className={`glass rounded-3xl p-5 border ${r.status === "open" ? "border-lava/40 animate-pulse-slow" : "border-border/40"}`}
+            >
               <div className="flex flex-wrap items-start justify-between gap-4">
                 <div className="flex items-start gap-3">
-                  <span className={`px-2.5 py-1 rounded-full border text-[10px] uppercase tracking-wider font-mono ${LEVEL_STYLES[r.level]}`}>
+                  <span
+                    className={`px-2.5 py-1 rounded-full border text-[10px] uppercase tracking-wider font-mono ${LEVEL_STYLES[r.level]}`}
+                  >
                     {r.level}
                   </span>
                   <div>
@@ -228,34 +334,101 @@ function AdminSos() {
                       {new Date(r.created_at).toLocaleString()}
                     </div>
                     {r.note && <p className="mt-2 text-sm text-foreground/85">{r.note}</p>}
+                    {r.responder_note && (
+                      <p className="mt-1 text-xs text-gold/80">
+                        Responder note: {r.responder_note}
+                      </p>
+                    )}
+                    {r.resolution_note && (
+                      <p className="mt-1 text-xs text-savanna/80">
+                        Resolution: {r.resolution_note}
+                      </p>
+                    )}
                     {r.share_location && r.location_lat != null && r.location_lng != null && (
-                      <a target="_blank" rel="noreferrer"
+                      <a
+                        target="_blank"
+                        rel="noreferrer"
                         href={`https://maps.google.com/?q=${r.location_lat},${r.location_lng}`}
-                        className="mt-2 inline-flex items-center gap-1 text-xs text-gold hover:underline">
+                        className="mt-2 inline-flex items-center gap-1 text-xs text-gold hover:underline"
+                      >
                         <MapPin size={12} /> Open location
                       </a>
                     )}
                   </div>
                 </div>
-                <div className="flex items-center gap-2">
-                  <span className={`px-2 py-1 rounded-full text-[10px] uppercase tracking-wider ${STATUS_STYLES[r.status]}`}>
+                <div className="flex items-center gap-2 flex-wrap">
+                  {responder && (
+                    <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full text-[10px] uppercase tracking-wider bg-foreground/10 text-foreground/70">
+                      <UserCheck size={10} /> {responder.display_name}
+                    </span>
+                  )}
+                  {responseTime && (
+                    <span className="text-[10px] font-mono text-foreground/50">
+                      ⏱ {responseTime}
+                    </span>
+                  )}
+                  <span
+                    className={`px-2 py-1 rounded-full text-[10px] uppercase tracking-wider ${STATUS_STYLES[r.status]}`}
+                  >
                     {r.status.replace("_", " ")}
                   </span>
                 </div>
               </div>
               <div className="mt-4 flex flex-wrap gap-2">
+                {(r.status === "open" || r.status === "acknowledged") && staffList.length > 0 && (
+                  <select
+                    value={r.responder_id ?? ""}
+                    onChange={(e) => assignResponder(r, e.target.value)}
+                    className="bg-night/60 border border-border/50 rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-gold max-w-[180px]"
+                  >
+                    <option value="">Assign responder</option>
+                    {staffList.map((s) => (
+                      <option key={s.id} value={s.id}>
+                        {s.display_name}
+                      </option>
+                    ))}
+                  </select>
+                )}
                 {r.status === "open" && (
-                  <button onClick={() => ack(r)} className="inline-flex items-center gap-1.5 rounded-xl bg-gold px-3 py-2 text-xs text-night-deep hover:opacity-90">
+                  <button
+                    onClick={() => ack(r)}
+                    className="inline-flex items-center gap-1.5 rounded-xl bg-gold px-3 py-2 text-xs text-night-deep hover:opacity-90"
+                  >
                     <BellRing size={12} /> Acknowledge
                   </button>
                 )}
                 {r.status !== "resolved" && r.status !== "false_alarm" && (
-                  <button onClick={() => resolve(r)} className="inline-flex items-center gap-1.5 rounded-xl bg-savanna/20 text-savanna px-3 py-2 text-xs hover:bg-savanna/30">
-                    <Check size={12} /> Resolve
-                  </button>
+                  <>
+                    <button
+                      onClick={() => resolve(r)}
+                      className="inline-flex items-center gap-1.5 rounded-xl bg-savanna/20 text-savanna px-3 py-2 text-xs hover:bg-savanna/30"
+                    >
+                      <Check size={12} /> {resolvingId === r.id ? "Confirm resolve" : "Resolve"}
+                    </button>
+                    {resolvingId === r.id && (
+                      <input
+                        value={resolutionNote}
+                        onChange={(e) => setResolutionNote(e.target.value)}
+                        placeholder="Resolution note (optional)"
+                        maxLength={200}
+                        className="bg-night/60 border border-border/50 rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-gold w-56"
+                        autoFocus
+                        onKeyDown={(e) => {
+                          if (e.key === "Enter") resolve(r);
+                          if (e.key === "Escape") {
+                            setResolvingId(null);
+                            setResolutionNote("");
+                          }
+                        }}
+                      />
+                    )}
+                  </>
                 )}
                 {r.status === "open" && (
-                  <button onClick={() => dismiss(r)} className="inline-flex items-center gap-1.5 rounded-xl border border-border/50 px-3 py-2 text-xs hover:border-foreground/40">
+                  <button
+                    onClick={() => dismiss(r)}
+                    className="inline-flex items-center gap-1.5 rounded-xl border border-border/50 px-3 py-2 text-xs hover:border-foreground/40"
+                  >
                     <X size={12} /> False alarm
                   </button>
                 )}

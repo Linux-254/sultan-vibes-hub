@@ -1,2 +1,10 @@
 User-agent: *
 Allow: /
+Disallow: /admin
+Disallow: /auth
+Disallow: /profile
+Disallow: /chat
+Disallow: /sos
+Disallow: /reset-password
+
+Sitemap: https://empirekwasultan.co.ke/sitemap.xml

@@ -1,18 +1,26 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
-import { useMemo, useState } from "react";
-import { ArrowRight, Calendar, Car, Check, Flame, Minus, Plus, Wine, Crown } from "lucide-react";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { useEffect, useMemo, useState } from "react";
+import { ArrowRight, Car, Check, Crown } from "lucide-react";
 import { z } from "zod";
 import { toast } from "sonner";
+import { RequireAuth } from "@/components/RequireAuth";
+import { ReserveCalendar } from "@/components/ReserveCalendar";
+import { ProductDrinksPicker, type DrinkEntry } from "@/components/ProductDrinksPicker";
+import { ProductShishaPicker, type ShishaEntry } from "@/components/ProductShishaPicker";
+import { MpesaPayment } from "@/components/MpesaPayment";
+import { supabase } from "@/integrations/supabase/client";
 
-const packageSchema = z
-  .enum(["solo", "duo", "squad", "vip", "sultan"])
-  .catch("solo");
+const packageSchema = z.enum(["solo", "duo", "squad", "vip", "sultan"]).catch("solo");
 
 export const Route = createFileRoute("/reserve")({
   head: () => ({
     meta: [
-      { title: "Reserve a Table — Empire Park & Puff" },
-      { name: "description", content: "Lock in your section, parking and shisha for the night. Pay via M-Pesa, get a QR confirmation on WhatsApp." },
+      { title: "Reserve a Table — Empire Kwa Sultan" },
+      {
+        name: "description",
+        content:
+          "Lock in your section, parking and shisha for the night. Pay via M-Pesa, get a QR confirmation on WhatsApp.",
+      },
       { name: "robots", content: "noindex" },
     ],
   }),
@@ -22,89 +30,154 @@ export const Route = createFileRoute("/reserve")({
   component: ReservePage,
 });
 
-const PACKAGES = {
+function ReservePage() {
+  return (
+    <RequireAuth>
+      <ReservePageInner />
+    </RequireAuth>
+  );
+}
+
+type PkgMap = Record<string, { name: string; capacity: string; price: number }>;
+type ParkingOpt = { id: string; name: string; price: number };
+type DepositCfg = { type: string; value: number; min_amount: number };
+
+const DEFAULT_PACKAGES: PkgMap = {
   solo: { name: "Solo Vibe", capacity: "1", price: 700 },
   duo: { name: "Duo Pack", capacity: "2", price: 1200 },
   squad: { name: "Squad", capacity: "4–6", price: 4500 },
   vip: { name: "VIP Table", capacity: "6–10", price: 9000 },
   sultan: { name: "The Empire", capacity: "10+", price: 18000 },
-} as const;
+};
 
-// SHISHA / POT / BONG line items — all capped at KES 550 each
-const SHISHA_MENU = [
-  { id: "classic", name: "Classic Shisha", price: 450 },
-  { id: "premium", name: "Premium Shisha (double-apple, mint, grape)", price: 550 },
-  { id: "fruit", name: "Fruit Bowl Shisha (pineapple/melon)", price: 550 },
-  { id: "pot", name: "Clay Pot", price: 500 },
-  { id: "bong", name: "Glass Bong", price: 550 },
-] as const;
-
-const DRINKS = ["Kenya Cane", "Captain Morgan", "Tusker", "Whitecap", "Smirnoff", "Heineken", "Mocktail"];
-
-const PARKING = [
+const DEFAULT_PARKING: ParkingOpt[] = [
   { id: "standard", name: "Standard sedan", price: 200 },
   { id: "suv", name: "SUV / crossover", price: 350 },
   { id: "premium", name: "Premium spot (near entrance)", price: 500 },
   { id: "convoy", name: "Convoy (3+ cars)", price: 800 },
 ];
 
-function ReservePage() {
+const DEFAULT_DEPOSIT: DepositCfg = { type: "percentage", value: 30, min_amount: 500 };
+
+function ReservePageInner() {
   const { pkg: initialPkg } = Route.useSearch();
-  const [pkg, setPkg] = useState<keyof typeof PACKAGES>(initialPkg);
+  const navigate = useNavigate();
+  const [packages, setPackages] = useState<PkgMap>(DEFAULT_PACKAGES);
+  const [parkingOpts, setParkingOpts] = useState<ParkingOpt[]>(DEFAULT_PARKING);
+  const [depositCfg, setDepositCfg] = useState<DepositCfg>(DEFAULT_DEPOSIT);
+  const [cfgLoaded, setCfgLoaded] = useState(false);
+  const [pkg, setPkg] = useState<keyof PkgMap>(initialPkg);
   const [date, setDate] = useState("");
   const [time, setTime] = useState("21:00");
-  const [shisha, setShisha] = useState<Record<string, number>>({});
-  const [drinks, setDrinks] = useState<string[]>([]);
+  const [shisha, setShisha] = useState<ShishaEntry[]>([]);
+  const [drinks, setDrinks] = useState<DrinkEntry[]>([]);
   const [parking, setParking] = useState<string | null>(null);
   const [carModel, setCarModel] = useState("");
   const [plate, setPlate] = useState("");
   const [arrival, setArrival] = useState("");
   const [special, setSpecial] = useState("");
+  const [showMpesa, setShowMpesa] = useState(false);
+  const [busy, setBusy] = useState(false);
+
+  useEffect(() => {
+    supabase.from("pricing_config").select("key, value").then(({ data }) => {
+      if (!data) return;
+      for (const row of data) {
+        if (row.key === "packages") setPackages({ ...DEFAULT_PACKAGES, ...(row.value as PkgMap) });
+        if (row.key === "parking_options") setParkingOpts(row.value as ParkingOpt[]);
+        if (row.key === "deposit") setDepositCfg(row.value as DepositCfg);
+      }
+      setCfgLoaded(true);
+    });
+  }, []);
+
+  const pkgKey = pkg as keyof PkgMap;
+  const activePkg = packages[pkgKey] ?? packages.solo;
 
   const total = useMemo(() => {
-    const base = PACKAGES[pkg].price;
-    const shishaTotal = Object.entries(shisha).reduce((s, [id, qty]) => {
-      const item = SHISHA_MENU.find((m) => m.id === id);
-      return s + (item ? item.price * qty : 0);
-    }, 0);
-    const parkingTotal = parking ? (PARKING.find((p) => p.id === parking)?.price ?? 0) : 0;
-    return base + shishaTotal + parkingTotal;
-  }, [pkg, shisha, parking]);
+    const base = activePkg.price;
+    const shishaTotal = shisha.reduce((s, item) => s + item.price * item.quantity, 0);
+    const drinksTotal = drinks.reduce((s, d) => s + d.price * d.quantity, 0);
+    const parkingTotal = parking ? (parkingOpts.find((p) => p.id === parking)?.price ?? 0) : 0;
+    return base + shishaTotal + drinksTotal + parkingTotal;
+  }, [activePkg, shisha, drinks, parking, parkingOpts]);
 
-  const updateShisha = (id: string, delta: number) => {
-    setShisha((s) => {
-      const next = { ...s };
-      const v = (next[id] ?? 0) + delta;
-      if (v <= 0) delete next[id];
-      else next[id] = Math.min(v, 10);
-      return next;
-    });
+  const MIN_DEPOSIT = depositCfg.min_amount;
+  const depositPct = depositCfg.type === "percentage" ? depositCfg.value / 100 : 1;
+  const depositFlat = depositCfg.type === "flat" ? depositCfg.value : 0;
+  const deposit = depositCfg.type === "flat"
+    ? Math.min(Math.max(depositFlat, MIN_DEPOSIT), total)
+    : Math.min(Math.max(Math.round(total * depositPct), MIN_DEPOSIT), total);
+
+  const submit = async () => {
+    if (!date) return toast.error("Pick a date for your reservation.");
+    setBusy(true);
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) { toast.error("Please sign in first"); setBusy(false); return; }
+    const { data: profile } = await supabase
+      .from("profiles")
+      .select("display_name, phone")
+      .eq("id", user.id)
+      .single();
+    setBusy(false);
+    setShowMpesa(true);
   };
 
-  const submit = () => {
-    if (!date) return toast.error("Pick a date for your reservation.");
-    toast.success("Reservation locked. We'll WhatsApp your QR confirmation.");
+  const onPaymentSuccess = async (paymentId: string) => {
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) return;
+    const { data: profile } = await supabase
+      .from("profiles")
+      .select("display_name, phone")
+      .eq("id", user.id)
+      .single();
+    const capacityMap: Record<string, number> = { solo: 1, duo: 2, squad: 6, vip: 10, sultan: 15 };
+    const { error } = await supabase.from("reservations").insert({
+      user_id: user.id,
+      full_name: profile?.display_name ?? user.email ?? "Guest",
+      phone: profile?.phone ?? "",
+      party_size: capacityMap[pkg] ?? 2,
+      reservation_date: date,
+      reservation_time: time,
+      table_preference: activePkg.name,
+      special_requests: special || null,
+      deposit_amount: deposit,
+      drinks: drinks.length > 0 ? drinks : null,
+      status: "pending",
+    });
+    if (error) { toast.error(error.message); return; }
+    toast.success("Reservation confirmed! Check your phone for the STK receipt.");
+    navigate({ to: "/profile" });
   };
 
   return (
     <section className="mx-auto max-w-6xl px-5 lg:px-8 py-20 lg:py-28">
+      <MpesaPayment
+        amount={deposit}
+        reference={`RES-${pkg.toUpperCase()}`}
+        description="Empire reservation deposit"
+        onSuccess={onPaymentSuccess}
+        onClose={() => setShowMpesa(false)}
+        open={showMpesa}
+      />
       <div className="eyebrow">Advance reservation</div>
-      <h1 className="font-display text-5xl md:text-6xl mt-3 leading-[0.95]">
+      <h1 className="font-display text-4xl sm:text-5xl md:text-6xl mt-3 leading-[0.95]">
         Lock your <span className="text-gold-gradient">section</span>.
       </h1>
       <p className="mt-3 text-foreground/70 max-w-xl">
-        Pay a small deposit via M-Pesa, get a QR code on WhatsApp, walk in like the night belongs to you.
+        Pay a small deposit via M-Pesa, get a QR code on WhatsApp, walk in like the night belongs to
+        you.
       </p>
 
       <div className="mt-12 grid lg:grid-cols-[1fr_380px] gap-8 items-start">
         {/* FORM */}
         <div className="space-y-6">
           {/* Package */}
-          <div className="glass rounded-3xl p-6">
+          <div className="glass rounded-3xl p-5 sm:p-6">
             <div className="eyebrow">1 · Choose package</div>
-            <div className="grid sm:grid-cols-2 gap-2 mt-3">
-              {(Object.keys(PACKAGES) as Array<keyof typeof PACKAGES>).map((k) => {
-                const p = PACKAGES[k];
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-3">
+              {(Object.keys(packages) as Array<keyof PkgMap>).map((k) => {
+                const p = packages[k];
                 const active = pkg === k;
                 return (
                   <button
@@ -116,7 +189,9 @@ function ReservePage() {
                       <div className="font-display text-lg">{p.name}</div>
                       {active && <Check size={16} className="text-gold" />}
                     </div>
-                    <div className="text-xs text-foreground/55 mt-1">For {p.capacity} · KES {p.price.toLocaleString()}</div>
+                    <div className="text-xs text-foreground/55 mt-1">
+                      For {p.capacity} · KES {p.price.toLocaleString()}
+                    </div>
                   </button>
                 );
               })}
@@ -124,82 +199,42 @@ function ReservePage() {
           </div>
 
           {/* Date / time */}
-          <div className="glass rounded-3xl p-6">
+          <div className="glass rounded-3xl p-5 sm:p-6">
             <div className="eyebrow">2 · Date & time</div>
-            <div className="grid sm:grid-cols-2 gap-3 mt-3">
-              <label className="block">
-                <span className="text-xs text-foreground/60">Date</span>
-                <div className="mt-1 flex items-center gap-2 bg-night/50 border border-border/50 rounded-2xl px-3">
-                  <Calendar size={14} className="text-gold" />
-                  <input type="date" value={date} onChange={(e) => setDate(e.target.value)} className="flex-1 bg-transparent py-3 text-sm focus:outline-none" />
-                </div>
-              </label>
-              <label className="block">
-                <span className="text-xs text-foreground/60">Arrival time</span>
-                <input type="time" value={time} onChange={(e) => setTime(e.target.value)} className="mt-1 w-full bg-night/50 border border-border/50 rounded-2xl px-4 py-3 text-sm focus:outline-none" />
-              </label>
+            <div className="mt-3">
+              <ReserveCalendar
+                date={date}
+                onDateChange={setDate}
+                time={time}
+                onTimeChange={setTime}
+              />
             </div>
           </div>
 
           {/* Shisha */}
-          <div className="glass rounded-3xl p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <div className="eyebrow flex items-center gap-2"><Flame size={12} /> 3 · Shisha · pots · bongs</div>
-                <p className="text-xs text-foreground/55 mt-1">Every item capped at <span className="text-gold">KES 550</span>.</p>
-              </div>
-            </div>
-            <ul className="mt-4 divide-y divide-border/30">
-              {SHISHA_MENU.map((s) => {
-                const qty = shisha[s.id] ?? 0;
-                return (
-                  <li key={s.id} className="py-3 flex items-center justify-between gap-4">
-                    <div>
-                      <div className="text-sm">{s.name}</div>
-                      <div className="text-xs text-gold">KES {s.price}</div>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <button onClick={() => updateShisha(s.id, -1)} className="h-8 w-8 rounded-full border border-border/50 hover:border-gold flex items-center justify-center" aria-label="Decrease">
-                        <Minus size={12} />
-                      </button>
-                      <span className="w-6 text-center text-sm tabular-nums">{qty}</span>
-                      <button onClick={() => updateShisha(s.id, 1)} className="h-8 w-8 rounded-full border border-border/50 hover:border-gold flex items-center justify-center" aria-label="Increase">
-                        <Plus size={12} />
-                      </button>
-                    </div>
-                  </li>
-                );
-              })}
-            </ul>
+          <div className="glass rounded-3xl p-5 sm:p-6">
+            <ProductShishaPicker value={shisha} onChange={setShisha} />
           </div>
 
           {/* Drinks */}
-          <div className="glass rounded-3xl p-6">
-            <div className="eyebrow flex items-center gap-2"><Wine size={12} /> 4 · Drinks (included with package)</div>
-            <div className="flex flex-wrap gap-2 mt-3">
-              {DRINKS.map((d) => {
-                const active = drinks.includes(d);
-                return (
-                  <button
-                    key={d}
-                    onClick={() => setDrinks((s) => (active ? s.filter((x) => x !== d) : [...s, d]))}
-                    className={`text-xs uppercase tracking-wider px-3 py-1.5 rounded-full border transition ${active ? "bg-gold text-night-deep border-gold" : "border-border/40 hover:border-gold text-foreground/70"}`}
-                  >
-                    {d}
-                  </button>
-                );
-              })}
-            </div>
+          <div className="glass rounded-3xl p-5 sm:p-6">
+            <ProductDrinksPicker value={drinks} onChange={setDrinks} />
           </div>
 
           {/* Parking */}
-          <div className="glass rounded-3xl p-6">
-            <div className="eyebrow flex items-center gap-2"><Car size={12} /> 5 · Parking (optional)</div>
-            <div className="grid sm:grid-cols-2 gap-2 mt-3">
-              {PARKING.map((p) => {
+          <div className="glass rounded-3xl p-5 sm:p-6">
+            <div className="eyebrow flex items-center gap-2">
+              <Car size={12} /> 5 · Parking (optional)
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-3">
+              {parkingOpts.map((p) => {
                 const active = parking === p.id;
                 return (
-                  <button key={p.id} onClick={() => setParking(active ? null : p.id)} className={`text-left rounded-2xl p-3 border transition ${active ? "border-gold bg-gold/10" : "border-border/40 hover:border-foreground/30"}`}>
+                  <button
+                    key={p.id}
+                    onClick={() => setParking(active ? null : p.id)}
+                    className={`text-left rounded-2xl p-3 border transition ${active ? "border-gold bg-gold/10" : "border-border/40 hover:border-foreground/30"}`}
+                  >
                     <div className="text-sm">{p.name}</div>
                     <div className="text-xs text-gold mt-0.5">KES {p.price}</div>
                   </button>
@@ -207,47 +242,90 @@ function ReservePage() {
               })}
             </div>
             {parking && (
-              <div className="grid sm:grid-cols-3 gap-3 mt-4">
-                <input value={carModel} onChange={(e) => setCarModel(e.target.value)} placeholder="Car model" className="bg-night/50 border border-border/50 rounded-2xl px-4 py-3 text-sm focus:outline-none focus:border-gold" />
-                <input value={plate} onChange={(e) => setPlate(e.target.value.toUpperCase())} placeholder="KAA 123A" className="bg-night/50 border border-border/50 rounded-2xl px-4 py-3 text-sm uppercase tracking-wider focus:outline-none focus:border-gold" />
-                <input value={arrival} onChange={(e) => setArrival(e.target.value)} type="time" className="bg-night/50 border border-border/50 rounded-2xl px-4 py-3 text-sm focus:outline-none focus:border-gold" />
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-4">
+                <input
+                  value={carModel}
+                  onChange={(e) => setCarModel(e.target.value)}
+                  placeholder="Car model"
+                  className="bg-night/50 border border-border/50 rounded-2xl px-4 py-3 text-sm focus:outline-none focus:border-gold"
+                />
+                <input
+                  value={plate}
+                  onChange={(e) => setPlate(e.target.value.toUpperCase())}
+                  placeholder="KAA 123A"
+                  className="bg-night/50 border border-border/50 rounded-2xl px-4 py-3 text-sm uppercase tracking-wider focus:outline-none focus:border-gold"
+                />
+                <input
+                  value={arrival}
+                  onChange={(e) => setArrival(e.target.value)}
+                  type="time"
+                  className="bg-night/50 border border-border/50 rounded-2xl px-4 py-3 text-sm focus:outline-none focus:border-gold"
+                />
               </div>
             )}
           </div>
 
           {/* Notes */}
-          <div className="glass rounded-3xl p-6">
+          <div className="glass rounded-3xl p-5 sm:p-6">
             <div className="eyebrow">6 · Special requests</div>
-            <textarea value={special} onChange={(e) => setSpecial(e.target.value)} maxLength={400} rows={3} placeholder="Birthday setup, accessible spot, decorations…" className="mt-3 w-full bg-night/50 border border-border/50 rounded-2xl px-4 py-3 text-sm focus:outline-none focus:border-gold resize-none" />
+            <textarea
+              value={special}
+              onChange={(e) => setSpecial(e.target.value)}
+              maxLength={400}
+              rows={3}
+              placeholder="Birthday setup, accessible spot, decorations…"
+              className="mt-3 w-full bg-night/50 border border-border/50 rounded-2xl px-4 py-3 text-sm focus:outline-none focus:border-gold resize-none"
+            />
           </div>
         </div>
 
         {/* SUMMARY */}
         <aside className="lg:sticky lg:top-24 space-y-4">
-          <div className="glass rounded-3xl p-6 kente-border">
+          <div className="glass rounded-3xl p-5 sm:p-6 kente-border">
             <div className="eyebrow">Your night</div>
-            <div className="mt-3 font-display text-2xl">{PACKAGES[pkg].name}</div>
-            <div className="text-xs text-foreground/55">For {PACKAGES[pkg].capacity}</div>
+            <div className="mt-3 font-display text-2xl">{activePkg.name}</div>
+            <div className="text-xs text-foreground/55">For {activePkg.capacity}</div>
 
             <div className="border-t border-border/40 mt-5 pt-5 space-y-2 text-sm">
-              <Row label="Package" value={`KES ${PACKAGES[pkg].price.toLocaleString()}`} />
-              {Object.entries(shisha).map(([id, qty]) => {
-                const m = SHISHA_MENU.find((s) => s.id === id)!;
-                return <Row key={id} label={`${m.name} × ${qty}`} value={`KES ${(m.price * qty).toLocaleString()}`} />;
-              })}
-              {parking && <Row label={`Parking · ${PARKING.find((p) => p.id === parking)?.name}`} value={`KES ${PARKING.find((p) => p.id === parking)?.price}`} />}
+              <Row label="Package" value={`KES ${activePkg.price.toLocaleString()}`} />
+              {shisha.map((s) => (
+                <Row
+                  key={s.product_id}
+                  label={`${s.name} × ${s.quantity}`}
+                  value={`KES ${(s.price * s.quantity).toLocaleString()}`}
+                />
+              ))}
+              {drinks.map((d) => (
+                <Row
+                  key={d.product_id}
+                  label={`${d.name} × ${d.quantity}`}
+                  value={`KES ${(d.price * d.quantity).toLocaleString()}`}
+                />
+              ))}
+              {parking && (
+                <Row
+                  label={`Parking · ${parkingOpts.find((p) => p.id === parking)?.name}`}
+                  value={`KES ${parkingOpts.find((p) => p.id === parking)?.price}`}
+                />
+              )}
             </div>
 
             <div className="border-t border-border/40 mt-5 pt-5 flex items-baseline justify-between">
               <span className="text-xs uppercase tracking-wider text-foreground/60">Total</span>
-              <span className="font-display text-3xl text-gold-gradient">KES {total.toLocaleString()}</span>
+              <span className="font-display text-3xl text-gold-gradient">
+                KES {total.toLocaleString()}
+              </span>
             </div>
 
-            <button onClick={submit} className="mt-5 w-full inline-flex items-center justify-center gap-2 rounded-2xl bg-gold px-5 py-3.5 text-sm font-semibold text-night-deep hover:shadow-[var(--shadow-glow)] transition">
-              Pay deposit via M-Pesa <ArrowRight size={16} />
+            <button
+              onClick={submit}
+              disabled={busy}
+              className="mt-5 w-full inline-flex items-center justify-center gap-2 rounded-2xl bg-gold px-5 py-3.5 text-sm font-semibold text-night-deep hover:shadow-[var(--shadow-glow)] transition disabled:opacity-60"
+            >
+              {busy ? "Preparing..." : <>Pay KES {deposit.toLocaleString()} via M-Pesa <ArrowRight size={16} /></>}
             </button>
             <p className="mt-3 text-[11px] text-foreground/50 text-center leading-relaxed">
-              We'll send an STK push to your registered M-Pesa number. Balance settled at the door.
+              {deposit >= total ? "Full amount" : `${deposit >= MIN_DEPOSIT ? `${depositCfg.value}% deposit` : `KES ${MIN_DEPOSIT} minimum deposit`}`} — balance settled at the door. We'll send an STK push to your M-Pesa.
             </p>
           </div>
 

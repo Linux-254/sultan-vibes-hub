@@ -2,7 +2,18 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
 import { toast } from "sonner";
-import { Search, Shield, ShieldCheck, ShieldOff, UserCog } from "lucide-react";
+import {
+  Search,
+  Shield,
+  ShieldCheck,
+  ShieldOff,
+  UserCog,
+  GlassWater,
+  BellRing,
+  Cigarette,
+  Camera,
+  Siren,
+} from "lucide-react";
 import { listUsersWithRoles, grantRole, revokeRole } from "@/lib/admin-users.functions";
 import { useAuth } from "@/hooks/use-auth";
 
@@ -11,11 +22,51 @@ export const Route = createFileRoute("/admin/roles")({
 });
 
 type Row = Awaited<ReturnType<typeof listUsersWithRoles>>[number];
-type Role = "admin" | "crew";
+type Role = "admin" | "crew" | "bartender" | "waitress" | "shisha_distributor" | "content_manager" | "security";
 
 const AREAS: { role: Role; label: string; desc: string; icon: React.ElementType }[] = [
-  { role: "admin", label: "Admin", desc: "Full control — roles, payments, all dashboards", icon: ShieldCheck },
-  { role: "crew", label: "Crew", desc: "Reservations, SOS, crew chat, payments view", icon: Shield },
+  {
+    role: "admin",
+    label: "Admin",
+    desc: "Full control — roles, payments, all dashboards",
+    icon: ShieldCheck,
+  },
+  {
+    role: "crew",
+    label: "Crew",
+    desc: "Reservations, SOS, crew chat, payments view",
+    icon: Shield,
+  },
+  {
+    role: "bartender",
+    label: "Bartender",
+    desc: "Order fulfilment, drink prep queue",
+    icon: GlassWater,
+  },
+  {
+    role: "waitress",
+    label: "Waitress",
+    desc: "Table service, reservations, orders",
+    icon: BellRing,
+  },
+  {
+    role: "shisha_distributor",
+    label: "Shisha Dist.",
+    desc: "Shisha prep, flavour inventory",
+    icon: Cigarette,
+  },
+  {
+    role: "content_manager",
+    label: "Content Mgr",
+    desc: "Recap media, slideshow, analytics",
+    icon: Camera,
+  },
+  {
+    role: "security",
+    label: "Security",
+    desc: "SOS response, surveillance, floor safety",
+    icon: Siren,
+  },
 ];
 
 function RolesPage() {
@@ -40,7 +91,9 @@ function RolesPage() {
     }
   };
 
-  useEffect(() => { load(""); }, []);
+  useEffect(() => {
+    load("");
+  }, []);
   useEffect(() => {
     const t = setTimeout(() => load(search), 250);
     return () => clearTimeout(t);
@@ -65,7 +118,10 @@ function RolesPage() {
       <header>
         <div className="eyebrow">Access control</div>
         <h1 className="font-display text-3xl sm:text-4xl mt-1">Roles & Permissions</h1>
-        <p className="text-sm text-foreground/60 mt-1">Grant or revoke dashboard access per user. Admins see everything; Crew handle floor operations.</p>
+        <p className="text-sm text-foreground/60 mt-1">
+          Grant or revoke dashboard access per user. Admins see everything; Crew handle floor
+          operations.
+        </p>
       </header>
 
       <div className="glass rounded-2xl p-3 sm:p-4 flex items-center gap-2">
@@ -84,7 +140,11 @@ function RolesPage() {
             <tr>
               <th className="px-4 py-3">User</th>
               <th className="px-4 py-3">Contact</th>
-              {AREAS.map((a) => <th key={a.role} className="px-4 py-3 text-center">{a.label}</th>)}
+              {AREAS.map((a) => (
+                <th key={a.role} className="px-4 py-3 text-center">
+                  {a.label}
+                </th>
+              ))}
             </tr>
           </thead>
           <tbody>
@@ -92,7 +152,9 @@ function RolesPage() {
               <tr key={r.id} className="border-t border-border/30 hover:bg-white/[0.02]">
                 <td className="px-4 py-3">
                   <div className="font-medium">{r.display_name ?? "—"}</div>
-                  <div className="text-[10px] text-foreground/50 font-mono">{r.id.slice(0, 8)}…</div>
+                  <div className="text-[10px] text-foreground/50 font-mono">
+                    {r.id.slice(0, 8)}…
+                  </div>
                 </td>
                 <td className="px-4 py-3 text-foreground/70">
                   <div>{r.email ?? "—"}</div>
@@ -106,7 +168,13 @@ function RolesPage() {
                       <button
                         disabled={busy === `${r.id}:${a.role}` || isSelfAdmin}
                         onClick={() => toggle(r, a.role, has)}
-                        title={isSelfAdmin ? "Can't revoke your own admin" : has ? `Revoke ${a.label}` : `Grant ${a.label}`}
+                        title={
+                          isSelfAdmin
+                            ? "Can't revoke your own admin"
+                            : has
+                              ? `Revoke ${a.label}`
+                              : `Grant ${a.label}`
+                        }
                         className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs border transition ${
                           has
                             ? "bg-gold text-night-deep border-gold"
@@ -122,7 +190,14 @@ function RolesPage() {
               </tr>
             ))}
             {!loading && rows.length === 0 && (
-              <tr><td colSpan={2 + AREAS.length} className="px-4 py-12 text-center text-foreground/50">No users found.</td></tr>
+              <tr>
+                <td
+                  colSpan={2 + AREAS.length}
+                  className="px-4 py-12 text-center text-foreground/50"
+                >
+                  No users found.
+                </td>
+              </tr>
             )}
           </tbody>
         </table>
@@ -138,7 +213,9 @@ function RolesPage() {
               </div>
               <div className="min-w-0 flex-1">
                 <div className="font-medium truncate">{r.display_name ?? r.email ?? "Unnamed"}</div>
-                <div className="text-xs text-foreground/60 truncate">{r.email ?? r.phone ?? "—"}</div>
+                <div className="text-xs text-foreground/60 truncate">
+                  {r.email ?? r.phone ?? "—"}
+                </div>
               </div>
             </div>
             <div className="grid grid-cols-2 gap-2">
@@ -151,13 +228,17 @@ function RolesPage() {
                     disabled={busy === `${r.id}:${a.role}` || isSelfAdmin}
                     onClick={() => toggle(r, a.role, has)}
                     className={`flex flex-col items-start gap-1 p-3 rounded-xl border text-left transition ${
-                      has ? "bg-gold/15 border-gold text-gold" : "border-border/50 text-foreground/70"
+                      has
+                        ? "bg-gold/15 border-gold text-gold"
+                        : "border-border/50 text-foreground/70"
                     } disabled:opacity-50`}
                   >
                     <div className="flex items-center gap-1.5 text-xs uppercase tracking-wider">
                       <a.icon size={12} /> {a.label}
                     </div>
-                    <div className="text-[10px] text-foreground/60 leading-tight">{has ? "Access granted — tap to revoke" : "Tap to grant"}</div>
+                    <div className="text-[10px] text-foreground/60 leading-tight">
+                      {has ? "Access granted — tap to revoke" : "Tap to grant"}
+                    </div>
                   </button>
                 );
               })}
@@ -165,7 +246,9 @@ function RolesPage() {
           </div>
         ))}
         {!loading && rows.length === 0 && (
-          <div className="glass rounded-2xl p-8 text-center text-sm text-foreground/50">No users found.</div>
+          <div className="glass rounded-2xl p-8 text-center text-sm text-foreground/50">
+            No users found.
+          </div>
         )}
       </div>
 

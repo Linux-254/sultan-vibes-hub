@@ -9,99 +9,48 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as VibeRouteImport } from './routes/vibe'
-import { Route as TalentRouteImport } from './routes/talent'
-import { Route as SosRouteImport } from './routes/sos'
-import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
-import { Route as ReserveRouteImport } from './routes/reserve'
-import { Route as RecapRouteImport } from './routes/recap'
-import { Route as ProfileRouteImport } from './routes/profile'
-import { Route as ProductsRouteImport } from './routes/products'
-import { Route as MilestonesRouteImport } from './routes/milestones'
-import { Route as EventsRouteImport } from './routes/events'
-import { Route as CollabsRouteImport } from './routes/collabs'
-import { Route as ChatRouteImport } from './routes/chat'
-import { Route as AuthRouteImport } from './routes/auth'
-import { Route as AdminRouteImport } from './routes/admin'
-import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AboutRouteImport } from './routes/about'
+import { Route as AdminRouteImport } from './routes/admin'
+import { Route as AuthRouteImport } from './routes/auth'
+import { Route as ChatRouteImport } from './routes/chat'
+import { Route as CollabsRouteImport } from './routes/collabs'
+import { Route as EventsRouteImport } from './routes/events'
+import { Route as MilestonesRouteImport } from './routes/milestones'
+import { Route as ProductsRouteImport } from './routes/products'
+import { Route as ProfileRouteImport } from './routes/profile'
+import { Route as RecapRouteImport } from './routes/recap'
+import { Route as ReserveRouteImport } from './routes/reserve'
+import { Route as ResetPasswordRouteImport } from './routes/reset-password'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
+import { Route as SosRouteImport } from './routes/sos'
+import { Route as TalentRouteImport } from './routes/talent'
+import { Route as VibeRouteImport } from './routes/vibe'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
-import { Route as TalentUsernameRouteImport } from './routes/talent.$username'
-import { Route as CollabsSlugRouteImport } from './routes/collabs.$slug'
-import { Route as AdminSosRouteImport } from './routes/admin.sos'
-import { Route as AdminRolesRouteImport } from './routes/admin.roles'
-import { Route as AdminReservationsRouteImport } from './routes/admin.reservations'
-import { Route as AdminPaymentsRouteImport } from './routes/admin.payments'
 import { Route as AdminChatRouteImport } from './routes/admin.chat'
+import { Route as AdminEventsRouteImport } from './routes/admin.events'
+import { Route as AdminFaqsRouteImport } from './routes/admin.faqs'
+import { Route as AdminInventoryRouteImport } from './routes/admin.inventory'
+import { Route as AdminLeadsRouteImport } from './routes/admin.leads'
+import { Route as AdminMilestonesRouteImport } from './routes/admin.milestones'
+import { Route as AdminOrdersRouteImport } from './routes/admin.orders'
+import { Route as AdminPagesRouteImport } from './routes/admin.pages'
+import { Route as AdminParkingRouteImport } from './routes/admin.parking'
+import { Route as AdminPaymentsRouteImport } from './routes/admin.payments'
+import { Route as AdminPeopleRouteImport } from './routes/admin.people'
+import { Route as AdminPricingRouteImport } from './routes/admin.pricing'
+import { Route as AdminRecapRouteImport } from './routes/admin.recap'
+import { Route as AdminReservationsRouteImport } from './routes/admin.reservations'
+import { Route as AdminRolesRouteImport } from './routes/admin.roles'
+import { Route as AdminSalesRouteImport } from './routes/admin.sales'
+import { Route as AdminSlideshowRouteImport } from './routes/admin.slideshow'
+import { Route as AdminSosRouteImport } from './routes/admin.sos'
+import { Route as CollabsSlugRouteImport } from './routes/collabs.$slug'
+import { Route as TalentUsernameRouteImport } from './routes/talent.$username'
 
-const VibeRoute = VibeRouteImport.update({
-  id: '/vibe',
-  path: '/vibe',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const TalentRoute = TalentRouteImport.update({
-  id: '/talent',
-  path: '/talent',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const SosRoute = SosRouteImport.update({
-  id: '/sos',
-  path: '/sos',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
-  id: '/sitemap.xml',
-  path: '/sitemap.xml',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ReserveRoute = ReserveRouteImport.update({
-  id: '/reserve',
-  path: '/reserve',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const RecapRoute = RecapRouteImport.update({
-  id: '/recap',
-  path: '/recap',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ProfileRoute = ProfileRouteImport.update({
-  id: '/profile',
-  path: '/profile',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ProductsRoute = ProductsRouteImport.update({
-  id: '/products',
-  path: '/products',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const MilestonesRoute = MilestonesRouteImport.update({
-  id: '/milestones',
-  path: '/milestones',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const EventsRoute = EventsRouteImport.update({
-  id: '/events',
-  path: '/events',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const CollabsRoute = CollabsRouteImport.update({
-  id: '/collabs',
-  path: '/collabs',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ChatRoute = ChatRouteImport.update({
-  id: '/chat',
-  path: '/chat',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AuthRoute = AuthRouteImport.update({
-  id: '/auth',
-  path: '/auth',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AdminRoute = AdminRouteImport.update({
-  id: '/admin',
-  path: '/admin',
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AboutRoute = AboutRouteImport.update({
@@ -109,9 +58,79 @@ const AboutRoute = AboutRouteImport.update({
   path: '/about',
   getParentRoute: () => rootRouteImport,
 } as any)
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
+const AdminRoute = AdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ChatRoute = ChatRouteImport.update({
+  id: '/chat',
+  path: '/chat',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CollabsRoute = CollabsRouteImport.update({
+  id: '/collabs',
+  path: '/collabs',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EventsRoute = EventsRouteImport.update({
+  id: '/events',
+  path: '/events',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MilestonesRoute = MilestonesRouteImport.update({
+  id: '/milestones',
+  path: '/milestones',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProductsRoute = ProductsRouteImport.update({
+  id: '/products',
+  path: '/products',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProfileRoute = ProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RecapRoute = RecapRouteImport.update({
+  id: '/recap',
+  path: '/recap',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ReserveRoute = ReserveRouteImport.update({
+  id: '/reserve',
+  path: '/reserve',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ResetPasswordRoute = ResetPasswordRouteImport.update({
+  id: '/reset-password',
+  path: '/reset-password',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SosRoute = SosRouteImport.update({
+  id: '/sos',
+  path: '/sos',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TalentRoute = TalentRouteImport.update({
+  id: '/talent',
+  path: '/talent',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const VibeRoute = VibeRouteImport.update({
+  id: '/vibe',
+  path: '/vibe',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminIndexRoute = AdminIndexRouteImport.update({
@@ -119,29 +138,49 @@ const AdminIndexRoute = AdminIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AdminRoute,
 } as any)
-const TalentUsernameRoute = TalentUsernameRouteImport.update({
-  id: '/$username',
-  path: '/$username',
-  getParentRoute: () => TalentRoute,
-} as any)
-const CollabsSlugRoute = CollabsSlugRouteImport.update({
-  id: '/$slug',
-  path: '/$slug',
-  getParentRoute: () => CollabsRoute,
-} as any)
-const AdminSosRoute = AdminSosRouteImport.update({
-  id: '/sos',
-  path: '/sos',
+const AdminChatRoute = AdminChatRouteImport.update({
+  id: '/chat',
+  path: '/chat',
   getParentRoute: () => AdminRoute,
 } as any)
-const AdminRolesRoute = AdminRolesRouteImport.update({
-  id: '/roles',
-  path: '/roles',
+const AdminEventsRoute = AdminEventsRouteImport.update({
+  id: '/events',
+  path: '/events',
   getParentRoute: () => AdminRoute,
 } as any)
-const AdminReservationsRoute = AdminReservationsRouteImport.update({
-  id: '/reservations',
-  path: '/reservations',
+const AdminFaqsRoute = AdminFaqsRouteImport.update({
+  id: '/faqs',
+  path: '/faqs',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminInventoryRoute = AdminInventoryRouteImport.update({
+  id: '/inventory',
+  path: '/inventory',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminLeadsRoute = AdminLeadsRouteImport.update({
+  id: '/leads',
+  path: '/leads',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminMilestonesRoute = AdminMilestonesRouteImport.update({
+  id: '/milestones',
+  path: '/milestones',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminOrdersRoute = AdminOrdersRouteImport.update({
+  id: '/orders',
+  path: '/orders',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminPagesRoute = AdminPagesRouteImport.update({
+  id: '/pages',
+  path: '/pages',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminParkingRoute = AdminParkingRouteImport.update({
+  id: '/parking',
+  path: '/parking',
   getParentRoute: () => AdminRoute,
 } as any)
 const AdminPaymentsRoute = AdminPaymentsRouteImport.update({
@@ -149,10 +188,55 @@ const AdminPaymentsRoute = AdminPaymentsRouteImport.update({
   path: '/payments',
   getParentRoute: () => AdminRoute,
 } as any)
-const AdminChatRoute = AdminChatRouteImport.update({
-  id: '/chat',
-  path: '/chat',
+const AdminPeopleRoute = AdminPeopleRouteImport.update({
+  id: '/people',
+  path: '/people',
   getParentRoute: () => AdminRoute,
+} as any)
+const AdminPricingRoute = AdminPricingRouteImport.update({
+  id: '/pricing',
+  path: '/pricing',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminRecapRoute = AdminRecapRouteImport.update({
+  id: '/recap',
+  path: '/recap',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminReservationsRoute = AdminReservationsRouteImport.update({
+  id: '/reservations',
+  path: '/reservations',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminRolesRoute = AdminRolesRouteImport.update({
+  id: '/roles',
+  path: '/roles',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminSalesRoute = AdminSalesRouteImport.update({
+  id: '/sales',
+  path: '/sales',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminSlideshowRoute = AdminSlideshowRouteImport.update({
+  id: '/slideshow',
+  path: '/slideshow',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminSosRoute = AdminSosRouteImport.update({
+  id: '/sos',
+  path: '/sos',
+  getParentRoute: () => AdminRoute,
+} as any)
+const CollabsSlugRoute = CollabsSlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => CollabsRoute,
+} as any)
+const TalentUsernameRoute = TalentUsernameRouteImport.update({
+  id: '/$username',
+  path: '/$username',
+  getParentRoute: () => TalentRoute,
 } as any)
 
 export interface FileRoutesByFullPath {
@@ -168,14 +252,28 @@ export interface FileRoutesByFullPath {
   '/profile': typeof ProfileRoute
   '/recap': typeof RecapRoute
   '/reserve': typeof ReserveRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/sos': typeof SosRoute
   '/talent': typeof TalentRouteWithChildren
   '/vibe': typeof VibeRoute
   '/admin/chat': typeof AdminChatRoute
+  '/admin/events': typeof AdminEventsRoute
+  '/admin/faqs': typeof AdminFaqsRoute
+  '/admin/inventory': typeof AdminInventoryRoute
+  '/admin/leads': typeof AdminLeadsRoute
+  '/admin/milestones': typeof AdminMilestonesRoute
+  '/admin/orders': typeof AdminOrdersRoute
+  '/admin/pages': typeof AdminPagesRoute
+  '/admin/parking': typeof AdminParkingRoute
   '/admin/payments': typeof AdminPaymentsRoute
+  '/admin/people': typeof AdminPeopleRoute
+  '/admin/pricing': typeof AdminPricingRoute
+  '/admin/recap': typeof AdminRecapRoute
   '/admin/reservations': typeof AdminReservationsRoute
   '/admin/roles': typeof AdminRolesRoute
+  '/admin/sales': typeof AdminSalesRoute
+  '/admin/slideshow': typeof AdminSlideshowRoute
   '/admin/sos': typeof AdminSosRoute
   '/collabs/$slug': typeof CollabsSlugRoute
   '/talent/$username': typeof TalentUsernameRoute
@@ -193,14 +291,28 @@ export interface FileRoutesByTo {
   '/profile': typeof ProfileRoute
   '/recap': typeof RecapRoute
   '/reserve': typeof ReserveRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/sos': typeof SosRoute
   '/talent': typeof TalentRouteWithChildren
   '/vibe': typeof VibeRoute
   '/admin/chat': typeof AdminChatRoute
+  '/admin/events': typeof AdminEventsRoute
+  '/admin/faqs': typeof AdminFaqsRoute
+  '/admin/inventory': typeof AdminInventoryRoute
+  '/admin/leads': typeof AdminLeadsRoute
+  '/admin/milestones': typeof AdminMilestonesRoute
+  '/admin/orders': typeof AdminOrdersRoute
+  '/admin/pages': typeof AdminPagesRoute
+  '/admin/parking': typeof AdminParkingRoute
   '/admin/payments': typeof AdminPaymentsRoute
+  '/admin/people': typeof AdminPeopleRoute
+  '/admin/pricing': typeof AdminPricingRoute
+  '/admin/recap': typeof AdminRecapRoute
   '/admin/reservations': typeof AdminReservationsRoute
   '/admin/roles': typeof AdminRolesRoute
+  '/admin/sales': typeof AdminSalesRoute
+  '/admin/slideshow': typeof AdminSlideshowRoute
   '/admin/sos': typeof AdminSosRoute
   '/collabs/$slug': typeof CollabsSlugRoute
   '/talent/$username': typeof TalentUsernameRoute
@@ -220,14 +332,28 @@ export interface FileRoutesById {
   '/profile': typeof ProfileRoute
   '/recap': typeof RecapRoute
   '/reserve': typeof ReserveRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/sos': typeof SosRoute
   '/talent': typeof TalentRouteWithChildren
   '/vibe': typeof VibeRoute
   '/admin/chat': typeof AdminChatRoute
+  '/admin/events': typeof AdminEventsRoute
+  '/admin/faqs': typeof AdminFaqsRoute
+  '/admin/inventory': typeof AdminInventoryRoute
+  '/admin/leads': typeof AdminLeadsRoute
+  '/admin/milestones': typeof AdminMilestonesRoute
+  '/admin/orders': typeof AdminOrdersRoute
+  '/admin/pages': typeof AdminPagesRoute
+  '/admin/parking': typeof AdminParkingRoute
   '/admin/payments': typeof AdminPaymentsRoute
+  '/admin/people': typeof AdminPeopleRoute
+  '/admin/pricing': typeof AdminPricingRoute
+  '/admin/recap': typeof AdminRecapRoute
   '/admin/reservations': typeof AdminReservationsRoute
   '/admin/roles': typeof AdminRolesRoute
+  '/admin/sales': typeof AdminSalesRoute
+  '/admin/slideshow': typeof AdminSlideshowRoute
   '/admin/sos': typeof AdminSosRoute
   '/collabs/$slug': typeof CollabsSlugRoute
   '/talent/$username': typeof TalentUsernameRoute
@@ -248,14 +374,28 @@ export interface FileRouteTypes {
     | '/profile'
     | '/recap'
     | '/reserve'
+    | '/reset-password'
     | '/sitemap.xml'
     | '/sos'
     | '/talent'
     | '/vibe'
     | '/admin/chat'
+    | '/admin/events'
+    | '/admin/faqs'
+    | '/admin/inventory'
+    | '/admin/leads'
+    | '/admin/milestones'
+    | '/admin/orders'
+    | '/admin/pages'
+    | '/admin/parking'
     | '/admin/payments'
+    | '/admin/people'
+    | '/admin/pricing'
+    | '/admin/recap'
     | '/admin/reservations'
     | '/admin/roles'
+    | '/admin/sales'
+    | '/admin/slideshow'
     | '/admin/sos'
     | '/collabs/$slug'
     | '/talent/$username'
@@ -273,14 +413,28 @@ export interface FileRouteTypes {
     | '/profile'
     | '/recap'
     | '/reserve'
+    | '/reset-password'
     | '/sitemap.xml'
     | '/sos'
     | '/talent'
     | '/vibe'
     | '/admin/chat'
+    | '/admin/events'
+    | '/admin/faqs'
+    | '/admin/inventory'
+    | '/admin/leads'
+    | '/admin/milestones'
+    | '/admin/orders'
+    | '/admin/pages'
+    | '/admin/parking'
     | '/admin/payments'
+    | '/admin/people'
+    | '/admin/pricing'
+    | '/admin/recap'
     | '/admin/reservations'
     | '/admin/roles'
+    | '/admin/sales'
+    | '/admin/slideshow'
     | '/admin/sos'
     | '/collabs/$slug'
     | '/talent/$username'
@@ -299,14 +453,28 @@ export interface FileRouteTypes {
     | '/profile'
     | '/recap'
     | '/reserve'
+    | '/reset-password'
     | '/sitemap.xml'
     | '/sos'
     | '/talent'
     | '/vibe'
     | '/admin/chat'
+    | '/admin/events'
+    | '/admin/faqs'
+    | '/admin/inventory'
+    | '/admin/leads'
+    | '/admin/milestones'
+    | '/admin/orders'
+    | '/admin/pages'
+    | '/admin/parking'
     | '/admin/payments'
+    | '/admin/people'
+    | '/admin/pricing'
+    | '/admin/recap'
     | '/admin/reservations'
     | '/admin/roles'
+    | '/admin/sales'
+    | '/admin/slideshow'
     | '/admin/sos'
     | '/collabs/$slug'
     | '/talent/$username'
@@ -326,6 +494,7 @@ export interface RootRouteChildren {
   ProfileRoute: typeof ProfileRoute
   RecapRoute: typeof RecapRoute
   ReserveRoute: typeof ReserveRoute
+  ResetPasswordRoute: typeof ResetPasswordRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   SosRoute: typeof SosRoute
   TalentRoute: typeof TalentRouteWithChildren
@@ -334,102 +503,11 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/vibe': {
-      id: '/vibe'
-      path: '/vibe'
-      fullPath: '/vibe'
-      preLoaderRoute: typeof VibeRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/talent': {
-      id: '/talent'
-      path: '/talent'
-      fullPath: '/talent'
-      preLoaderRoute: typeof TalentRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/sos': {
-      id: '/sos'
-      path: '/sos'
-      fullPath: '/sos'
-      preLoaderRoute: typeof SosRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/sitemap.xml': {
-      id: '/sitemap.xml'
-      path: '/sitemap.xml'
-      fullPath: '/sitemap.xml'
-      preLoaderRoute: typeof SitemapDotxmlRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/reserve': {
-      id: '/reserve'
-      path: '/reserve'
-      fullPath: '/reserve'
-      preLoaderRoute: typeof ReserveRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/recap': {
-      id: '/recap'
-      path: '/recap'
-      fullPath: '/recap'
-      preLoaderRoute: typeof RecapRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/profile': {
-      id: '/profile'
-      path: '/profile'
-      fullPath: '/profile'
-      preLoaderRoute: typeof ProfileRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/products': {
-      id: '/products'
-      path: '/products'
-      fullPath: '/products'
-      preLoaderRoute: typeof ProductsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/milestones': {
-      id: '/milestones'
-      path: '/milestones'
-      fullPath: '/milestones'
-      preLoaderRoute: typeof MilestonesRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/events': {
-      id: '/events'
-      path: '/events'
-      fullPath: '/events'
-      preLoaderRoute: typeof EventsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/collabs': {
-      id: '/collabs'
-      path: '/collabs'
-      fullPath: '/collabs'
-      preLoaderRoute: typeof CollabsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/chat': {
-      id: '/chat'
-      path: '/chat'
-      fullPath: '/chat'
-      preLoaderRoute: typeof ChatRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/auth': {
-      id: '/auth'
-      path: '/auth'
-      fullPath: '/auth'
-      preLoaderRoute: typeof AuthRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/admin': {
-      id: '/admin'
-      path: '/admin'
-      fullPath: '/admin'
-      preLoaderRoute: typeof AdminRouteImport
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/about': {
@@ -439,11 +517,109 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AboutRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/chat': {
+      id: '/chat'
+      path: '/chat'
+      fullPath: '/chat'
+      preLoaderRoute: typeof ChatRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/collabs': {
+      id: '/collabs'
+      path: '/collabs'
+      fullPath: '/collabs'
+      preLoaderRoute: typeof CollabsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/events': {
+      id: '/events'
+      path: '/events'
+      fullPath: '/events'
+      preLoaderRoute: typeof EventsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/milestones': {
+      id: '/milestones'
+      path: '/milestones'
+      fullPath: '/milestones'
+      preLoaderRoute: typeof MilestonesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/products': {
+      id: '/products'
+      path: '/products'
+      fullPath: '/products'
+      preLoaderRoute: typeof ProductsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/profile': {
+      id: '/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof ProfileRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/recap': {
+      id: '/recap'
+      path: '/recap'
+      fullPath: '/recap'
+      preLoaderRoute: typeof RecapRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/reserve': {
+      id: '/reserve'
+      path: '/reserve'
+      fullPath: '/reserve'
+      preLoaderRoute: typeof ReserveRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/reset-password': {
+      id: '/reset-password'
+      path: '/reset-password'
+      fullPath: '/reset-password'
+      preLoaderRoute: typeof ResetPasswordRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sos': {
+      id: '/sos'
+      path: '/sos'
+      fullPath: '/sos'
+      preLoaderRoute: typeof SosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/talent': {
+      id: '/talent'
+      path: '/talent'
+      fullPath: '/talent'
+      preLoaderRoute: typeof TalentRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/vibe': {
+      id: '/vibe'
+      path: '/vibe'
+      fullPath: '/vibe'
+      preLoaderRoute: typeof VibeRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/admin/': {
@@ -453,39 +629,67 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminIndexRouteImport
       parentRoute: typeof AdminRoute
     }
-    '/talent/$username': {
-      id: '/talent/$username'
-      path: '/$username'
-      fullPath: '/talent/$username'
-      preLoaderRoute: typeof TalentUsernameRouteImport
-      parentRoute: typeof TalentRoute
-    }
-    '/collabs/$slug': {
-      id: '/collabs/$slug'
-      path: '/$slug'
-      fullPath: '/collabs/$slug'
-      preLoaderRoute: typeof CollabsSlugRouteImport
-      parentRoute: typeof CollabsRoute
-    }
-    '/admin/sos': {
-      id: '/admin/sos'
-      path: '/sos'
-      fullPath: '/admin/sos'
-      preLoaderRoute: typeof AdminSosRouteImport
+    '/admin/chat': {
+      id: '/admin/chat'
+      path: '/chat'
+      fullPath: '/admin/chat'
+      preLoaderRoute: typeof AdminChatRouteImport
       parentRoute: typeof AdminRoute
     }
-    '/admin/roles': {
-      id: '/admin/roles'
-      path: '/roles'
-      fullPath: '/admin/roles'
-      preLoaderRoute: typeof AdminRolesRouteImport
+    '/admin/events': {
+      id: '/admin/events'
+      path: '/events'
+      fullPath: '/admin/events'
+      preLoaderRoute: typeof AdminEventsRouteImport
       parentRoute: typeof AdminRoute
     }
-    '/admin/reservations': {
-      id: '/admin/reservations'
-      path: '/reservations'
-      fullPath: '/admin/reservations'
-      preLoaderRoute: typeof AdminReservationsRouteImport
+    '/admin/faqs': {
+      id: '/admin/faqs'
+      path: '/faqs'
+      fullPath: '/admin/faqs'
+      preLoaderRoute: typeof AdminFaqsRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/inventory': {
+      id: '/admin/inventory'
+      path: '/inventory'
+      fullPath: '/admin/inventory'
+      preLoaderRoute: typeof AdminInventoryRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/leads': {
+      id: '/admin/leads'
+      path: '/leads'
+      fullPath: '/admin/leads'
+      preLoaderRoute: typeof AdminLeadsRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/milestones': {
+      id: '/admin/milestones'
+      path: '/milestones'
+      fullPath: '/admin/milestones'
+      preLoaderRoute: typeof AdminMilestonesRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/orders': {
+      id: '/admin/orders'
+      path: '/orders'
+      fullPath: '/admin/orders'
+      preLoaderRoute: typeof AdminOrdersRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/pages': {
+      id: '/admin/pages'
+      path: '/pages'
+      fullPath: '/admin/pages'
+      preLoaderRoute: typeof AdminPagesRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/parking': {
+      id: '/admin/parking'
+      path: '/parking'
+      fullPath: '/admin/parking'
+      preLoaderRoute: typeof AdminParkingRouteImport
       parentRoute: typeof AdminRoute
     }
     '/admin/payments': {
@@ -495,30 +699,119 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminPaymentsRouteImport
       parentRoute: typeof AdminRoute
     }
-    '/admin/chat': {
-      id: '/admin/chat'
-      path: '/chat'
-      fullPath: '/admin/chat'
-      preLoaderRoute: typeof AdminChatRouteImport
+    '/admin/people': {
+      id: '/admin/people'
+      path: '/people'
+      fullPath: '/admin/people'
+      preLoaderRoute: typeof AdminPeopleRouteImport
       parentRoute: typeof AdminRoute
+    }
+    '/admin/pricing': {
+      id: '/admin/pricing'
+      path: '/pricing'
+      fullPath: '/admin/pricing'
+      preLoaderRoute: typeof AdminPricingRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/recap': {
+      id: '/admin/recap'
+      path: '/recap'
+      fullPath: '/admin/recap'
+      preLoaderRoute: typeof AdminRecapRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/reservations': {
+      id: '/admin/reservations'
+      path: '/reservations'
+      fullPath: '/admin/reservations'
+      preLoaderRoute: typeof AdminReservationsRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/roles': {
+      id: '/admin/roles'
+      path: '/roles'
+      fullPath: '/admin/roles'
+      preLoaderRoute: typeof AdminRolesRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/sales': {
+      id: '/admin/sales'
+      path: '/sales'
+      fullPath: '/admin/sales'
+      preLoaderRoute: typeof AdminSalesRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/slideshow': {
+      id: '/admin/slideshow'
+      path: '/slideshow'
+      fullPath: '/admin/slideshow'
+      preLoaderRoute: typeof AdminSlideshowRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/sos': {
+      id: '/admin/sos'
+      path: '/sos'
+      fullPath: '/admin/sos'
+      preLoaderRoute: typeof AdminSosRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/collabs/$slug': {
+      id: '/collabs/$slug'
+      path: '/$slug'
+      fullPath: '/collabs/$slug'
+      preLoaderRoute: typeof CollabsSlugRouteImport
+      parentRoute: typeof CollabsRoute
+    }
+    '/talent/$username': {
+      id: '/talent/$username'
+      path: '/$username'
+      fullPath: '/talent/$username'
+      preLoaderRoute: typeof TalentUsernameRouteImport
+      parentRoute: typeof TalentRoute
     }
   }
 }
 
 interface AdminRouteChildren {
   AdminChatRoute: typeof AdminChatRoute
+  AdminEventsRoute: typeof AdminEventsRoute
+  AdminFaqsRoute: typeof AdminFaqsRoute
+  AdminInventoryRoute: typeof AdminInventoryRoute
+  AdminLeadsRoute: typeof AdminLeadsRoute
+  AdminMilestonesRoute: typeof AdminMilestonesRoute
+  AdminOrdersRoute: typeof AdminOrdersRoute
+  AdminPagesRoute: typeof AdminPagesRoute
+  AdminParkingRoute: typeof AdminParkingRoute
   AdminPaymentsRoute: typeof AdminPaymentsRoute
+  AdminPeopleRoute: typeof AdminPeopleRoute
+  AdminPricingRoute: typeof AdminPricingRoute
+  AdminRecapRoute: typeof AdminRecapRoute
   AdminReservationsRoute: typeof AdminReservationsRoute
   AdminRolesRoute: typeof AdminRolesRoute
+  AdminSalesRoute: typeof AdminSalesRoute
+  AdminSlideshowRoute: typeof AdminSlideshowRoute
   AdminSosRoute: typeof AdminSosRoute
   AdminIndexRoute: typeof AdminIndexRoute
 }
 
 const AdminRouteChildren: AdminRouteChildren = {
   AdminChatRoute: AdminChatRoute,
+  AdminEventsRoute: AdminEventsRoute,
+  AdminFaqsRoute: AdminFaqsRoute,
+  AdminInventoryRoute: AdminInventoryRoute,
+  AdminLeadsRoute: AdminLeadsRoute,
+  AdminMilestonesRoute: AdminMilestonesRoute,
+  AdminOrdersRoute: AdminOrdersRoute,
+  AdminPagesRoute: AdminPagesRoute,
+  AdminParkingRoute: AdminParkingRoute,
   AdminPaymentsRoute: AdminPaymentsRoute,
+  AdminPeopleRoute: AdminPeopleRoute,
+  AdminPricingRoute: AdminPricingRoute,
+  AdminRecapRoute: AdminRecapRoute,
   AdminReservationsRoute: AdminReservationsRoute,
   AdminRolesRoute: AdminRolesRoute,
+  AdminSalesRoute: AdminSalesRoute,
+  AdminSlideshowRoute: AdminSlideshowRoute,
   AdminSosRoute: AdminSosRoute,
   AdminIndexRoute: AdminIndexRoute,
 }
@@ -560,6 +853,7 @@ const rootRouteChildren: RootRouteChildren = {
   ProfileRoute: ProfileRoute,
   RecapRoute: RecapRoute,
   ReserveRoute: ReserveRoute,
+  ResetPasswordRoute: ResetPasswordRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   SosRoute: SosRoute,
   TalentRoute: TalentRouteWithChildren,

@@ -2,7 +2,7 @@ import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 
-type Role = "admin" | "crew" | "user";
+type Role = "admin" | "crew" | "user" | "bartender" | "waitress" | "shisha_distributor" | "content_manager" | "security";
 
 async function assertAdmin(supabase: any, userId: string) {
   const { data, error } = await supabase
@@ -17,7 +17,7 @@ async function assertAdmin(supabase: any, userId: string) {
 
 export const listUsersWithRoles = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((d) => z.object({ search: z.string().optional().default("") }).parse(d))
+  .validator((d) => z.object({ search: z.string().optional().default("") }).parse(d))
   .handler(async ({ context, data }) => {
     await assertAdmin(context.supabase, context.userId);
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
@@ -59,17 +59,21 @@ export const listUsersWithRoles = createServerFn({ method: "GET" })
         (profiles ?? []).find((p: any) => p.id === u.id)?.display_name ??
         (u.user_metadata?.display_name as string) ??
         null,
-      roles: (roleRows ?? []).filter((r: any) => r.user_id === u.id).map((r: any) => r.role as Role),
+      roles: (roleRows ?? [])
+        .filter((r: any) => r.user_id === u.id)
+        .map((r: any) => r.role as Role),
     }));
   });
 
 export const grantRole = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((d) =>
-    z.object({
-      userId: z.string().uuid(),
-      role: z.enum(["admin", "crew", "user"]),
-    }).parse(d),
+  .validator((d) =>
+    z
+      .object({
+        userId: z.string().uuid(),
+        role: z.enum(["admin", "crew", "user", "bartender", "waitress", "shisha_distributor", "content_manager", "security"]),
+      })
+      .parse(d),
   )
   .handler(async ({ context, data }) => {
     await assertAdmin(context.supabase, context.userId);
@@ -83,11 +87,13 @@ export const grantRole = createServerFn({ method: "POST" })
 
 export const revokeRole = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((d) =>
-    z.object({
-      userId: z.string().uuid(),
-      role: z.enum(["admin", "crew", "user"]),
-    }).parse(d),
+  .validator((d) =>
+    z
+      .object({
+        userId: z.string().uuid(),
+        role: z.enum(["admin", "crew", "user", "bartender", "waitress", "shisha_distributor", "content_manager", "security"]),
+      })
+      .parse(d),
   )
   .handler(async ({ context, data }) => {
     await assertAdmin(context.supabase, context.userId);
