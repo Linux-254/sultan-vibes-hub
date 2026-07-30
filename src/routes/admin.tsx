@@ -203,7 +203,7 @@ function AdminLayout() {
         </button>
       </aside>
 
-      <main className="p-4 sm:p-6 lg:p-10 max-w-6xl w-full">
+      <main className="p-4 sm:p-6 lg:p-10 max-w-6xl w-full pb-24 lg:pb-10">
         <Outlet />
       </main>
     </div>

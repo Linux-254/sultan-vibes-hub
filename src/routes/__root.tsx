@@ -13,6 +13,7 @@ import appCss from "../styles.css?url";
 import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
 import { WhatsAppFloat } from "@/components/WhatsAppFloat";
+import { MobileBottomNav } from "@/components/MobileBottomNav";
 import { AuthProvider } from "@/hooks/use-auth";
 import { Toaster } from "@/components/ui/sonner";
 import { EventNotificationBar } from "@/components/EventNotificationBar";
@@ -166,9 +167,10 @@ function RootComponent() {
           </div>
         </div>
         <SiteHeader />
-        <main className="pt-16">
+        <main className="pt-16 pb-20 lg:pb-0">
           <Outlet />
         </main>
+        <MobileBottomNav />
         <SiteFooter />
         <WhatsAppFloat />
         <EventNotificationBar />

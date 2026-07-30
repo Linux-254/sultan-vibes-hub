@@ -1,5 +1,5 @@
-import { Link } from "@tanstack/react-router";
-import { useState } from "react";
+import { Link, useRouterState } from "@tanstack/react-router";
+import { useState, useEffect, useRef } from "react";
 import { Menu, X, Siren } from "lucide-react";
 import { useAuth } from "@/hooks/use-auth";
 import logo from "@/assets/empire-logo.webp";
@@ -18,9 +18,27 @@ const NAV = [
 
 export function SiteHeader() {
   const [open, setOpen] = useState(false);
+  const [hidden, setHidden] = useState(false);
+  const lastScroll = useRef(0);
   const { user } = useAuth();
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const y = window.scrollY;
+      if (y > 80 && y > lastScroll.current + 10) setHidden(true);
+      else if (y < lastScroll.current - 5 || y < 80) setHidden(false);
+      lastScroll.current = y;
+    };
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   return (
-    <header className="fixed top-0 inset-x-0 z-50">
+    <header
+      className={`fixed top-0 inset-x-0 z-50 transition-transform duration-300 ${
+        hidden ? "-translate-y-full" : "translate-y-0"
+      }`}
+    >
       <div className="glass border-b border-border/50">
         <div className="mx-auto max-w-7xl px-5 lg:px-8 h-16 flex items-center justify-between gap-4">
           <Link
