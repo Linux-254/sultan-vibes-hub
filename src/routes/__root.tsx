@@ -166,7 +166,7 @@ function RootComponent() {
           </div>
         </div>
         <SiteHeader />
-        <main className="pt-16 pb-20 lg:pb-0">
+        <main className="pt-16 pb-24 lg:pb-0">
           <Outlet />
         </main>
         <MobileBottomNav />

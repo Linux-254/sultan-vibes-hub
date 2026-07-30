@@ -17,20 +17,23 @@ export function MobileBottomNav() {
 
   return (
     <nav className="fixed bottom-0 inset-x-0 z-50 block lg:hidden safe-area-bottom">
-      <div className="glass border-t border-border/40 backdrop-blur-lg">
-        <div className="flex items-center justify-around py-1.5">
+      <div className="bg-night/80 backdrop-blur-2xl border-t border-gold/10">
+        <div className="flex items-center justify-around pb-1 pt-0.5">
           {BOTTOM_NAV.map((n) => {
             const active = n.to === "/" ? path === "/" : path.startsWith(n.to);
             return (
               <Link
                 key={n.to}
                 to={n.to}
-                className={`flex flex-col items-center gap-0.5 px-2 py-1 rounded-xl text-[10px] font-medium transition ${
-                  active ? "text-gold" : "text-foreground/50 hover:text-foreground/80"
+                className={`relative flex flex-col items-center gap-0 px-3 py-1.5 text-[10px] font-medium transition-all duration-150 active:scale-90 ${
+                  active ? "text-gold" : "text-foreground/40 hover:text-foreground/70"
                 }`}
               >
-                <n.icon size={18} />
-                <span>{n.label}</span>
+                {active && (
+                  <span className="absolute -top-0.5 left-1/2 -translate-x-1/2 h-0.5 w-6 rounded-full bg-gold shadow-[0_0_8px_rgba(212,175,55,0.6)]" />
+                )}
+                <n.icon size={20} className={active ? "drop-shadow-[0_0_6px_rgba(212,175,55,0.4)]" : ""} />
+                <span className="mt-0.5">{n.label}</span>
               </Link>
             );
           })}
