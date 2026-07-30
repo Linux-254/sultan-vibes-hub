@@ -1,0 +1,23 @@
+services:
+  - type: web
+    name: empire-kwa-sultan
+    runtime: node
+    repo: https://github.com/Linux-254/sultan-vibes-hub
+    plan: free
+    region: frankfurt
+    buildCommand: npm ci && npm run build
+    startCommand: node serve.mjs
+    healthCheckPath: /health
+    envVars:
+      - key: NODE_VERSION
+        value: "22"
+      - key: SUPABASE_URL
+        sync: false
+      - key: SUPABASE_SERVICE_ROLE_KEY
+        sync: false
+      - key: VITE_SUPABASE_URL
+        sync: false
+      - key: VITE_SUPABASE_PUBLISHABLE_KEY
+        sync: false
+      - key: VITE_SUPABASE_PROJECT_ID
+        sync: false

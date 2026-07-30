@@ -18,10 +18,13 @@ dist-ssr
 dev.err
 dev.log
 supabase/.temp/
+.env
 
 # Wrangler / Cloudflare
 .wrangler/
 .dev.vars
+
+
 
 # Lovable
 .lovable/

@@ -147,6 +147,15 @@ function addSecurityHeaders(response: Response): Response {
 export default {
   async fetch(request: Request, env: unknown, ctx: unknown) {
     try {
+      const url = new URL(request.url);
+
+      // Health check for Render
+      if (url.pathname === "/health") {
+        return new Response(JSON.stringify({ status: "ok", time: new Date().toISOString() }), {
+          headers: { "content-type": "application/json" },
+        });
+      }
+
       // Rate limiting
       const blocked = applyRateLimit(request);
       if (blocked) return blocked;
