@@ -7,7 +7,7 @@ import {
   HeadContent,
   Scripts,
 } from "@tanstack/react-router";
-import { useState, useEffect, Fragment } from "react";
+import { useState, useEffect } from "react";
 
 import appCss from "../styles.css?url";
 import { SiteHeader } from "@/components/SiteHeader";
@@ -116,7 +116,13 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 });
 
 function RootShell({ children }: { children: React.ReactNode }) {
-  return <>{children}</>;
+  return (
+    <>
+      <HeadContent />
+      {children}
+      <Scripts />
+    </>
+  );
 }
 
 function RootComponent() {
@@ -131,7 +137,6 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <HeadContent />
       <div className="dark">
         <AuthProvider>
         <div style={{ display: ageConfirmed ? "none" : "flex" }} className="fixed inset-0 z-[999] items-center justify-center bg-night-deep/95 backdrop-blur-md">
@@ -164,7 +169,6 @@ function RootComponent() {
         <MobileBottomNav />
         <SiteFooter />
         <EventNotificationBar />
-        <Scripts />
         <Toaster />
       </AuthProvider>
     </div>
