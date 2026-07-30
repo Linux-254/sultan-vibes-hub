@@ -1,4 +1,4 @@
-import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState, type FormEvent } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/use-auth";
@@ -50,12 +50,7 @@ function AuthPage() {
       return sessionStorage.getItem("empire_age_confirmed") === "true";
     return false;
   });
-  const navigate = useNavigate();
   const { user, loading } = useAuth();
-
-  useEffect(() => {
-    if (!loading && user) navigate({ to: "/profile" });
-  }, [loading, user, navigate]);
 
   const isEmail = (v: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
 
