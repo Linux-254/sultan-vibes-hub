@@ -45,12 +45,8 @@ function AuthPage() {
   const [userType, setUserType] = useState<string>("user");
   const [busy, setBusy] = useState(false);
   const [resolving, setResolving] = useState(false);
-  const [ageConfirmed, setAgeConfirmed] = useState(() => {
-    if (typeof window !== "undefined")
-      return sessionStorage.getItem("empire_age_confirmed") === "true";
-    return false;
-  });
   const { user, loading } = useAuth();
+  const navigate = useNavigate();
 
   const isEmail = (v: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
 
@@ -209,38 +205,6 @@ function AuthPage() {
     <section className="relative min-h-[100svh] overflow-hidden flex flex-col">
       {/* Vibrant background slideshow */}
       <HeroSlideshow slot="auth" />
-
-      {/* Age Gate Overlay */}
-      {!ageConfirmed && (
-        <div className="absolute inset-0 z-50 flex items-center justify-center bg-night-deep/90 backdrop-blur-sm">
-          <div className="glass rounded-3xl p-8 sm:p-10 kente-border max-w-sm mx-4 text-center shadow-[var(--shadow-elevated)]">
-            <div className="text-5xl mb-4">🔞</div>
-            <h2 className="font-display text-2xl sm:text-3xl">
-              Are you <span className="text-gold-gradient">18+</span>?
-            </h2>
-            <p className="text-foreground/60 text-sm mt-2">
-              Empire Kwa Sultan is an 18+ venue. You must be of legal age to enter.
-            </p>
-            <div className="mt-6 space-y-2">
-              <button
-                onClick={() => {
-                  setAgeConfirmed(true);
-                  sessionStorage.setItem("empire_age_confirmed", "true");
-                }}
-                className="w-full rounded-2xl bg-gold px-6 py-3 text-sm font-semibold text-night-deep hover:shadow-[var(--shadow-glow)] transition"
-              >
-                Yes, I'm 18+
-              </button>
-              <Link
-                to="/"
-                className="block w-full rounded-2xl border border-foreground/20 px-6 py-3 text-sm text-foreground/60 hover:border-lava hover:text-lava transition"
-              >
-                No, take me back
-              </Link>
-            </div>
-          </div>
-        </div>
-      )}
 
       {/* ──── MOBILE: single tight column ──── */}
       <div className="relative lg:hidden flex flex-col min-h-[100svh]">
