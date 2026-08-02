@@ -53,7 +53,14 @@ export const Route = createFileRoute("/admin")({
   notFoundComponent: AdminNotFound,
 });
 
-type RoleFlag = "admin" | "crew" | "bartender" | "waitress" | "shisha_distributor" | "content_manager" | "security";
+type RoleFlag =
+  | "admin"
+  | "crew"
+  | "bartender"
+  | "waitress"
+  | "shisha_distributor"
+  | "content_manager"
+  | "security";
 
 interface NavItem {
   to: string;
@@ -67,19 +74,61 @@ interface NavItem {
 const NAV: NavItem[] = [
   { to: "/admin", label: "Dashboard", icon: LayoutDashboard, exact: true },
   { to: "/admin/sales", label: "Sales", icon: BarChart3, exact: false, roles: ["content_manager"] },
-  { to: "/admin/reservations", label: "Reservations", icon: CalendarCheck, exact: false, roles: ["waitress"] },
+  {
+    to: "/admin/reservations",
+    label: "Reservations",
+    icon: CalendarCheck,
+    exact: false,
+    roles: ["waitress"],
+  },
   { to: "/admin/payments", label: "Payments", icon: CreditCard, exact: false },
-  { to: "/admin/orders", label: "Orders", icon: Package, exact: false, roles: ["bartender", "waitress", "shisha_distributor"] },
+  {
+    to: "/admin/orders",
+    label: "Orders",
+    icon: Package,
+    exact: false,
+    roles: ["bartender", "waitress", "shisha_distributor"],
+  },
   { to: "/admin/leads", label: "Leads", icon: Users, exact: false },
-  { to: "/admin/events", label: "Events", icon: CalendarClock, exact: false, roles: ["content_manager"] },
-  { to: "/admin/inventory", label: "Products", icon: ShoppingBag, exact: false, roles: ["shisha_distributor"] },
+  {
+    to: "/admin/events",
+    label: "Events",
+    icon: CalendarClock,
+    exact: false,
+    roles: ["content_manager"],
+  },
+  {
+    to: "/admin/inventory",
+    label: "Products",
+    icon: ShoppingBag,
+    exact: false,
+    roles: ["shisha_distributor"],
+  },
   { to: "/admin/people", label: "People", icon: Users, exact: false, roles: ["content_manager"] },
   { to: "/admin/parking", label: "Parking", icon: Car, exact: false },
   { to: "/admin/pricing", label: "Pricing", icon: DollarSign, exact: false },
-  { to: "/admin/milestones", label: "Milestones", icon: Flag, exact: false, roles: ["content_manager"] },
+  {
+    to: "/admin/milestones",
+    label: "Milestones",
+    icon: Flag,
+    exact: false,
+    roles: ["content_manager"],
+  },
   { to: "/admin/recap", label: "Recap", icon: Camera, exact: false, roles: ["content_manager"] },
-  { to: "/admin/pages", label: "Site Pages", icon: FileText, exact: false, roles: ["content_manager"] },
-  { to: "/admin/slideshow", label: "Slideshow", icon: Image, exact: false, roles: ["content_manager"] },
+  {
+    to: "/admin/pages",
+    label: "Site Pages",
+    icon: FileText,
+    exact: false,
+    roles: ["content_manager"],
+  },
+  {
+    to: "/admin/slideshow",
+    label: "Slideshow",
+    icon: Image,
+    exact: false,
+    roles: ["content_manager"],
+  },
   { to: "/admin/sos", label: "SOS", icon: Siren, exact: false },
   { to: "/admin/chat", label: "Crew Chat", icon: MessagesSquare, exact: false },
   { to: "/admin/roles", label: "Roles", icon: Shield, exact: false, adminOnly: true },

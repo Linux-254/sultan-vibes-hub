@@ -32,7 +32,10 @@ export function MobileBottomNav() {
                 {active && (
                   <span className="absolute -top-0.5 left-1/2 -translate-x-1/2 h-0.5 w-6 rounded-full bg-gold shadow-[0_0_8px_rgba(212,175,55,0.6)]" />
                 )}
-                <n.icon size={20} className={active ? "drop-shadow-[0_0_6px_rgba(212,175,55,0.4)]" : ""} />
+                <n.icon
+                  size={20}
+                  className={active ? "drop-shadow-[0_0_6px_rgba(212,175,55,0.4)]" : ""}
+                />
                 <span className="mt-0.5">{n.label}</span>
               </Link>
             );

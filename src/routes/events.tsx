@@ -31,7 +31,10 @@ type SpecialEvent = {
 function formatDjs(djs: SiteEvent["djs"]): string {
   if (!djs) return "";
   if (typeof djs === "string") return djs;
-  return djs.map((dj) => dj.name).filter(Boolean).join(", ");
+  return djs
+    .map((dj) => dj.name)
+    .filter(Boolean)
+    .join(", ");
 }
 
 export const Route = createFileRoute("/events")({
@@ -66,7 +69,11 @@ function EventsPage() {
     const fetchEvents = async () => {
       const [siteRes, specialRes] = await Promise.all([
         supabase.from("site_events").select("*").order("sort_order", { ascending: true }),
-        supabase.from("special_events").select("id, name, description, ticket_price, requires_payment, event_date, event_time").gte("event_date", new Date().toISOString().slice(0, 10)).order("event_date"),
+        supabase
+          .from("special_events")
+          .select("id, name, description, ticket_price, requires_payment, event_date, event_time")
+          .gte("event_date", new Date().toISOString().slice(0, 10))
+          .order("event_date"),
       ]);
       if (siteRes.data) setEvents(siteRes.data as SiteEvent[]);
       if (specialRes.data) setSpecialEvents(specialRes.data as SpecialEvent[]);
@@ -85,7 +92,10 @@ function EventsPage() {
       status: "completed",
       payment_id: paymentId,
     });
-    if (error) { toast.error(error.message); return; }
+    if (error) {
+      toast.error(error.message);
+      return;
+    }
     toast.success(`${buying.qty} ticket${buying.qty > 1 ? "s" : ""} purchased!`);
     setBuying(null);
   };
@@ -244,14 +254,25 @@ function EventsPage() {
                 <div key={e.id} className="glass rounded-3xl p-5 border border-border/30">
                   <h3 className="font-display text-xl">{e.name}</h3>
                   <div className="text-xs text-foreground/50 mt-1">
-                    {e.event_date}{e.event_time ? ` · ${e.event_time}` : ""}
+                    {e.event_date}
+                    {e.event_time ? ` · ${e.event_time}` : ""}
                   </div>
-                  {e.description && <p className="text-sm text-foreground/70 mt-2">{e.description}</p>}
+                  {e.description && (
+                    <p className="text-sm text-foreground/70 mt-2">{e.description}</p>
+                  )}
                   <div className="flex items-center justify-between mt-4 pt-3 border-t border-border/30">
-                    <span className="font-mono text-gold font-semibold">KES {Number(e.ticket_price).toLocaleString()}</span>
+                    <span className="font-mono text-gold font-semibold">
+                      KES {Number(e.ticket_price).toLocaleString()}
+                    </span>
                     {e.requires_payment ? (
                       <button
-                        onClick={() => { if (!user) { toast.error("Sign in to buy tickets"); return; } setBuying({ event: e, qty: 1 }); }}
+                        onClick={() => {
+                          if (!user) {
+                            toast.error("Sign in to buy tickets");
+                            return;
+                          }
+                          setBuying({ event: e, qty: 1 });
+                        }}
                         className="inline-flex items-center gap-1.5 rounded-xl bg-gold px-4 py-2 text-xs font-semibold text-night-deep hover:opacity-90 transition"
                       >
                         <Ticket size={12} /> Buy Ticket

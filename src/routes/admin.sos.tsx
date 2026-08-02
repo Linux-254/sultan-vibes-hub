@@ -99,7 +99,15 @@ function AdminSos() {
     const { data } = await supabase
       .from("user_roles")
       .select("user_id, role")
-      .in("role", ["admin", "crew", "bartender", "waitress", "shisha_distributor", "content_manager", "security"]);
+      .in("role", [
+        "admin",
+        "crew",
+        "bartender",
+        "waitress",
+        "shisha_distributor",
+        "content_manager",
+        "security",
+      ]);
     if (!data) return;
     const ids = [...new Set(data.map((r: any) => r.user_id))];
     if (ids.length === 0) return;
@@ -309,9 +317,7 @@ function AdminSos() {
         )}
         {filtered.map((r) => {
           const p = r.user_id ? profiles[r.user_id] : null;
-          const responder = r.responder_id
-            ? staffList.find((s) => s.id === r.responder_id)
-            : null;
+          const responder = r.responder_id ? staffList.find((s) => s.id === r.responder_id) : null;
           const responseTime =
             r.acknowledged_at &&
             `+${Math.round((new Date(r.acknowledged_at).getTime() - new Date(r.created_at).getTime()) / 1000)}s`;

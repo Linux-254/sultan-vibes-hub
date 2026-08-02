@@ -32,10 +32,26 @@ export const Route = createFileRoute("/about")({
 const ICON_MAP: Record<string, React.ElementType> = { Users, Crown, Heart, ShieldCheck };
 
 const DEFAULT_VALUES = [
-  { icon: "Users", title: "Community", body: "Empire is a regulars-bar at heart. Names are remembered, drinks are remembered, you are remembered." },
-  { icon: "Crown", title: "Culture", body: "Afro-Kenyan to the bone. The music, the design, the rituals — we make space for what we grew up around." },
-  { icon: "Heart", title: "Quality Vibes", body: "We say no to a lot of bookings. We protect the night for the people who love it." },
-  { icon: "ShieldCheck", title: "Safety", body: "An 18+ venue with trained door staff and a silent SOS system for every guest." },
+  {
+    icon: "Users",
+    title: "Community",
+    body: "Empire is a regulars-bar at heart. Names are remembered, drinks are remembered, you are remembered.",
+  },
+  {
+    icon: "Crown",
+    title: "Culture",
+    body: "Afro-Kenyan to the bone. The music, the design, the rituals — we make space for what we grew up around.",
+  },
+  {
+    icon: "Heart",
+    title: "Quality Vibes",
+    body: "We say no to a lot of bookings. We protect the night for the people who love it.",
+  },
+  {
+    icon: "ShieldCheck",
+    title: "Safety",
+    body: "An 18+ venue with trained door staff and a silent SOS system for every guest.",
+  },
 ];
 
 type Faq = { id: string; question: string; answer: string; sort_order: number };
@@ -49,7 +65,11 @@ function AboutPage() {
   useEffect(() => {
     const load = async () => {
       const [faqRes, contentRes] = await Promise.all([
-        supabase.from("faqs").select("*").eq("active", true).order("sort_order", { ascending: true }),
+        supabase
+          .from("faqs")
+          .select("*")
+          .eq("active", true)
+          .order("sort_order", { ascending: true }),
         supabase.from("site_content").select("slug, content"),
       ]);
       if (faqRes.data) setFaqs(faqRes.data);
@@ -92,9 +112,7 @@ function AboutPage() {
           <h1 className="font-display text-5xl md:text-7xl lg:text-8xl mt-3 leading-[0.95]">
             {heroHeadline}
           </h1>
-          <p className="mt-8 max-w-xl text-foreground/75 text-lg">
-            {heroDesc}
-          </p>
+          <p className="mt-8 max-w-xl text-foreground/75 text-lg">{heroDesc}</p>
         </div>
       </section>
 
@@ -106,13 +124,13 @@ function AboutPage() {
           {values.map((v) => {
             const Icon = ICON_MAP[v.icon] ?? Users;
             return (
-            <div key={v.title} className="glass rounded-2xl p-6">
-              <div className="h-10 w-10 rounded-full bg-gold/15 text-gold flex items-center justify-center">
-                <Icon size={18} />
+              <div key={v.title} className="glass rounded-2xl p-6">
+                <div className="h-10 w-10 rounded-full bg-gold/15 text-gold flex items-center justify-center">
+                  <Icon size={18} />
+                </div>
+                <h3 className="font-display text-xl mt-4">{v.title}</h3>
+                <p className="text-sm text-foreground/70 mt-2">{v.body}</p>
               </div>
-              <h3 className="font-display text-xl mt-4">{v.title}</h3>
-              <p className="text-sm text-foreground/70 mt-2">{v.body}</p>
-            </div>
             );
           })}
         </div>

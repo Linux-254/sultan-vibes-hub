@@ -12,7 +12,14 @@ interface MpesaPaymentProps {
   open: boolean;
 }
 
-export function MpesaPayment({ amount, reference, description, onSuccess, onClose, open }: MpesaPaymentProps) {
+export function MpesaPayment({
+  amount,
+  reference,
+  description,
+  onSuccess,
+  onClose,
+  open,
+}: MpesaPaymentProps) {
   const [phone, setPhone] = useState("");
   const [step, setStep] = useState<"form" | "sent" | "polling" | "success" | "failed">("form");
   const [checkoutId, setCheckoutId] = useState("");
@@ -31,7 +38,9 @@ export function MpesaPayment({ amount, reference, description, onSuccess, onClos
     setStep("sent");
     try {
       const { mpesaStkPush } = await import("@/lib/mpesa.functions");
-      const fn = await mpesaStkPush({ data: { phone: cleaned, amount, reference, description: description ?? "Empire Payment" } });
+      const fn = await mpesaStkPush({
+        data: { phone: cleaned, amount, reference, description: description ?? "Empire Payment" },
+      });
       setCheckoutId(fn.checkoutRequestID);
       setStep("polling");
     } catch (e: any) {
@@ -56,7 +65,7 @@ export function MpesaPayment({ amount, reference, description, onSuccess, onClos
               phone: phone.replace(/[\s\-]/g, ""),
               mpesa_receipt: receipt,
               checkout_request_id: checkoutId,
-              status: "completed",
+              status: "success",
             })
             .select("id")
             .single();
@@ -69,12 +78,14 @@ export function MpesaPayment({ amount, reference, description, onSuccess, onClos
           setStep("failed");
           clearInterval(interval);
         }
-      } catch { }
+      } catch {}
     }, 3000);
     return () => clearInterval(interval);
   }, [step, checkoutId, amount, phone, onSuccess]);
 
-  useEffect(() => { if (!open) reset(); }, [open, reset]);
+  useEffect(() => {
+    if (!open) reset();
+  }, [open, reset]);
 
   if (!open) return null;
 
@@ -86,7 +97,10 @@ export function MpesaPayment({ amount, reference, description, onSuccess, onClos
             <Smartphone size={18} className="text-savanna" />
             <span className="font-display text-lg">M-Pesa</span>
           </div>
-          <button onClick={onClose} className="h-8 w-8 inline-flex items-center justify-center rounded-lg hover:bg-white/10">
+          <button
+            onClick={onClose}
+            className="h-8 w-8 inline-flex items-center justify-center rounded-lg hover:bg-white/10"
+          >
             <X size={16} className="text-foreground/50" />
           </button>
         </div>

@@ -21,7 +21,9 @@ import {
 import { ImageUpload } from "@/components/ImageUpload";
 
 export const Route = createFileRoute("/admin/recap")({
-  head: () => ({ meta: [{ title: "Recap — Empire Admin" }, { name: "robots", content: "noindex" }] }),
+  head: () => ({
+    meta: [{ title: "Recap — Empire Admin" }, { name: "robots", content: "noindex" }],
+  }),
   component: AdminRecap,
 });
 
@@ -130,7 +132,9 @@ function RecapEvents({ user }: { user: any }) {
     setLoading(false);
   };
 
-  useEffect(() => { load(); }, []);
+  useEffect(() => {
+    load();
+  }, []);
 
   const startCreate = () => {
     setEditing(null);
@@ -167,11 +171,19 @@ function RecapEvents({ user }: { user: any }) {
     };
     if (editing) {
       const { error } = await supabase.from("recap_events").update(payload).eq("id", editing);
-      if (error) { toast.error(error.message); setSaving(false); return; }
+      if (error) {
+        toast.error(error.message);
+        setSaving(false);
+        return;
+      }
       toast.success("Recap updated");
     } else {
       const { error } = await supabase.from("recap_events").insert(payload);
-      if (error) { toast.error(error.message); setSaving(false); return; }
+      if (error) {
+        toast.error(error.message);
+        setSaving(false);
+        return;
+      }
       toast.success("Recap created");
     }
     setShowForm(false);
@@ -185,7 +197,10 @@ function RecapEvents({ user }: { user: any }) {
     if (!confirm("Delete this recap?")) return;
     const { error } = await supabase.from("recap_events").delete().eq("id", id);
     if (error) toast.error(error.message);
-    else { toast.success("Deleted"); load(); }
+    else {
+      toast.success("Deleted");
+      load();
+    }
   };
 
   return (
@@ -204,15 +219,32 @@ function RecapEvents({ user }: { user: any }) {
           <div className="glass rounded-3xl p-6 w-full max-w-2xl max-h-[90vh] overflow-y-auto space-y-5 border border-border/40 shadow-2xl">
             <div className="flex items-center justify-between">
               <div className="font-display text-xl">{editing ? "Edit Recap" : "New Recap"}</div>
-              <button onClick={() => { setShowForm(false); setEditing(null); }} className="h-8 w-8 inline-flex items-center justify-center rounded-lg hover:bg-white/10 transition">
+              <button
+                onClick={() => {
+                  setShowForm(false);
+                  setEditing(null);
+                }}
+                className="h-8 w-8 inline-flex items-center justify-center rounded-lg hover:bg-white/10 transition"
+              >
                 <X size={16} className="text-foreground/50" />
               </button>
             </div>
-            <ImageUpload folder="recap" value={form.cover_url} onChange={(url) => setForm((s) => ({ ...s, cover_url: url }))} label="Upload cover" className="h-40" />
+            <ImageUpload
+              folder="recap"
+              value={form.cover_url}
+              onChange={(url) => setForm((s) => ({ ...s, cover_url: url }))}
+              label="Upload cover"
+              className="h-40"
+            />
             <div className="grid sm:grid-cols-2 gap-3">
               {[
                 { label: "Event name", key: "name", type: "text" },
-                { label: "Event date", key: "event_date", type: "text", placeholder: "e.g. May 4, 2026" },
+                {
+                  label: "Event date",
+                  key: "event_date",
+                  type: "text",
+                  placeholder: "e.g. May 4, 2026",
+                },
                 { label: "Photo count", key: "photo_count", type: "number" },
                 { label: "Video count", key: "video_count", type: "number" },
                 { label: "Bundle price (KES)", key: "bundle_price", type: "number" },
@@ -224,17 +256,32 @@ function RecapEvents({ user }: { user: any }) {
                     type={f.type}
                     value={(form as any)[f.key]}
                     placeholder={"placeholder" in f ? (f as any).placeholder : undefined}
-                    onChange={(e) => setForm((s) => ({ ...s, [f.key]: f.type === "number" ? Number(e.target.value) : e.target.value }))}
+                    onChange={(e) =>
+                      setForm((s) => ({
+                        ...s,
+                        [f.key]: f.type === "number" ? Number(e.target.value) : e.target.value,
+                      }))
+                    }
                     className="mt-2 w-full bg-night/60 border border-border/60 rounded-2xl px-4 py-3 text-sm focus:outline-none focus:border-gold"
                   />
                 </label>
               ))}
             </div>
             <div className="flex items-center gap-3 pt-2">
-              <button onClick={save} disabled={saving || !form.name || !form.event_date} className="rounded-2xl bg-gold px-6 py-3 text-sm font-semibold text-night-deep hover:shadow-[var(--shadow-glow)] transition disabled:opacity-50">
+              <button
+                onClick={save}
+                disabled={saving || !form.name || !form.event_date}
+                className="rounded-2xl bg-gold px-6 py-3 text-sm font-semibold text-night-deep hover:shadow-[var(--shadow-glow)] transition disabled:opacity-50"
+              >
                 {saving ? "Saving…" : editing ? "Update Recap" : "Create Recap"}
               </button>
-              <button onClick={() => { setShowForm(false); setEditing(null); }} className="rounded-2xl border border-border/50 px-6 py-3 text-sm font-medium text-foreground/70 hover:bg-white/5 transition">
+              <button
+                onClick={() => {
+                  setShowForm(false);
+                  setEditing(null);
+                }}
+                className="rounded-2xl border border-border/50 px-6 py-3 text-sm font-medium text-foreground/70 hover:bg-white/5 transition"
+              >
                 Cancel
               </button>
             </div>
@@ -271,10 +318,16 @@ function RecapEvents({ user }: { user: any }) {
               <DollarSign size={14} /> KES {Number(r.bundle_price ?? 0).toLocaleString()}
             </div>
             <div className="flex items-center gap-2 mt-4 pt-3 border-t border-border/30">
-              <button onClick={() => startEdit(r)} className="flex-1 inline-flex items-center justify-center gap-1.5 rounded-xl border border-border/50 py-2 text-xs font-medium hover:border-gold hover:text-gold transition">
+              <button
+                onClick={() => startEdit(r)}
+                className="flex-1 inline-flex items-center justify-center gap-1.5 rounded-xl border border-border/50 py-2 text-xs font-medium hover:border-gold hover:text-gold transition"
+              >
                 <Pencil size={13} /> Edit
               </button>
-              <button onClick={() => remove(r.id)} className="flex-1 inline-flex items-center justify-center gap-1.5 rounded-xl border border-border/50 py-2 text-xs font-medium hover:border-lava hover:text-lava transition">
+              <button
+                onClick={() => remove(r.id)}
+                className="flex-1 inline-flex items-center justify-center gap-1.5 rounded-xl border border-border/50 py-2 text-xs font-medium hover:border-lava hover:text-lava transition"
+              >
                 <Trash2 size={13} /> Delete
               </button>
             </div>
@@ -344,32 +397,68 @@ function RecapMedia() {
     setLoading(false);
   };
 
-  useEffect(() => { loadEvents(); }, []);
-  useEffect(() => { if (selectedEventId) loadMedia(selectedEventId); }, [selectedEventId]);
+  useEffect(() => {
+    loadEvents();
+  }, []);
+  useEffect(() => {
+    if (selectedEventId) loadMedia(selectedEventId);
+  }, [selectedEventId]);
 
   const startCreate = () => {
     setEditing(null);
-    setForm({ recap_event_id: selectedEventId, media_type: "image", url: "", thumbnail_url: "", free_preview: false, unlock_price: 0, sort_order: media.length });
+    setForm({
+      recap_event_id: selectedEventId,
+      media_type: "image",
+      url: "",
+      thumbnail_url: "",
+      free_preview: false,
+      unlock_price: 0,
+      sort_order: media.length,
+    });
     setShowForm(true);
   };
 
   const startEdit = (m: RecapMedia) => {
     setEditing(m.id);
-    setForm({ recap_event_id: m.recap_event_id, media_type: m.media_type, url: m.url, thumbnail_url: m.thumbnail_url ?? "", free_preview: m.free_preview, unlock_price: m.unlock_price, sort_order: m.sort_order });
+    setForm({
+      recap_event_id: m.recap_event_id,
+      media_type: m.media_type,
+      url: m.url,
+      thumbnail_url: m.thumbnail_url ?? "",
+      free_preview: m.free_preview,
+      unlock_price: m.unlock_price,
+      sort_order: m.sort_order,
+    });
     setShowForm(true);
   };
 
   const save = async () => {
     if (!form.url.trim()) return toast.error("URL is required");
     setSaving(true);
-    const payload = { recap_event_id: form.recap_event_id, media_type: form.media_type, url: form.url.trim(), thumbnail_url: form.thumbnail_url.trim() || null, free_preview: form.free_preview, unlock_price: form.unlock_price, sort_order: form.sort_order };
+    const payload = {
+      recap_event_id: form.recap_event_id,
+      media_type: form.media_type,
+      url: form.url.trim(),
+      thumbnail_url: form.thumbnail_url.trim() || null,
+      free_preview: form.free_preview,
+      unlock_price: form.unlock_price,
+      sort_order: form.sort_order,
+    };
     if (editing) {
       const { error } = await supabase.from("recap_media").update(payload).eq("id", editing);
-      if (error) { toast.error(error.message); setSaving(false); return; }
+      if (error) {
+        toast.error(error.message);
+        setSaving(false);
+        return;
+      }
       toast.success("Media updated");
     } else {
       const { error } = await supabase.from("recap_media").insert(payload);
-      if (error) { toast.error(error.message); setSaving(false); return; }
+      if (error) {
+        toast.error(error.message);
+        setSaving(false);
+        return;
+      }
       toast.success("Media created");
     }
     setShowForm(false);
@@ -382,7 +471,10 @@ function RecapMedia() {
     if (!confirm("Delete this media item?")) return;
     const { error } = await supabase.from("recap_media").delete().eq("id", id);
     if (error) toast.error(error.message);
-    else { toast.success("Deleted"); loadMedia(selectedEventId); }
+    else {
+      toast.success("Deleted");
+      loadMedia(selectedEventId);
+    }
   };
 
   const selectedEvent = events.find((e) => e.id === selectedEventId);
@@ -399,12 +491,17 @@ function RecapMedia() {
           >
             <option value="">Choose a recap event...</option>
             {events.map((ev) => (
-              <option key={ev.id} value={ev.id}>{ev.name} ({ev.event_date})</option>
+              <option key={ev.id} value={ev.id}>
+                {ev.name} ({ev.event_date})
+              </option>
             ))}
           </select>
         </label>
         {selectedEventId && (
-          <button onClick={startCreate} className="inline-flex items-center gap-2 rounded-full bg-gold px-5 py-3 text-sm font-semibold text-night-deep hover:shadow-[var(--shadow-glow)] transition shrink-0">
+          <button
+            onClick={startCreate}
+            className="inline-flex items-center gap-2 rounded-full bg-gold px-5 py-3 text-sm font-semibold text-night-deep hover:shadow-[var(--shadow-glow)] transition shrink-0"
+          >
             <Plus size={16} /> New Media
           </button>
         )}
@@ -414,44 +511,98 @@ function RecapMedia() {
         <div className="glass rounded-3xl p-6 space-y-5 border border-border/40">
           <div className="flex items-center justify-between">
             <div className="font-display text-xl">{editing ? "Edit Media" : "New Media"}</div>
-            <button onClick={() => { setShowForm(false); setEditing(null); }} className="text-xs text-foreground/50 hover:text-foreground">Cancel</button>
+            <button
+              onClick={() => {
+                setShowForm(false);
+                setEditing(null);
+              }}
+              className="text-xs text-foreground/50 hover:text-foreground"
+            >
+              Cancel
+            </button>
           </div>
           <div className="space-y-4">
             <label className="block">
               <span className="eyebrow">Media Type *</span>
-              <select value={form.media_type} onChange={(e) => setForm((s) => ({ ...s, media_type: e.target.value }))} className="mt-2 w-full bg-night/60 border border-border/60 rounded-2xl px-4 py-3 text-sm focus:outline-none focus:border-gold">
+              <select
+                value={form.media_type}
+                onChange={(e) => setForm((s) => ({ ...s, media_type: e.target.value }))}
+                className="mt-2 w-full bg-night/60 border border-border/60 rounded-2xl px-4 py-3 text-sm focus:outline-none focus:border-gold"
+              >
                 <option value="image">Image</option>
                 <option value="video">Video</option>
               </select>
             </label>
             <div>
-              <span className="eyebrow">{form.media_type === "video" ? "Video URL *" : "Image URL *"}</span>
+              <span className="eyebrow">
+                {form.media_type === "video" ? "Video URL *" : "Image URL *"}
+              </span>
               {form.media_type === "image" ? (
-                <div className="mt-2"><ImageUpload folder="recap" value={form.url} onChange={(url) => setForm((s) => ({ ...s, url: url }))} label="Upload image" className="h-48" /></div>
+                <div className="mt-2">
+                  <ImageUpload
+                    folder="recap"
+                    value={form.url}
+                    onChange={(url) => setForm((s) => ({ ...s, url: url }))}
+                    label="Upload image"
+                    className="h-48"
+                  />
+                </div>
               ) : (
-                <input value={form.url} onChange={(e) => setForm((s) => ({ ...s, url: e.target.value }))} placeholder="https://..." className="mt-2 w-full bg-night/60 border border-border/60 rounded-2xl px-4 py-3 text-sm focus:outline-none focus:border-gold" />
+                <input
+                  value={form.url}
+                  onChange={(e) => setForm((s) => ({ ...s, url: e.target.value }))}
+                  placeholder="https://..."
+                  className="mt-2 w-full bg-night/60 border border-border/60 rounded-2xl px-4 py-3 text-sm focus:outline-none focus:border-gold"
+                />
               )}
             </div>
             <div>
               <span className="eyebrow">Thumbnail</span>
-              <div className="mt-2"><ImageUpload folder="recap" value={form.thumbnail_url} onChange={(url) => setForm((s) => ({ ...s, thumbnail_url: url }))} label="Upload thumbnail (optional)" className="h-40" /></div>
+              <div className="mt-2">
+                <ImageUpload
+                  folder="recap"
+                  value={form.thumbnail_url}
+                  onChange={(url) => setForm((s) => ({ ...s, thumbnail_url: url }))}
+                  label="Upload thumbnail (optional)"
+                  className="h-40"
+                />
+              </div>
             </div>
             <div className="grid sm:grid-cols-2 gap-3">
               <label className="block">
                 <span className="eyebrow">Unlock Price</span>
-                <input type="number" value={form.unlock_price} onChange={(e) => setForm((s) => ({ ...s, unlock_price: Number(e.target.value) }))} className="mt-2 w-full bg-night/60 border border-border/60 rounded-2xl px-4 py-3 text-sm focus:outline-none focus:border-gold" />
+                <input
+                  type="number"
+                  value={form.unlock_price}
+                  onChange={(e) => setForm((s) => ({ ...s, unlock_price: Number(e.target.value) }))}
+                  className="mt-2 w-full bg-night/60 border border-border/60 rounded-2xl px-4 py-3 text-sm focus:outline-none focus:border-gold"
+                />
               </label>
               <label className="block">
                 <span className="eyebrow">Sort Order</span>
-                <input type="number" value={form.sort_order} onChange={(e) => setForm((s) => ({ ...s, sort_order: Number(e.target.value) }))} className="mt-2 w-full bg-night/60 border border-border/60 rounded-2xl px-4 py-3 text-sm focus:outline-none focus:border-gold" />
+                <input
+                  type="number"
+                  value={form.sort_order}
+                  onChange={(e) => setForm((s) => ({ ...s, sort_order: Number(e.target.value) }))}
+                  className="mt-2 w-full bg-night/60 border border-border/60 rounded-2xl px-4 py-3 text-sm focus:outline-none focus:border-gold"
+                />
               </label>
             </div>
             <div className="flex items-center gap-2">
-              <input type="checkbox" checked={form.free_preview} onChange={(e) => setForm((s) => ({ ...s, free_preview: e.target.checked }))} className="accent-[var(--gold)]" />
+              <input
+                type="checkbox"
+                checked={form.free_preview}
+                onChange={(e) => setForm((s) => ({ ...s, free_preview: e.target.checked }))}
+                className="accent-[var(--gold)]"
+              />
               <span className="text-sm text-foreground/70">Free Preview</span>
             </div>
           </div>
-          <button onClick={save} disabled={saving || !form.url.trim()} className="rounded-2xl bg-gold px-6 py-3 text-sm font-semibold text-night-deep hover:shadow-[var(--shadow-glow)] transition disabled:opacity-50">
+          <button
+            onClick={save}
+            disabled={saving || !form.url.trim()}
+            className="rounded-2xl bg-gold px-6 py-3 text-sm font-semibold text-night-deep hover:shadow-[var(--shadow-glow)] transition disabled:opacity-50"
+          >
             {saving ? "Saving..." : editing ? "Update Media" : "Create Media"}
           </button>
         </div>
@@ -468,7 +619,11 @@ function RecapMedia() {
           {selectedEvent && (
             <div className="glass rounded-2xl p-4 mb-5 flex items-center gap-4 border border-border/30">
               {selectedEvent.cover_url ? (
-                <img src={selectedEvent.cover_url} alt="" className="w-16 h-16 rounded-xl object-cover shrink-0" />
+                <img
+                  src={selectedEvent.cover_url}
+                  alt=""
+                  className="w-16 h-16 rounded-xl object-cover shrink-0"
+                />
               ) : (
                 <div className="w-16 h-16 rounded-xl bg-white/[0.04] flex items-center justify-center shrink-0">
                   <Image size={20} className="text-foreground/20" />
@@ -486,13 +641,29 @@ function RecapMedia() {
               <div key={m.id} className="glass rounded-2xl overflow-hidden group">
                 <div className="relative aspect-[4/3] bg-night/60 overflow-hidden">
                   {m.media_type === "video" ? (
-                    <img src={m.thumbnail_url || m.url} alt="" className="w-full h-full object-cover" />
+                    <img
+                      src={m.thumbnail_url || m.url}
+                      alt=""
+                      className="w-full h-full object-cover"
+                    />
                   ) : (
-                    <img src={m.thumbnail_url || m.url} alt="" className="w-full h-full object-cover" />
+                    <img
+                      src={m.thumbnail_url || m.url}
+                      alt=""
+                      className="w-full h-full object-cover"
+                    />
                   )}
                   <div className="absolute top-2 left-2">
                     <span className="inline-flex items-center gap-1 text-[11px] px-2 py-0.5 rounded-full bg-black/60 backdrop-blur-sm font-semibold text-white/80">
-                      {m.media_type === "video" ? <><Film size={10} /> Video</> : <><Image size={10} /> Image</>}
+                      {m.media_type === "video" ? (
+                        <>
+                          <Film size={10} /> Video
+                        </>
+                      ) : (
+                        <>
+                          <Image size={10} /> Image
+                        </>
+                      )}
                     </span>
                   </div>
                   <div className="absolute top-2 right-2">
@@ -513,10 +684,16 @@ function RecapMedia() {
                       <GripVertical size={11} /> #{m.sort_order}
                     </span>
                     <div className="flex items-center gap-1">
-                      <button onClick={() => startEdit(m)} className="h-7 w-7 inline-flex items-center justify-center rounded-lg border border-border/50 hover:border-gold hover:text-gold transition">
+                      <button
+                        onClick={() => startEdit(m)}
+                        className="h-7 w-7 inline-flex items-center justify-center rounded-lg border border-border/50 hover:border-gold hover:text-gold transition"
+                      >
                         <Pencil size={12} />
                       </button>
-                      <button onClick={() => remove(m.id)} className="h-7 w-7 inline-flex items-center justify-center rounded-lg border border-border/50 hover:border-lava hover:text-lava transition">
+                      <button
+                        onClick={() => remove(m.id)}
+                        className="h-7 w-7 inline-flex items-center justify-center rounded-lg border border-border/50 hover:border-lava hover:text-lava transition"
+                      >
                         <Trash2 size={12} />
                       </button>
                     </div>

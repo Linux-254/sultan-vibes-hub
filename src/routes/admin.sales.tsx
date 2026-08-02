@@ -544,6 +544,7 @@ function MetricCard({
 
 function statusTone(status: string): string {
   switch (status) {
+    case "success":
     case "completed":
       return "bg-savanna/15 text-savanna";
     case "processing":

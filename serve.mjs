@@ -34,7 +34,10 @@ async function handler(nodeReq, nodeRes) {
 
     // Serve static files from dist/client/
     if (url.pathname !== "/" && !url.pathname.startsWith("/_")) {
-      const filePath = join(clientDir, url.pathname === "/favicon.png" ? "favicon.png" : url.pathname.replace(/^\//, ""));
+      const filePath = join(
+        clientDir,
+        url.pathname === "/favicon.png" ? "favicon.png" : url.pathname.replace(/^\//, ""),
+      );
       if (existsSync(filePath)) {
         const ext = extname(filePath).toLowerCase();
         const contentType = MIME_TYPES[ext] || "application/octet-stream";
@@ -55,13 +58,14 @@ async function handler(nodeReq, nodeRes) {
       headers.set(nodeReq.rawHeaders[i], nodeReq.rawHeaders[i + 1]);
     }
 
-    const body = nodeReq.method === "GET" || nodeReq.method === "HEAD"
-      ? undefined
-      : await new Promise((resolve) => {
-          const chunks = [];
-          nodeReq.on("data", (c) => chunks.push(c));
-          nodeReq.on("end", () => resolve(Buffer.concat(chunks)));
-        });
+    const body =
+      nodeReq.method === "GET" || nodeReq.method === "HEAD"
+        ? undefined
+        : await new Promise((resolve) => {
+            const chunks = [];
+            nodeReq.on("data", (c) => chunks.push(c));
+            nodeReq.on("end", () => resolve(Buffer.concat(chunks)));
+          });
 
     const request = new Request(url.href, {
       method: nodeReq.method,
@@ -77,17 +81,25 @@ async function handler(nodeReq, nodeRes) {
       const pump = async () => {
         while (true) {
           const { done, value } = await reader.read();
-          if (done) { nodeRes.end(); return; }
+          if (done) {
+            nodeRes.end();
+            return;
+          }
           nodeRes.write(value);
         }
       };
-      pump().catch((err) => { console.error(err); nodeRes.end(); });
+      pump().catch((err) => {
+        console.error(err);
+        nodeRes.end();
+      });
     } else {
       nodeRes.end();
     }
   } catch (error) {
     console.error(error);
-    try { nodeRes.writeHead(500, { "Content-Type": "text/html" }); } catch {}
+    try {
+      nodeRes.writeHead(500, { "Content-Type": "text/html" });
+    } catch {}
     nodeRes.end("<h1>500 Internal Server Error</h1>");
   }
 }

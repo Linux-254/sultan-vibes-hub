@@ -419,7 +419,10 @@ function Dashboard() {
             <span className="font-display text-sm flex items-center gap-2">
               <CalendarCheck size={14} className="text-gold" /> Recent Reservations
             </span>
-            <Link to="/admin/reservations" className="text-[10px] text-gold hover:underline font-medium">
+            <Link
+              to="/admin/reservations"
+              className="text-[10px] text-gold hover:underline font-medium"
+            >
               View all →
             </Link>
           </div>
@@ -430,7 +433,10 @@ function Dashboard() {
               </div>
             )}
             {recentRes.map((r: any) => (
-              <div key={r.id} className="px-5 py-3 flex items-center gap-3 hover:bg-white/[0.02] transition">
+              <div
+                key={r.id}
+                className="px-5 py-3 flex items-center gap-3 hover:bg-white/[0.02] transition"
+              >
                 <div className="h-8 w-8 rounded-full bg-gold/10 text-gold text-xs font-bold flex items-center justify-center shrink-0">
                   {(r.full_name ?? "?").charAt(0).toUpperCase()}
                 </div>
@@ -471,12 +477,17 @@ function Dashboard() {
               <div className="px-5 py-8 text-center text-xs text-foreground/40">No orders yet</div>
             )}
             {recentOrders.map((o: any) => (
-              <div key={o.id} className="px-5 py-3 flex items-center gap-3 hover:bg-white/[0.02] transition">
+              <div
+                key={o.id}
+                className="px-5 py-3 flex items-center gap-3 hover:bg-white/[0.02] transition"
+              >
                 <div className="h-8 w-8 rounded-full bg-gold/10 text-gold text-[10px] font-mono font-bold flex items-center justify-center shrink-0">
                   #{(o.ticket_number ?? "0").slice(-3)}
                 </div>
                 <div className="flex-1 min-w-0">
-                  <div className="text-sm font-medium truncate font-mono">{o.ticket_number ?? "—"}</div>
+                  <div className="text-sm font-medium truncate font-mono">
+                    {o.ticket_number ?? "—"}
+                  </div>
                   <div className="text-xs text-foreground/50">
                     {o.order_type} · KES {Number(o.total).toLocaleString()}
                   </div>
@@ -503,11 +514,31 @@ function Dashboard() {
         <div className="eyebrow mb-4">Quick access</div>
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
           {[
-            { to: "/admin/sales", label: "Sales Dashboard", icon: <TrendingUp size={18} />, accent: "gold" },
+            {
+              to: "/admin/sales",
+              label: "Sales Dashboard",
+              icon: <TrendingUp size={18} />,
+              accent: "gold",
+            },
             { to: "/admin/orders", label: "Orders", icon: <Package size={18} />, accent: "gold" },
-            { to: "/admin/reservations", label: "Reservations", icon: <CalendarCheck size={18} />, accent: "savanna" },
-            { to: "/admin/payments", label: "Payments", icon: <CreditCard size={18} />, accent: "gold" },
-            { to: "/admin/inventory", label: "Products", icon: <ShoppingCart size={18} />, accent: "savanna" },
+            {
+              to: "/admin/reservations",
+              label: "Reservations",
+              icon: <CalendarCheck size={18} />,
+              accent: "savanna",
+            },
+            {
+              to: "/admin/payments",
+              label: "Payments",
+              icon: <CreditCard size={18} />,
+              accent: "gold",
+            },
+            {
+              to: "/admin/inventory",
+              label: "Products",
+              icon: <ShoppingCart size={18} />,
+              accent: "savanna",
+            },
             { to: "/admin/events", label: "Events", icon: <Clock size={18} />, accent: "gold" },
             { to: "/admin/sos", label: "SOS Alerts", icon: <Siren size={18} />, accent: "lava" },
             { to: "/admin/leads", label: "Leads", icon: <Users size={18} />, accent: "gold" },
@@ -517,12 +548,20 @@ function Dashboard() {
               to={q.to}
               className="glass rounded-2xl p-4 flex flex-col items-start gap-2 border border-border/40 hover:border-gold/40 hover:bg-gold/[0.03] transition-all duration-200 group"
             >
-              <div className={`h-10 w-10 rounded-2xl flex items-center justify-center shrink-0 ${
-                q.accent === "lava" ? "bg-lava/15 text-lava" : q.accent === "savanna" ? "bg-savanna/15 text-savanna" : "bg-gold/15 text-gold"
-              }`}>
+              <div
+                className={`h-10 w-10 rounded-2xl flex items-center justify-center shrink-0 ${
+                  q.accent === "lava"
+                    ? "bg-lava/15 text-lava"
+                    : q.accent === "savanna"
+                      ? "bg-savanna/15 text-savanna"
+                      : "bg-gold/15 text-gold"
+                }`}
+              >
                 {q.icon}
               </div>
-              <span className="text-sm font-medium text-foreground/80 group-hover:text-gold transition-colors">{q.label}</span>
+              <span className="text-sm font-medium text-foreground/80 group-hover:text-gold transition-colors">
+                {q.label}
+              </span>
             </Link>
           ))}
         </div>

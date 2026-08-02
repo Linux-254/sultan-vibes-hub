@@ -10,7 +10,7 @@ import { ProductShishaPicker, type ShishaEntry } from "@/components/ProductShish
 import { MpesaPayment } from "@/components/MpesaPayment";
 import { supabase } from "@/integrations/supabase/client";
 
-const packageSchema = z.enum(["solo", "duo", "squad", "vip", "sultan"]).catch("solo");
+const packageSchema = z.enum(["solo", "duo", "squad", "vip", "sultan"]);
 
 export const Route = createFileRoute("/reserve")({
   head: () => ({
@@ -24,9 +24,9 @@ export const Route = createFileRoute("/reserve")({
       { name: "robots", content: "noindex" },
     ],
   }),
-  validateSearch: (s: Record<string, unknown>) => ({
-    pkg: packageSchema.parse(s.pkg ?? "solo"),
-  }),
+  validateSearch: z.object({
+    pkg: packageSchema.catch("solo").optional(),
+  }).parse,
   component: ReservePage,
 });
 
@@ -66,7 +66,7 @@ function ReservePageInner() {
   const [parkingOpts, setParkingOpts] = useState<ParkingOpt[]>(DEFAULT_PARKING);
   const [depositCfg, setDepositCfg] = useState<DepositCfg>(DEFAULT_DEPOSIT);
   const [cfgLoaded, setCfgLoaded] = useState(false);
-  const [pkg, setPkg] = useState<keyof PkgMap>(initialPkg);
+  const [pkg, setPkg] = useState<keyof PkgMap>(initialPkg ?? "solo");
   const [date, setDate] = useState("");
   const [time, setTime] = useState("21:00");
   const [shisha, setShisha] = useState<ShishaEntry[]>([]);
@@ -80,15 +80,19 @@ function ReservePageInner() {
   const [busy, setBusy] = useState(false);
 
   useEffect(() => {
-    supabase.from("pricing_config").select("key, value").then(({ data }) => {
-      if (!data) return;
-      for (const row of data) {
-        if (row.key === "packages") setPackages({ ...DEFAULT_PACKAGES, ...(row.value as PkgMap) });
-        if (row.key === "parking_options") setParkingOpts(row.value as ParkingOpt[]);
-        if (row.key === "deposit") setDepositCfg(row.value as DepositCfg);
-      }
-      setCfgLoaded(true);
-    });
+    supabase
+      .from("pricing_config")
+      .select("key, value")
+      .then(({ data }) => {
+        if (!data) return;
+        for (const row of data) {
+          if (row.key === "packages")
+            setPackages({ ...DEFAULT_PACKAGES, ...(row.value as PkgMap) });
+          if (row.key === "parking_options") setParkingOpts(row.value as ParkingOpt[]);
+          if (row.key === "deposit") setDepositCfg(row.value as DepositCfg);
+        }
+        setCfgLoaded(true);
+      });
   }, []);
 
   const pkgKey = pkg as keyof PkgMap;
@@ -105,15 +109,22 @@ function ReservePageInner() {
   const MIN_DEPOSIT = depositCfg.min_amount;
   const depositPct = depositCfg.type === "percentage" ? depositCfg.value / 100 : 1;
   const depositFlat = depositCfg.type === "flat" ? depositCfg.value : 0;
-  const deposit = depositCfg.type === "flat"
-    ? Math.min(Math.max(depositFlat, MIN_DEPOSIT), total)
-    : Math.min(Math.max(Math.round(total * depositPct), MIN_DEPOSIT), total);
+  const deposit =
+    depositCfg.type === "flat"
+      ? Math.min(Math.max(depositFlat, MIN_DEPOSIT), total)
+      : Math.min(Math.max(Math.round(total * depositPct), MIN_DEPOSIT), total);
 
   const submit = async () => {
     if (!date) return toast.error("Pick a date for your reservation.");
     setBusy(true);
-    const { data: { user } } = await supabase.auth.getUser();
-    if (!user) { toast.error("Please sign in first"); setBusy(false); return; }
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+    if (!user) {
+      toast.error("Please sign in first");
+      setBusy(false);
+      return;
+    }
     const { data: profile } = await supabase
       .from("profiles")
       .select("display_name, phone")
@@ -124,7 +135,9 @@ function ReservePageInner() {
   };
 
   const onPaymentSuccess = async (paymentId: string) => {
-    const { data: { user } } = await supabase.auth.getUser();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
     if (!user) return;
     const { data: profile } = await supabase
       .from("profiles")
@@ -145,7 +158,10 @@ function ReservePageInner() {
       drinks: drinks.length > 0 ? drinks : null,
       status: "pending",
     });
-    if (error) { toast.error(error.message); return; }
+    if (error) {
+      toast.error(error.message);
+      return;
+    }
     toast.success("Reservation confirmed! Check your phone for the STK receipt.");
     navigate({ to: "/profile" });
   };
@@ -326,10 +342,19 @@ function ReservePageInner() {
               disabled={busy}
               className="mt-5 w-full inline-flex items-center justify-center gap-2 rounded-2xl bg-gold px-5 py-3.5 text-sm font-semibold text-night-deep hover:shadow-[var(--shadow-glow)] transition disabled:opacity-60"
             >
-              {busy ? "Preparing..." : <>Pay KES {deposit.toLocaleString()} via M-Pesa <ArrowRight size={16} /></>}
+              {busy ? (
+                "Preparing..."
+              ) : (
+                <>
+                  Pay KES {deposit.toLocaleString()} via M-Pesa <ArrowRight size={16} />
+                </>
+              )}
             </button>
             <p className="mt-3 text-[11px] text-foreground/50 text-center leading-relaxed">
-              {deposit >= total ? "Full amount" : `${deposit >= MIN_DEPOSIT ? `${depositCfg.value}% deposit` : `KES ${MIN_DEPOSIT} minimum deposit`}`} — balance settled at the door. We'll send an STK push to your M-Pesa.
+              {deposit >= total
+                ? "Full amount"
+                : `${deposit >= MIN_DEPOSIT ? `${depositCfg.value}% deposit` : `KES ${MIN_DEPOSIT} minimum deposit`}`}{" "}
+              — balance settled at the door. We'll send an STK push to your M-Pesa.
             </p>
           </div>
 

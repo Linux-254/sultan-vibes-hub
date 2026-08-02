@@ -143,39 +143,44 @@ function RootComponent() {
     <QueryClientProvider client={queryClient}>
       <div className="dark">
         <AuthProvider>
-        <div style={{ display: ageConfirmed ? "none" : "flex" }} className="fixed inset-0 z-[999] items-center justify-center bg-night-deep/95 backdrop-blur-md">
-          <div className="glass rounded-3xl p-8 sm:p-10 kente-border max-w-sm mx-4 text-center shadow-[var(--shadow-elevated)]">
-            <div className="text-5xl mb-4">🔞</div>
-            <h2 className="font-display text-2xl sm:text-3xl">
-              Are you <span className="text-gold-gradient">18+</span>?
-            </h2>
-            <p className="text-foreground/60 text-sm mt-2">
-              Empire Kwa Sultan is an 18+ venue. You must be of legal age to enter.
-            </p>
-            <div className="mt-6 space-y-2">
-              <button
-                onClick={() => {
-                  setAgeConfirmed(true);
-                  try { sessionStorage.setItem("empire_age_confirmed", "true"); } catch {}
-                }}
-                className="w-full rounded-2xl bg-gold px-6 py-3 text-sm font-semibold text-night-deep hover:shadow-[var(--shadow-glow)] transition"
-              >
-                Yes, I'm 18+
-              </button>
-              <p className="text-xs text-foreground/50">You must be 18+ to access this site.</p>
+          <div
+            style={{ display: ageConfirmed ? "none" : "flex" }}
+            className="fixed inset-0 z-[999] items-center justify-center bg-night-deep/95 backdrop-blur-md"
+          >
+            <div className="glass rounded-3xl p-8 sm:p-10 kente-border max-w-sm mx-4 text-center shadow-[var(--shadow-elevated)]">
+              <div className="text-5xl mb-4">🔞</div>
+              <h2 className="font-display text-2xl sm:text-3xl">
+                Are you <span className="text-gold-gradient">18+</span>?
+              </h2>
+              <p className="text-foreground/60 text-sm mt-2">
+                Empire Kwa Sultan is an 18+ venue. You must be of legal age to enter.
+              </p>
+              <div className="mt-6 space-y-2">
+                <button
+                  onClick={() => {
+                    setAgeConfirmed(true);
+                    try {
+                      sessionStorage.setItem("empire_age_confirmed", "true");
+                    } catch {}
+                  }}
+                  className="w-full rounded-2xl bg-gold px-6 py-3 text-sm font-semibold text-night-deep hover:shadow-[var(--shadow-glow)] transition"
+                >
+                  Yes, I'm 18+
+                </button>
+                <p className="text-xs text-foreground/50">You must be 18+ to access this site.</p>
+              </div>
             </div>
           </div>
-        </div>
-        <SiteHeader />
-        <main className="pt-16 pb-24 lg:pb-0">
-          <Outlet />
-        </main>
-        <MobileBottomNav />
-        <SiteFooter />
-        <EventNotificationBar />
-        <Toaster />
-      </AuthProvider>
-    </div>
+          <SiteHeader />
+          <main className="pt-16 pb-24 lg:pb-0">
+            <Outlet />
+          </main>
+          <MobileBottomNav />
+          <SiteFooter />
+          <EventNotificationBar />
+          <Toaster />
+        </AuthProvider>
+      </div>
     </QueryClientProvider>
   );
 }

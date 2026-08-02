@@ -22,7 +22,14 @@ export const Route = createFileRoute("/admin/roles")({
 });
 
 type Row = Awaited<ReturnType<typeof listUsersWithRoles>>[number];
-type Role = "admin" | "crew" | "bartender" | "waitress" | "shisha_distributor" | "content_manager" | "security";
+type Role =
+  | "admin"
+  | "crew"
+  | "bartender"
+  | "waitress"
+  | "shisha_distributor"
+  | "content_manager"
+  | "security";
 
 const AREAS: { role: Role; label: string; desc: string; icon: React.ElementType }[] = [
   {

@@ -2,7 +2,15 @@ import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 
-type Role = "admin" | "crew" | "user" | "bartender" | "waitress" | "shisha_distributor" | "content_manager" | "security";
+type Role =
+  | "admin"
+  | "crew"
+  | "user"
+  | "bartender"
+  | "waitress"
+  | "shisha_distributor"
+  | "content_manager"
+  | "security";
 
 async function assertAdmin(supabase: any, userId: string) {
   const { data, error } = await supabase
@@ -71,7 +79,16 @@ export const grantRole = createServerFn({ method: "POST" })
     z
       .object({
         userId: z.string().uuid(),
-        role: z.enum(["admin", "crew", "user", "bartender", "waitress", "shisha_distributor", "content_manager", "security"]),
+        role: z.enum([
+          "admin",
+          "crew",
+          "user",
+          "bartender",
+          "waitress",
+          "shisha_distributor",
+          "content_manager",
+          "security",
+        ]),
       })
       .parse(d),
   )
@@ -91,7 +108,16 @@ export const revokeRole = createServerFn({ method: "POST" })
     z
       .object({
         userId: z.string().uuid(),
-        role: z.enum(["admin", "crew", "user", "bartender", "waitress", "shisha_distributor", "content_manager", "security"]),
+        role: z.enum([
+          "admin",
+          "crew",
+          "user",
+          "bartender",
+          "waitress",
+          "shisha_distributor",
+          "content_manager",
+          "security",
+        ]),
       })
       .parse(d),
   )

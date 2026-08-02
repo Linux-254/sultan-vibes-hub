@@ -2,10 +2,22 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import { Save, FileText, Plus, Trash2, GripVertical, Users, Crown, Heart, ShieldCheck } from "lucide-react";
+import {
+  Save,
+  FileText,
+  Plus,
+  Trash2,
+  GripVertical,
+  Users,
+  Crown,
+  Heart,
+  ShieldCheck,
+} from "lucide-react";
 
 export const Route = createFileRoute("/admin/pages")({
-  head: () => ({ meta: [{ title: "Site Pages — Empire Admin" }, { name: "robots", content: "noindex" }] }),
+  head: () => ({
+    meta: [{ title: "Site Pages — Empire Admin" }, { name: "robots", content: "noindex" }],
+  }),
   component: AdminPages,
 });
 
@@ -28,7 +40,9 @@ function AdminPages() {
     setLoading(false);
   };
 
-  useEffect(() => { load(); }, []);
+  useEffect(() => {
+    load();
+  }, []);
 
   const save = async (slug: string, content: string) => {
     setSaving(slug);
@@ -73,9 +87,7 @@ function AdminPages() {
               <div className="flex items-center gap-2 mb-3">
                 <FileText size={14} className="text-gold" />
                 <span className="font-display text-base">{p.title}</span>
-                <span className="text-[10px] font-mono text-foreground/40 ml-auto">
-                  {p.slug}
-                </span>
+                <span className="text-[10px] font-mono text-foreground/40 ml-auto">{p.slug}</span>
               </div>
               {p.slug === "about-values" ? (
                 <AboutValuesEditor
@@ -92,7 +104,9 @@ function AdminPages() {
               )}
               <div className="flex items-center justify-between mt-3">
                 <span className="text-[10px] text-foreground/40">
-                  {p.updated_at ? `Updated ${new Date(p.updated_at).toLocaleString()}` : "Not yet updated"}
+                  {p.updated_at
+                    ? `Updated ${new Date(p.updated_at).toLocaleString()}`
+                    : "Not yet updated"}
                 </span>
                 <button
                   onClick={() => save(p.slug, p.content)}
@@ -121,7 +135,10 @@ type ValueItem = { icon: string; title: string; body: string };
 
 function AboutValuesEditor({ value, onChange }: { value: string; onChange: (v: string) => void }) {
   let items: ValueItem[] = [];
-  try { const p = JSON.parse(value); if (Array.isArray(p)) items = p; } catch {}
+  try {
+    const p = JSON.parse(value);
+    if (Array.isArray(p)) items = p;
+  } catch {}
   if (!items.length) items = [{ icon: "Users", title: "", body: "" }];
 
   const setItems = (next: ValueItem[]) => onChange(JSON.stringify(next, null, 2));
@@ -153,7 +170,9 @@ function AboutValuesEditor({ value, onChange }: { value: string; onChange: (v: s
                 className="bg-night/60 border border-border/60 rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-gold"
               >
                 {VALUE_ICONS.map((ic) => (
-                  <option key={ic.value} value={ic.value}>{ic.label}</option>
+                  <option key={ic.value} value={ic.value}>
+                    {ic.label}
+                  </option>
                 ))}
               </select>
               <input

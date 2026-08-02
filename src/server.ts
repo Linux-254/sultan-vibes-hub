@@ -137,7 +137,10 @@ function addSecurityHeaders(response: Response): Response {
   headers.set("X-XSS-Protection", "1; mode=block");
   headers.set("Referrer-Policy", "strict-origin-when-cross-origin");
   headers.set("Permissions-Policy", "camera=(), microphone=(), geolocation=(self)");
-  headers.set("Content-Security-Policy", "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://api.fontshare.com https://cdn.fontshare.com; img-src 'self' data: blob: https:; font-src 'self' data: https://fonts.gstatic.com https://cdn.fontshare.com; connect-src 'self' https://rhdhaptcdjgnsbamgxyv.supabase.co wss://rhdhaptcdjgnsbamgxyv.supabase.co; frame-src 'self' https://www.google.com; object-src 'none'; base-uri 'self'");
+  headers.set(
+    "Content-Security-Policy",
+    "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://api.fontshare.com https://cdn.fontshare.com; img-src 'self' data: blob: https:; font-src 'self' data: https://fonts.gstatic.com https://cdn.fontshare.com; connect-src 'self' https://rhdhaptcdjgnsbamgxyv.supabase.co wss://rhdhaptcdjgnsbamgxyv.supabase.co; frame-src 'self' https://www.google.com; object-src 'none'; base-uri 'self'",
+  );
   // Cache static assets aggressively for repeat visits on slow networks
   try {
     const url = new URL(response.url);
@@ -145,7 +148,14 @@ function addSecurityHeaders(response: Response): Response {
       headers.set("Cache-Control", "public, max-age=31536000, immutable");
     } else if (url.pathname.match(/\.(js|css|webp|png|jpg|woff2?)$/)) {
       headers.set("Cache-Control", "public, max-age=31536000, immutable");
-    } else if (url.pathname === "/" || url.pathname.startsWith("/events") || url.pathname.startsWith("/about") || url.pathname.startsWith("/products") || url.pathname.startsWith("/vibe") || url.pathname.startsWith("/recap")) {
+    } else if (
+      url.pathname === "/" ||
+      url.pathname.startsWith("/events") ||
+      url.pathname.startsWith("/about") ||
+      url.pathname.startsWith("/products") ||
+      url.pathname.startsWith("/vibe") ||
+      url.pathname.startsWith("/recap")
+    ) {
       headers.set("Cache-Control", "public, max-age=60, stale-while-revalidate=300");
     }
   } catch {}

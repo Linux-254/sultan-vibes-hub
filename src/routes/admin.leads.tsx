@@ -16,9 +16,9 @@ type LeadRow = {
   id: string;
   lead_type: string;
   name: string;
-  email: string;
+  email: string | null;
   phone: string | null;
-  message: string;
+  message: string | null;
   status: string;
   notes: string | null;
   created_at: string;

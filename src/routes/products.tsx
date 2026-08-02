@@ -12,10 +12,14 @@ export const Route = createFileRoute("/products")({
       { title: "Shop — Empire Kwa Sultan" },
       {
         name: "description",
-        content: "Cocktails, liquor, beer, whisky, shisha, and CGS at Empire Kwa Sultan. Browse our full drink menu and shop online.",
+        content:
+          "Cocktails, liquor, beer, whisky, shisha, and CGS at Empire Kwa Sultan. Browse our full drink menu and shop online.",
       },
       { property: "og:title", content: "Empire Kwa Sultan Shop" },
-      { property: "og:description", content: "Cocktails, liquor, beer, whisky, shisha & CGS. Browse and order." },
+      {
+        property: "og:description",
+        content: "Cocktails, liquor, beer, whisky, shisha & CGS. Browse and order.",
+      },
     ],
   }),
   component: ProductsPage,
@@ -72,26 +76,34 @@ function ProductsPage() {
   }, []);
 
   const tabNames = ["All", ...categories.map((c) => c.name)];
-  const visible = tab === "All"
-    ? products
-    : products.filter((p) => {
-        const cat = categories.find((c) => c.name === tab);
-        return cat && p.category_id === cat.id;
-      });
+  const visible =
+    tab === "All"
+      ? products
+      : products.filter((p) => {
+          const cat = categories.find((c) => c.name === tab);
+          return cat && p.category_id === cat.id;
+        });
 
   const getCatSubtitle = (name: string) => categories.find((c) => c.name === name)?.subtitle;
 
   const addToCart = (product: Product) => {
     setCart((prev) => {
       const existing = prev.find((c) => c.product.id === product.id);
-      if (existing) return prev.map((c) => c.product.id === product.id ? { ...c, quantity: c.quantity + 1 } : c);
+      if (existing)
+        return prev.map((c) =>
+          c.product.id === product.id ? { ...c, quantity: c.quantity + 1 } : c,
+        );
       return [...prev, { product, quantity: 1 }];
     });
     setCartOpen(true);
   };
 
   const updateQty = (productId: string, delta: number) => {
-    setCart((prev) => prev.map((c) => c.product.id === productId ? { ...c, quantity: Math.max(1, c.quantity + delta) } : c));
+    setCart((prev) =>
+      prev.map((c) =>
+        c.product.id === productId ? { ...c, quantity: Math.max(1, c.quantity + delta) } : c,
+      ),
+    );
   };
 
   const removeItem = (productId: string) => {
@@ -99,11 +111,17 @@ function ProductsPage() {
     if (cart.length <= 1) setCartOpen(false);
   };
 
-  const cartTotal = useMemo(() => cart.reduce((s, c) => s + c.product.price * c.quantity, 0), [cart]);
+  const cartTotal = useMemo(
+    () => cart.reduce((s, c) => s + c.product.price * c.quantity, 0),
+    [cart],
+  );
   const cartCount = useMemo(() => cart.reduce((s, c) => s + c.quantity, 0), [cart]);
 
   const checkout = async () => {
-    if (!user) { toast.error("Sign in to place an order"); return; }
+    if (!user) {
+      toast.error("Sign in to place an order");
+      return;
+    }
     setCheckingOut(true);
     setShowMpesa(true);
   };
@@ -123,7 +141,10 @@ function ProductsPage() {
       })
       .select("id")
       .single();
-    if (orderErr) { toast.error(orderErr.message); return; }
+    if (orderErr) {
+      toast.error(orderErr.message);
+      return;
+    }
     const items = cart.map((c) => ({
       order_id: order.id,
       product_id: c.product.id,
@@ -132,7 +153,10 @@ function ProductsPage() {
       unit_price: c.product.price,
     }));
     const { error: itemsErr } = await supabase.from("order_items").insert(items);
-    if (itemsErr) { toast.error(itemsErr.message); return; }
+    if (itemsErr) {
+      toast.error(itemsErr.message);
+      return;
+    }
     setCart([]);
     setCartOpen(false);
     setShowMpesa(false);
@@ -155,7 +179,10 @@ function ProductsPage() {
         reference={`ORD-${Date.now().toString(36).toUpperCase().slice(0, 8)}`}
         description="Empire shop order"
         onSuccess={onPaymentSuccess}
-        onClose={() => { setShowMpesa(false); setCheckingOut(false); }}
+        onClose={() => {
+          setShowMpesa(false);
+          setCheckingOut(false);
+        }}
         open={showMpesa}
       />
 
@@ -200,7 +227,10 @@ function ProductsPage() {
           const catName = categories.find((c) => c.id === p.category_id)?.name ?? p.tag;
           const inCart = cart.find((c) => c.product.id === p.id);
           return (
-            <article key={p.id} className="glass rounded-3xl overflow-hidden hover:border-gold/40 transition group">
+            <article
+              key={p.id}
+              className="glass rounded-3xl overflow-hidden hover:border-gold/40 transition group"
+            >
               <div className="aspect-square bg-gradient-to-br from-gold/10 via-night to-lava/10 flex items-center justify-center relative">
                 <ShoppingBag size={48} className="text-gold/30" />
                 <span className="absolute top-3 left-3 text-[10px] uppercase tracking-wider font-mono px-2 py-0.5 rounded-full bg-night-deep/70 border border-border/40 text-foreground/70">
@@ -209,13 +239,21 @@ function ProductsPage() {
               </div>
               <div className="p-4">
                 {p.subcategory && (
-                  <div className="text-[10px] uppercase tracking-wider text-gold/70 mb-0.5">{p.subcategory}</div>
+                  <div className="text-[10px] uppercase tracking-wider text-gold/70 mb-0.5">
+                    {p.subcategory}
+                  </div>
                 )}
-                <div className="text-[11px] uppercase tracking-wider text-foreground/55">{p.brand}</div>
+                <div className="text-[11px] uppercase tracking-wider text-foreground/55">
+                  {p.brand}
+                </div>
                 <div className="font-display text-base mt-1 leading-snug">{p.name}</div>
-                {p.description && <p className="text-xs text-foreground/50 mt-1 line-clamp-2">{p.description}</p>}
+                {p.description && (
+                  <p className="text-xs text-foreground/50 mt-1 line-clamp-2">{p.description}</p>
+                )}
                 <div className="mt-3 flex items-center justify-between">
-                  <span className="text-gold font-mono text-sm">KES {p.price.toLocaleString()}</span>
+                  <span className="text-gold font-mono text-sm">
+                    KES {p.price.toLocaleString()}
+                  </span>
                   <button
                     onClick={() => addToCart(p)}
                     className={`text-xs uppercase tracking-wider px-3 py-1.5 rounded-full border transition ${inCart ? "bg-gold text-night-deep border-gold" : "border-gold/40 text-gold hover:bg-gold hover:text-night-deep"}`}
@@ -228,18 +266,26 @@ function ProductsPage() {
           );
         })}
         {visible.length === 0 && (
-          <div className="col-span-full text-center py-16 text-foreground/50 text-sm">No products in this category yet.</div>
+          <div className="col-span-full text-center py-16 text-foreground/50 text-sm">
+            No products in this category yet.
+          </div>
         )}
       </div>
 
       {/* Cart drawer */}
       {cartOpen && cart.length > 0 && (
         <div className="fixed inset-0 z-50" role="dialog" aria-modal="true">
-          <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={() => setCartOpen(false)} />
+          <div
+            className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+            onClick={() => setCartOpen(false)}
+          />
           <aside className="absolute right-0 top-16 h-[calc(100vh-4rem)] w-full max-w-md bg-night border-l border-border/40 p-5 flex flex-col overflow-y-auto shadow-2xl">
             <div className="flex items-center justify-between mb-5">
               <span className="font-display text-xl">Your Cart ({cartCount})</span>
-              <button onClick={() => setCartOpen(false)} className="h-9 w-9 rounded-xl border border-border/50 flex items-center justify-center hover:border-gold">
+              <button
+                onClick={() => setCartOpen(false)}
+                className="h-9 w-9 rounded-xl border border-border/50 flex items-center justify-center hover:border-gold"
+              >
                 <X size={14} />
               </button>
             </div>
@@ -251,19 +297,38 @@ function ProductsPage() {
                     <div className="text-[10px] text-foreground/50">{c.product.brand}</div>
                   </div>
                   <div className="flex items-center gap-2">
-                    <button onClick={() => updateQty(c.product.id, -1)} className="h-7 w-7 rounded-lg border border-border/50 flex items-center justify-center hover:border-gold text-xs"><Minus size={10} /></button>
+                    <button
+                      onClick={() => updateQty(c.product.id, -1)}
+                      className="h-7 w-7 rounded-lg border border-border/50 flex items-center justify-center hover:border-gold text-xs"
+                    >
+                      <Minus size={10} />
+                    </button>
                     <span className="text-sm font-mono w-6 text-center">{c.quantity}</span>
-                    <button onClick={() => updateQty(c.product.id, 1)} className="h-7 w-7 rounded-lg border border-border/50 flex items-center justify-center hover:border-gold text-xs"><Plus size={10} /></button>
+                    <button
+                      onClick={() => updateQty(c.product.id, 1)}
+                      className="h-7 w-7 rounded-lg border border-border/50 flex items-center justify-center hover:border-gold text-xs"
+                    >
+                      <Plus size={10} />
+                    </button>
                   </div>
-                  <span className="text-xs font-mono text-gold w-16 text-right">KES {(c.product.price * c.quantity).toLocaleString()}</span>
-                  <button onClick={() => removeItem(c.product.id)} className="h-7 w-7 rounded-lg border border-border/50 flex items-center justify-center hover:border-lava hover:text-lava text-xs"><X size={10} /></button>
+                  <span className="text-xs font-mono text-gold w-16 text-right">
+                    KES {(c.product.price * c.quantity).toLocaleString()}
+                  </span>
+                  <button
+                    onClick={() => removeItem(c.product.id)}
+                    className="h-7 w-7 rounded-lg border border-border/50 flex items-center justify-center hover:border-lava hover:text-lava text-xs"
+                  >
+                    <X size={10} />
+                  </button>
                 </div>
               ))}
             </div>
             <div className="mt-5 pt-4 border-t border-border/40">
               <div className="flex items-center justify-between mb-4">
                 <span className="text-sm text-foreground/60">Total</span>
-                <span className="font-display text-2xl text-gold-gradient">KES {cartTotal.toLocaleString()}</span>
+                <span className="font-display text-2xl text-gold-gradient">
+                  KES {cartTotal.toLocaleString()}
+                </span>
               </div>
               <button
                 onClick={checkout}
@@ -281,7 +346,8 @@ function ProductsPage() {
         <Crown className="text-gold" />
         <h3 className="font-display text-2xl mt-3">Want your brand here?</h3>
         <p className="mt-2 text-sm text-foreground/70">
-          Approved collaborators sell their products through Empire's storefront — we handle checkout, M-Pesa and weekly payouts. Apply via the Collabs hub.
+          Approved collaborators sell their products through Empire's storefront — we handle
+          checkout, M-Pesa and weekly payouts. Apply via the Collabs hub.
         </p>
       </div>
     </section>

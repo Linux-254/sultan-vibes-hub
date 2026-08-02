@@ -24,7 +24,9 @@ function ResetPasswordPage() {
 
   useEffect(() => {
     const check = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
       if (session) {
         setValid(true);
         setValidating(false);
