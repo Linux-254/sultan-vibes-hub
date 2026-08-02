@@ -63,38 +63,50 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
   head: () => ({
     meta: [
       { charSet: "utf-8" },
-      { name: "viewport", content: "width=device-width, initial-scale=1" },
+      { name: "viewport", content: "width=device-width, initial-scale=1, viewport-fit=cover" },
       { name: "theme-color", content: "#0D0D0D" },
-      { title: "Empire Kwa Sultan — Where Nairobi Comes to Breathe" },
+      { title: "Empire Kwa Sultan — Shisha & Chill Spots in Nairobi | Best Campus Hangout" },
       {
         name: "description",
         content:
-          "Afro-Kenyan lifestyle lounge & events venue on USIU Road, Nairobi. Shisha, cocktails, liquor, events, and Nairobi's best nightlife experience. Reserve your table today.",
+          "Empire Kwa Sultan is Nairobi's premier shisha lounge, cocktail bar & events venue on USIU Road. Kenya's best shisha, chill spot for students, nightlife, VIP tables & live DJs. Reserve your table today.",
       },
       {
         name: "keywords",
         content:
-          "shisha lounge Nairobi, cocktail bar Kenya, nightlife USIU Road, shisha Nairobi, Empire Kwa Sultan, hookah lounge Nairobi, events venue Nairobi, VIP lounge Nairobi, bar Nairobi, rooftop lounge, Afro house music, DJ Nairobi",
+          "shisha kenya, shisha lounge Nairobi, chill spots in Nairobi, campus hangouts, hookah lounge Nairobi, cocktail bar Kenya, nightlife USIU Road, Empire Kwa Sultan, shisha Nairobi, events venue Nairobi, VIP lounge Nairobi, bar Nairobi Kenya, student hangout Nairobi, rooftop lounge, Afro house music, DJ Nairobi, best shisha in Nairobi, where to chill in Nairobi",
       },
-      { property: "og:title", content: "Empire Kwa Sultan — Where Nairobi Comes to Breathe" },
+      { rel: "canonical", href: "https://empirekwasultan.co.ke/" },
+      {
+        property: "og:title",
+        content: "Empire Kwa Sultan — Nairobi's Best Shisha Lounge & Chill Spot",
+      },
       {
         property: "og:description",
-        content: "Shisha. Cocktails. Sound. Nairobi's premier lounge & events venue on USIU Road.",
+        content:
+          "Best shisha in Kenya, cocktails, chill spots & campus hangouts on USIU Road, Nairobi. Live DJs, VIP tables & unforgettable nights.",
       },
       { property: "og:type", content: "website" },
       { property: "og:site_name", content: "Empire Kwa Sultan" },
+      { property: "og:url", content: "https://empirekwasultan.co.ke/" },
+      { property: "og:image", content: "https://empirekwasultan.co.ke/favicon.png" },
+      { property: "og:locale", content: "en_KE" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:title", content: "Empire Kwa Sultan — Where Nairobi Comes to Breathe" },
+      { name: "twitter:title", content: "Empire Kwa Sultan — Shisha & Chill Spots in Nairobi" },
       {
         name: "twitter:description",
-        content: "Shisha. Cocktails. Sound. Nairobi's premier lounge & events venue.",
+        content: "Best shisha in Kenya, cocktails & campus hangouts on USIU Road, Nairobi.",
       },
+      { name: "twitter:image", content: "https://empirekwasultan.co.ke/favicon.png" },
+      { name: "geo.region", content: "KE" },
+      { name: "geo.placename", content: "Nairobi" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
       { rel: "icon", type: "image/png", href: "/favicon.png" },
       { rel: "apple-touch-icon", href: "/favicon.png" },
       { rel: "manifest", href: "/manifest.webmanifest" },
+      { rel: "canonical", href: "https://empirekwasultan.co.ke/" },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       { rel: "dns-prefetch", href: "https://rhdhaptcdjgnsbamgxyv.supabase.co" },
@@ -172,7 +184,7 @@ function RootComponent() {
             </div>
           </div>
           <SiteHeader />
-          <main className="pt-16 pb-24 lg:pb-0">
+          <main className="pt-16 pb-28 lg:pb-0">
             <Outlet />
           </main>
           <MobileBottomNav />

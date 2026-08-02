@@ -286,6 +286,28 @@
   padding-bottom: max(1.25rem, env(safe-area-inset-bottom));
 }
 
+/* Prevent any element from forcing horizontal page scroll on small screens */
+@media (max-width: 639px) {
+  img,
+  video,
+  svg {
+    max-width: 100%;
+  }
+  table {
+    table-layout: auto;
+  }
+  .min-w-0-forced {
+    min-width: 0;
+  }
+}
+
+/* Comfortable minimum touch target for primary mobile actions */
+@media (max-width: 639px) {
+  .touch-target {
+    min-height: 44px;
+  }
+}
+
 /* Horizontal scroll tabs — mobile */
 .scroll-x-auto {
   -webkit-overflow-scrolling: touch;

@@ -17,26 +17,28 @@ export function MobileBottomNav() {
 
   return (
     <nav className="fixed bottom-0 inset-x-0 z-50 block lg:hidden safe-area-bottom">
-      <div className="bg-night/80 backdrop-blur-2xl border-t border-gold/10">
-        <div className="flex items-center justify-around pb-1 pt-0.5">
+      <div className="bg-night/85 backdrop-blur-2xl border-t border-gold/10">
+        <div className="grid grid-cols-6 items-stretch">
           {BOTTOM_NAV.map((n) => {
             const active = n.to === "/" ? path === "/" : path.startsWith(n.to);
             return (
               <Link
                 key={n.to}
                 to={n.to}
-                className={`relative flex flex-col items-center gap-0 px-3 py-1.5 text-[10px] font-medium transition-all duration-150 active:scale-90 ${
-                  active ? "text-gold" : "text-foreground/40 hover:text-foreground/70"
+                aria-label={n.label}
+                className={`relative flex flex-col items-center justify-center gap-1 py-2 min-w-0 text-[10px] font-medium transition-all duration-150 active:scale-95 ${
+                  active ? "text-gold" : "text-foreground/45 hover:text-foreground/70"
                 }`}
               >
                 {active && (
-                  <span className="absolute -top-0.5 left-1/2 -translate-x-1/2 h-0.5 w-6 rounded-full bg-gold shadow-[0_0_8px_rgba(212,175,55,0.6)]" />
+                  <span className="absolute top-0 left-1/2 -translate-x-1/2 h-0.5 w-7 rounded-full bg-gold shadow-[0_0_8px_rgba(212,175,55,0.6)]" />
                 )}
                 <n.icon
-                  size={20}
+                  size={21}
+                  strokeWidth={active ? 2.4 : 2}
                   className={active ? "drop-shadow-[0_0_6px_rgba(212,175,55,0.4)]" : ""}
                 />
-                <span className="mt-0.5">{n.label}</span>
+                <span className="leading-none truncate">{n.label}</span>
               </Link>
             );
           })}
