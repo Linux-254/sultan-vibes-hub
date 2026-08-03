@@ -124,6 +124,7 @@ function ProductsPage() {
       return;
     }
     setCheckingOut(true);
+    setCartOpen(false);
     setShowMpesa(true);
   };
 
@@ -297,7 +298,7 @@ function ProductsPage() {
             className="absolute inset-0 bg-black/60 backdrop-blur-sm"
             onClick={() => setCartOpen(false)}
           />
-          <aside className="absolute right-0 top-16 bottom-0 w-full max-w-md bg-night border-l border-border/40 flex flex-col shadow-2xl">
+          <aside className="absolute bottom-0 left-0 right-0 sm:left-auto sm:right-0 top-16 sm:top-16 sm:bottom-0 sm:w-full sm:max-w-md max-h-[85vh] sm:max-h-none w-full bg-night border-t sm:border-t-0 sm:border-l border-border/40 flex flex-col shadow-2xl rounded-t-3xl sm:rounded-none">
             <div className="shrink-0 flex items-center justify-between px-5 pt-5">
               <span className="font-display text-xl">Your Cart ({cartCount})</span>
               <button

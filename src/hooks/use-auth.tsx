@@ -56,9 +56,34 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         }
       }
     });
-    supabase.auth.getSession().then(({ data }) => {
+    supabase.auth.getSession().then(async ({ data }) => {
       setSession(data.session);
-      if (data.session?.user) fetchRoles(data.session.user.id);
+      if (data.session?.user) {
+        // Validate the persisted token against Supabase. If it is stale or
+        // revoked (e.g. keys rotated or the session predates a domain change),
+        // clear it immediately so the user is cleanly signed out instead of
+        // being stuck in a loop of 401s that make data look "missing".
+        const { error } = await supabase.auth.getUser(data.session.access_token);
+        if (error && (error.status === 401 || error.status === 403)) {
+          try {
+            await supabase.auth.signOut();
+          } catch {
+            // signOut may fail on an already-dead token; clear storage below
+          }
+          if (typeof window !== "undefined") {
+            try {
+              window.localStorage.clear();
+              window.sessionStorage.clear();
+            } catch {
+              // storage may be unavailable; session is still cleared in memory
+            }
+          }
+          setSession(null);
+          setRoles([]);
+        } else {
+          fetchRoles(data.session.user.id);
+        }
+      }
       setLoading(false);
     });
     return () => subscription.unsubscribe();

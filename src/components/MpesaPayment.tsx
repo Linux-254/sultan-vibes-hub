@@ -3,7 +3,6 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/use-auth";
 import { toast } from "sonner";
 import { Smartphone, CheckCircle, XCircle, Loader2, X } from "lucide-react";
-
 interface MpesaPaymentProps {
   amount: number;
   reference: string;
@@ -112,7 +111,7 @@ export function MpesaPayment({
   if (!open) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/60 backdrop-blur-sm p-0 sm:p-4">
+    <div className="fixed inset-0 z-[60] flex items-end sm:items-center justify-center bg-black/60 backdrop-blur-sm p-0 sm:p-4">
       <div className="glass rounded-t-3xl sm:rounded-3xl p-6 w-full max-w-md border border-border/40 shadow-2xl max-h-[92vh] overflow-y-auto">
         <div className="flex items-center justify-between mb-5">
           <div className="flex items-center gap-2">
