@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/hooks/use-auth";
 import { toast } from "sonner";
 import { Smartphone, CheckCircle, XCircle, Loader2, X } from "lucide-react";
 
@@ -20,10 +21,30 @@ export function MpesaPayment({
   onClose,
   open,
 }: MpesaPaymentProps) {
+  const { user } = useAuth();
   const [phone, setPhone] = useState("");
   const [step, setStep] = useState<"form" | "sent" | "polling" | "success" | "failed">("form");
   const [checkoutId, setCheckoutId] = useState("");
   const [errMsg, setErrMsg] = useState("");
+
+  // Prefill the M-Pesa number from the signed-in user's saved profile
+  // so the cart/checkout flow doesn't ask for a number they already gave us.
+  useEffect(() => {
+    if (!open || !user) return;
+    (async () => {
+      try {
+        const { data } = await supabase
+          .from("profiles")
+          .select("phone")
+          .eq("id", user.id)
+          .maybeSingle();
+        if (data?.phone && !phone) setPhone(data.phone);
+      } catch {
+        // profile lookup is best-effort; user can still type a number
+      }
+    })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [open, user]);
 
   const reset = useCallback(() => {
     setPhone("");
