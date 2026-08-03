@@ -1,0 +1,23 @@
+# Normalize all text files to LF in the repo and on checkout.
+# This keeps eslint/prettier (which write LF) in sync with git so the
+# "modified but nothing changed" churn from CRLF never happens again.
+* text=auto eol=lf
+
+# Windows batch scripts must stay CRLF to run correctly.
+*.bat text eol=crlf
+*.cmd text eol=crlf
+
+# Binary files must not be touched.
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.webp binary
+*.gif binary
+*.ico binary
+*.woff binary
+*.woff2 binary
+*.ttf binary
+*.pdf binary
+*.mp3 binary
+*.mp4 binary
+*.zip binary
