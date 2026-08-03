@@ -7,4 +7,4 @@ Disallow: /chat
 Disallow: /sos
 Disallow: /reset-password
 
-Sitemap: https://empirekwasultan.co.ke/sitemap.xml
+Sitemap: https://sultan-vibes-hub.onrender.com/sitemap.xml

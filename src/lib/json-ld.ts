@@ -5,7 +5,7 @@ export function localBusinessJsonLd() {
     name: "Empire Kwa Sultan",
     description:
       "Afro-Kenyan shisha lounge, cocktail bar & events venue on USIU Road, Nairobi. Premium shisha, cocktails, liquor, beer, whisky, and the best nightlife in Kenya.",
-    url: "https://empirekwasultan.co.ke",
+    url: "https://sultan-vibes-hub.onrender.com",
     telephone: "+254-XXX-XXX-XXX",
     address: {
       "@type": "PostalAddress",
@@ -61,7 +61,7 @@ export function eventJsonLd(event: {
     organizer: {
       "@type": "Organization",
       name: "Empire Kwa Sultan",
-      url: "https://empirekwasultan.co.ke",
+      url: "https://sultan-vibes-hub.onrender.com",
     },
     url: event.url,
   };
