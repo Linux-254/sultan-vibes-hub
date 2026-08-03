@@ -7,10 +7,11 @@ const CONSUMER_KEY =
 const CONSUMER_SECRET =
   process.env.MPESA_CONSUMER_SECRET ??
   "dDORASu9wp4PARVYwH8PJU7DqrVHSGTgKmPpkOLPhCRLCQW4qgIAEeRphw1tKjmy";
-// Daraja sandbox defaults — 174379 is the standard test till and the passkey is
-// Safaricom's public sandbox passkey. Override with real credentials via env.
+// Daraja sandbox defaults — 174379 is the shared sandbox test till and the
+// passkey is Safaricom's published sandbox passkey. Override with real
+// credentials via env.
 const PASSKEY =
-  process.env.MPESA_PASSKEY ?? "bfb279f9aa9bdbcf158e97dd9a467552e2d03a9931ed85d6daaf27f11d3e5c8";
+  process.env.MPESA_PASSKEY ?? "bfb279f9aa9bdbcf158e97dd71a467cd2e0c893059b10f78e6b72ada1ed2c919";
 const SHORTCODE = process.env.MPESA_SHORTCODE ?? "174379";
 const MPESA_API_BASE = process.env.MPESA_API_BASE ?? "https://sandbox.safaricom.co.ke";
 const CALLBACK_URL =
