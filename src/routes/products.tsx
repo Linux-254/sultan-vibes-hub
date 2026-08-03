@@ -297,8 +297,8 @@ function ProductsPage() {
             className="absolute inset-0 bg-black/60 backdrop-blur-sm"
             onClick={() => setCartOpen(false)}
           />
-          <aside className="absolute right-0 top-16 h-[calc(100vh-4rem)] w-full max-w-md bg-night border-l border-border/40 p-5 flex flex-col overflow-y-auto shadow-2xl">
-            <div className="flex items-center justify-between mb-5">
+          <aside className="absolute right-0 top-16 bottom-0 w-full max-w-md bg-night border-l border-border/40 flex flex-col shadow-2xl">
+            <div className="shrink-0 flex items-center justify-between px-5 pt-5">
               <span className="font-display text-xl">Your Cart ({cartCount})</span>
               <button
                 onClick={() => setCartOpen(false)}
@@ -307,12 +307,15 @@ function ProductsPage() {
                 <X size={14} />
               </button>
             </div>
-            <div className="flex-1 space-y-3">
+            <div className="flex-1 min-h-0 overflow-y-auto space-y-3 px-5 pt-4 pb-4">
               {cart.map((c) => (
-                <div key={c.product.id} className="glass rounded-2xl p-4 flex items-center gap-3">
+                <div key={c.product.id} className="glass rounded-2xl p-3.5 flex items-center gap-3">
                   <div className="flex-1 min-w-0">
                     <div className="text-sm font-medium truncate">{c.product.name}</div>
                     <div className="text-[10px] text-foreground/50">{c.product.brand}</div>
+                    <div className="text-[10px] font-mono text-gold mt-0.5 sm:hidden">
+                      KES {(c.product.price * c.quantity).toLocaleString()}
+                    </div>
                   </div>
                   <div className="flex items-center gap-2">
                     <button
@@ -329,7 +332,7 @@ function ProductsPage() {
                       <Plus size={10} />
                     </button>
                   </div>
-                  <span className="text-xs font-mono text-gold w-16 text-right">
+                  <span className="text-xs font-mono text-gold w-16 text-right hidden sm:block">
                     KES {(c.product.price * c.quantity).toLocaleString()}
                   </span>
                   <button
@@ -341,7 +344,7 @@ function ProductsPage() {
                 </div>
               ))}
             </div>
-            <div className="mt-5 pt-4 border-t border-border/40">
+            <div className="shrink-0 px-5 pt-4 pb-5 border-t border-border/40 bg-night-deep/60">
               <div className="flex items-center justify-between mb-4">
                 <span className="text-sm text-foreground/60">Total</span>
                 <span className="font-display text-2xl text-gold-gradient">

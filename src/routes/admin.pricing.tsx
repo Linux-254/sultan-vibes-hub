@@ -621,10 +621,10 @@ export function AdminPricing() {
                 <thead className="text-left text-xs uppercase tracking-wider text-foreground/50 bg-white/[0.02]">
                   <tr>
                     <th className="px-4 py-3">Name</th>
-                    <th className="px-4 py-3">Code</th>
+                    <th className="px-4 py-3 hidden sm:table-cell">Code</th>
                     <th className="px-4 py-3">Value</th>
-                    <th className="px-4 py-3">Applies to</th>
-                    <th className="px-4 py-3">Uses</th>
+                    <th className="px-4 py-3 hidden md:table-cell">Applies to</th>
+                    <th className="px-4 py-3 hidden md:table-cell">Uses</th>
                     <th className="px-4 py-3">Active</th>
                     <th className="px-4 py-3 text-right">Actions</th>
                   </tr>
@@ -635,7 +635,7 @@ export function AdminPricing() {
                       <td className="px-4 py-3">
                         <div className="font-medium">{d.name}</div>
                       </td>
-                      <td className="px-4 py-3">
+                      <td className="px-4 py-3 hidden sm:table-cell">
                         {d.code ? (
                           <span className="font-mono text-xs bg-gold/10 text-gold px-2 py-0.5 rounded">
                             {d.code}
@@ -649,8 +649,10 @@ export function AdminPricing() {
                           ? `${d.value}%`
                           : `KES ${Number(d.value).toLocaleString()}`}
                       </td>
-                      <td className="px-4 py-3 text-xs capitalize">{d.applicable_to}</td>
-                      <td className="px-4 py-3 text-xs text-foreground/60">
+                      <td className="px-4 py-3 text-xs capitalize hidden md:table-cell">
+                        {d.applicable_to}
+                      </td>
+                      <td className="px-4 py-3 text-xs text-foreground/60 hidden md:table-cell">
                         {d.used_count}
                         {d.max_uses ? ` / ${d.max_uses}` : ""}
                       </td>
@@ -717,7 +719,7 @@ export function AdminPricing() {
               <thead className="text-left text-xs uppercase tracking-wider text-foreground/50 bg-white/[0.02]">
                 <tr>
                   <th className="px-4 py-3">Event</th>
-                  <th className="px-4 py-3">Date</th>
+                  <th className="px-4 py-3 hidden sm:table-cell">Date</th>
                   <th className="px-4 py-3">Price</th>
                   <th className="px-4 py-3">Status</th>
                   <th className="px-4 py-3">Requires Payment</th>
@@ -727,7 +729,9 @@ export function AdminPricing() {
                 {events.map((e) => (
                   <tr key={e.id} className="border-t border-border/30 hover:bg-white/[0.02]">
                     <td className="px-4 py-3 font-medium">{e.name}</td>
-                    <td className="px-4 py-3 text-xs text-foreground/60">{e.event_date}</td>
+                    <td className="px-4 py-3 text-xs text-foreground/60 hidden sm:table-cell">
+                      {e.event_date}
+                    </td>
                     <td className="px-4 py-3 font-mono text-gold">
                       KES {Number(e.ticket_price).toLocaleString()}
                     </td>

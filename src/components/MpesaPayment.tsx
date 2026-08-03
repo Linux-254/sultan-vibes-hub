@@ -56,6 +56,7 @@ export function MpesaPayment({
   const submit = async () => {
     const cleaned = phone.replace(/[\s\-]/g, "");
     if (cleaned.length < 10) return toast.error("Enter a valid M-Pesa phone number");
+    if (!user) return toast.error("Sign in to pay");
     setStep("sent");
     try {
       const { mpesaStkPush } = await import("@/lib/mpesa.functions");
@@ -111,8 +112,8 @@ export function MpesaPayment({
   if (!open) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
-      <div className="glass rounded-3xl p-6 w-full max-w-md border border-border/40 shadow-2xl">
+    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/60 backdrop-blur-sm p-0 sm:p-4">
+      <div className="glass rounded-t-3xl sm:rounded-3xl p-6 w-full max-w-md border border-border/40 shadow-2xl max-h-[92vh] overflow-y-auto">
         <div className="flex items-center justify-between mb-5">
           <div className="flex items-center gap-2">
             <Smartphone size={18} className="text-savanna" />
@@ -136,6 +137,9 @@ export function MpesaPayment({
               <label className="eyeblock">M-Pesa phone number</label>
               <input
                 name="mpesa-phone"
+                type="tel"
+                inputMode="numeric"
+                autoComplete="tel"
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
                 placeholder="e.g. 0712345678"
@@ -145,10 +149,10 @@ export function MpesaPayment({
             </div>
             <button
               onClick={submit}
-              disabled={phone.length < 10}
+              disabled={phone.length < 10 || !user}
               className="w-full rounded-2xl bg-savanna px-5 py-3 text-sm font-semibold text-white hover:opacity-90 transition disabled:opacity-50 inline-flex items-center justify-center gap-2"
             >
-              <Smartphone size={16} /> Pay with M-Pesa
+              <Smartphone size={16} /> {!user ? "Sign in to pay" : "Pay with M-Pesa"}
             </button>
           </div>
         )}

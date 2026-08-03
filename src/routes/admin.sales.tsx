@@ -416,7 +416,7 @@ export function AdminSales() {
                 <thead className="text-left text-xs uppercase tracking-wider text-foreground/50 bg-white/[0.02]">
                   <tr>
                     <th className="px-4 py-3">Product</th>
-                    <th className="px-4 py-3">Category</th>
+                    <th className="px-4 py-3 hidden sm:table-cell">Category</th>
                     <th className="px-4 py-3 text-right">Stock</th>
                     <th className="px-4 py-3">Status</th>
                   </tr>
@@ -439,7 +439,7 @@ export function AdminSales() {
                       return (
                         <tr key={p.id} className="border-t border-border/30 hover:bg-white/[0.02]">
                           <td className="px-4 py-3 font-medium">{p.name}</td>
-                          <td className="px-4 py-3">
+                          <td className="px-4 py-3 hidden sm:table-cell">
                             <span className="px-2 py-1 rounded-full text-[10px] uppercase tracking-wider bg-foreground/10 text-foreground/60">
                               {catName}
                             </span>
@@ -478,7 +478,7 @@ export function AdminSales() {
                   <tr>
                     <th className="px-4 py-3">Date</th>
                     <th className="px-4 py-3">Ticket #</th>
-                    <th className="px-4 py-3">Items</th>
+                    <th className="px-4 py-3 hidden md:table-cell">Items</th>
                     <th className="px-4 py-3">Status</th>
                     <th className="px-4 py-3 text-right">Total</th>
                   </tr>
@@ -492,7 +492,7 @@ export function AdminSales() {
                       <td className="px-4 py-3 font-mono text-xs">
                         {o.ticket_number ?? o.id.slice(0, 8)}
                       </td>
-                      <td className="px-4 py-3 text-foreground/70">
+                      <td className="px-4 py-3 text-foreground/70 hidden md:table-cell">
                         {o.order_items.map((i) => `${i.quantity}x ${i.name}`).join(", ") || "—"}
                       </td>
                       <td className="px-4 py-3">

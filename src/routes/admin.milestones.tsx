@@ -209,8 +209,8 @@ export function AdminMilestones() {
               <tr>
                 <th className="px-4 py-3">Date</th>
                 <th className="px-4 py-3">Title</th>
-                <th className="px-4 py-3">Body</th>
-                <th className="px-4 py-3">Order</th>
+                <th className="px-4 py-3 hidden md:table-cell">Body</th>
+                <th className="px-4 py-3 hidden sm:table-cell">Order</th>
                 <th className="px-4 py-3 text-right">Actions</th>
               </tr>
             </thead>
@@ -226,14 +226,14 @@ export function AdminMilestones() {
                   <td className="px-4 py-3">
                     <div className="font-medium">{r.title}</div>
                   </td>
-                  <td className="px-4 py-3">
+                  <td className="px-4 py-3 hidden md:table-cell">
                     {r.body && (
                       <div className="text-xs text-foreground/50 truncate max-w-[200px]">
                         {r.body}
                       </div>
                     )}
                   </td>
-                  <td className="px-4 py-3">
+                  <td className="px-4 py-3 hidden sm:table-cell">
                     <div className="flex items-center gap-1.5 text-foreground/70">
                       <Hash size={12} className="text-gold" />
                       {r.sort_order}

@@ -537,9 +537,9 @@ export function AdminPeople() {
               <thead className="text-left text-xs uppercase tracking-wider text-foreground/50 bg-white/[0.02]">
                 <tr>
                   <th className="px-4 py-3">Talent</th>
-                  <th className="px-4 py-3">Type</th>
+                  <th className="px-4 py-3 hidden sm:table-cell">Type</th>
                   <th className="px-4 py-3">Status</th>
-                  <th className="px-4 py-3">Featured</th>
+                  <th className="px-4 py-3 hidden md:table-cell">Featured</th>
                   <th className="px-4 py-3 text-right">Actions</th>
                 </tr>
               </thead>
@@ -567,7 +567,7 @@ export function AdminPeople() {
                           </div>
                         </div>
                       </td>
-                      <td className="px-4 py-3">
+                      <td className="px-4 py-3 hidden sm:table-cell">
                         <div className="flex items-center gap-1.5 text-foreground/70">
                           <Icon size={12} className="text-gold" />
                           {r.talent_type}
@@ -580,7 +580,7 @@ export function AdminPeople() {
                           {r.status}
                         </span>
                       </td>
-                      <td className="px-4 py-3">
+                      <td className="px-4 py-3 hidden md:table-cell">
                         {r.featured ? (
                           <Star size={14} className="text-gold fill-gold" />
                         ) : (
@@ -635,8 +635,8 @@ export function AdminPeople() {
               <thead className="text-left text-xs uppercase tracking-wider text-foreground/50 bg-white/[0.02]">
                 <tr>
                   <th className="px-4 py-3">Partner</th>
-                  <th className="px-4 py-3">Type</th>
-                  <th className="px-4 py-3">Slug</th>
+                  <th className="px-4 py-3 hidden sm:table-cell">Type</th>
+                  <th className="px-4 py-3 hidden md:table-cell">Slug</th>
                   <th className="px-4 py-3">Featured</th>
                   <th className="px-4 py-3 text-right">Actions</th>
                 </tr>
@@ -663,14 +663,16 @@ export function AdminPeople() {
                         </div>
                       </div>
                     </td>
-                    <td className="px-4 py-3">
+                    <td className="px-4 py-3 hidden sm:table-cell">
                       <span
                         className={`px-2 py-1 rounded-full text-[10px] uppercase tracking-wider ${TYPE_TONE[r.partner_type] ?? "bg-foreground/10 text-foreground/60"}`}
                       >
                         {r.partner_type}
                       </span>
                     </td>
-                    <td className="px-4 py-3 font-mono text-xs text-foreground/60">{r.slug}</td>
+                    <td className="px-4 py-3 font-mono text-xs text-foreground/60 hidden md:table-cell">
+                      {r.slug}
+                    </td>
                     <td className="px-4 py-3">
                       {r.featured ? (
                         <Eye size={14} className="text-gold" />

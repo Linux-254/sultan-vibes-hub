@@ -89,8 +89,8 @@ export function AdminReservations() {
               <tr>
                 <th className="px-4 py-3">When</th>
                 <th className="px-4 py-3">Guest</th>
-                <th className="px-4 py-3">Party</th>
-                <th className="px-4 py-3">Notes</th>
+                <th className="px-4 py-3 hidden sm:table-cell">Party</th>
+                <th className="px-4 py-3 hidden md:table-cell">Notes</th>
                 <th className="px-4 py-3">Status</th>
                 <th className="px-4 py-3 text-right">Actions</th>
               </tr>
@@ -108,8 +108,8 @@ export function AdminReservations() {
                     <div className="font-medium">{r.full_name}</div>
                     <div className="text-xs text-foreground/60">{r.phone}</div>
                   </td>
-                  <td className="px-4 py-3">{r.party_size}</td>
-                  <td className="px-4 py-3 max-w-[260px] text-foreground/70 text-xs">
+                  <td className="px-4 py-3 hidden sm:table-cell">{r.party_size}</td>
+                  <td className="px-4 py-3 max-w-[260px] text-foreground/70 text-xs hidden md:table-cell">
                     {r.table_preference && <div>📍 {r.table_preference}</div>}
                     {r.special_requests && (
                       <div className="truncate" title={r.special_requests}>

@@ -468,11 +468,11 @@ export function AdminInventory() {
               <thead className="text-left text-xs uppercase tracking-wider text-foreground/50 bg-white/[0.02]">
                 <tr>
                   <th className="px-4 py-3">Product</th>
-                  <th className="px-4 py-3">Price</th>
+                  <th className="px-4 py-3 hidden sm:table-cell">Price</th>
                   <th className="px-4 py-3">Stock</th>
-                  <th className="px-4 py-3">Category</th>
-                  <th className="px-4 py-3">Sub</th>
-                  <th className="px-4 py-3">Active</th>
+                  <th className="px-4 py-3 hidden sm:table-cell">Category</th>
+                  <th className="px-4 py-3 hidden md:table-cell">Sub</th>
+                  <th className="px-4 py-3 hidden md:table-cell">Active</th>
                   <th className="px-4 py-3 text-right">Actions</th>
                 </tr>
               </thead>
@@ -500,7 +500,7 @@ export function AdminInventory() {
                           </div>
                         </div>
                       </td>
-                      <td className="px-4 py-3 font-mono text-gold">
+                      <td className="px-4 py-3 font-mono text-gold hidden sm:table-cell">
                         KES {Number(r.price).toLocaleString()}
                       </td>
                       <td className="px-4 py-3 font-mono">
@@ -510,17 +510,17 @@ export function AdminInventory() {
                           <span className="text-lava/80">0</span>
                         )}
                       </td>
-                      <td className="px-4 py-3">
+                      <td className="px-4 py-3 hidden sm:table-cell">
                         <span
                           className={`px-2 py-1 rounded-full text-[10px] uppercase tracking-wider ${TAG_TONE[catName ?? r.tag] ?? "bg-foreground/10 text-foreground/60"}`}
                         >
                           {catName ?? r.tag}
                         </span>
                       </td>
-                      <td className="px-4 py-3 text-xs text-foreground/50">
+                      <td className="px-4 py-3 text-xs text-foreground/50 hidden md:table-cell">
                         {r.subcategory || "—"}
                       </td>
-                      <td className="px-4 py-3">
+                      <td className="px-4 py-3 hidden md:table-cell">
                         {r.active ? (
                           <Check size={14} className="text-savanna" />
                         ) : (
@@ -576,9 +576,9 @@ export function AdminInventory() {
                 <tr>
                   <th className="px-4 py-3 w-8"></th>
                   <th className="px-4 py-3">Category</th>
-                  <th className="px-4 py-3">Subtitle</th>
-                  <th className="px-4 py-3">Icon</th>
-                  <th className="px-4 py-3">Order</th>
+                  <th className="px-4 py-3 hidden md:table-cell">Subtitle</th>
+                  <th className="px-4 py-3 hidden sm:table-cell">Icon</th>
+                  <th className="px-4 py-3 hidden sm:table-cell">Order</th>
                   <th className="px-4 py-3">Active</th>
                   <th className="px-4 py-3 text-right">Actions</th>
                 </tr>
@@ -595,11 +595,13 @@ export function AdminInventory() {
                         <span className="font-medium">{r.name}</span>
                       </div>
                     </td>
-                    <td className="px-4 py-3 text-foreground/60 text-xs">{r.subtitle || "—"}</td>
-                    <td className="px-4 py-3 text-xs font-mono text-foreground/50">
+                    <td className="px-4 py-3 text-foreground/60 text-xs hidden md:table-cell">
+                      {r.subtitle || "—"}
+                    </td>
+                    <td className="px-4 py-3 text-xs font-mono text-foreground/50 hidden sm:table-cell">
                       {r.icon || "—"}
                     </td>
-                    <td className="px-4 py-3 font-mono text-xs text-foreground/50">
+                    <td className="px-4 py-3 font-mono text-xs text-foreground/50 hidden sm:table-cell">
                       {r.sort_order}
                     </td>
                     <td className="px-4 py-3">

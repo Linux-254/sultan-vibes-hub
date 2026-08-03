@@ -186,9 +186,9 @@ export function AdminOrders() {
               <thead className="text-left text-xs uppercase tracking-wider text-foreground/50 bg-white/[0.02]">
                 <tr>
                   <th className="px-4 py-3">Ticket #</th>
-                  <th className="px-4 py-3">Date</th>
+                  <th className="px-4 py-3 hidden sm:table-cell">Date</th>
                   <th className="px-4 py-3">Customer</th>
-                  <th className="px-4 py-3">Items</th>
+                  <th className="px-4 py-3 hidden md:table-cell">Items</th>
                   <th className="px-4 py-3">Status</th>
                   <th className="px-4 py-3 text-right">Total</th>
                   <th className="px-4 py-3 text-right">Actions</th>
@@ -335,7 +335,7 @@ function OrderRowComponent({
             <Ticket size={12} /> {order.ticket_number ?? order.id.slice(0, 8)}
           </button>
         </td>
-        <td className="px-4 py-3 text-xs text-foreground/70 whitespace-nowrap">
+        <td className="px-4 py-3 text-xs text-foreground/70 whitespace-nowrap hidden sm:table-cell">
           {new Date(order.created_at).toLocaleDateString()}
         </td>
         <td className="px-4 py-3">
@@ -344,7 +344,7 @@ function OrderRowComponent({
             <div className="text-xs text-foreground/50">{order.delivery_phone}</div>
           )}
         </td>
-        <td className="px-4 py-3 text-sm text-foreground/70">
+        <td className="px-4 py-3 text-sm text-foreground/70 hidden md:table-cell">
           {order.order_items.map((i) => `${i.quantity}x ${i.name}`).join(", ") || "—"}
         </td>
         <td className="px-4 py-3">

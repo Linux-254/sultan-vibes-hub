@@ -473,8 +473,8 @@ export function AdminEvents() {
                 <tr>
                   <th className="px-4 py-3">Event</th>
                   <th className="px-4 py-3">Date</th>
-                  <th className="px-4 py-3">Price</th>
-                  <th className="px-4 py-3">Countdown</th>
+                  <th className="px-4 py-3 hidden sm:table-cell">Price</th>
+                  <th className="px-4 py-3 hidden md:table-cell">Countdown</th>
                   <th className="px-4 py-3">Status</th>
                   <th className="px-4 py-3 text-right">Actions</th>
                 </tr>
@@ -499,10 +499,10 @@ export function AdminEvents() {
                         <div className="text-xs text-foreground/50">{r.event_time}</div>
                       )}
                     </td>
-                    <td className="px-4 py-3 font-mono text-gold">
+                    <td className="px-4 py-3 font-mono text-gold hidden sm:table-cell">
                       KES {Number(r.ticket_price).toLocaleString()}
                     </td>
-                    <td className="px-4 py-3">
+                    <td className="px-4 py-3 hidden md:table-cell">
                       {r.countdown_enabled ? (
                         <Eye size={14} className="text-savanna" />
                       ) : (
@@ -565,9 +565,9 @@ export function AdminEvents() {
                 <tr>
                   <th className="px-4 py-3">Event</th>
                   <th className="px-4 py-3">Date</th>
-                  <th className="px-4 py-3">Tags</th>
-                  <th className="px-4 py-3">Going</th>
-                  <th className="px-4 py-3">Featured</th>
+                  <th className="px-4 py-3 hidden sm:table-cell">Tags</th>
+                  <th className="px-4 py-3 hidden sm:table-cell">Going</th>
+                  <th className="px-4 py-3 hidden md:table-cell">Featured</th>
                   <th className="px-4 py-3 text-right">Actions</th>
                 </tr>
               </thead>
@@ -596,7 +596,7 @@ export function AdminEvents() {
                         {r.event_date}
                       </div>
                     </td>
-                    <td className="px-4 py-3">
+                    <td className="px-4 py-3 hidden sm:table-cell">
                       <div className="flex flex-wrap gap-1">
                         {(r.tags ?? []).map((tag) => (
                           <span
@@ -608,13 +608,13 @@ export function AdminEvents() {
                         ))}
                       </div>
                     </td>
-                    <td className="px-4 py-3">
+                    <td className="px-4 py-3 hidden sm:table-cell">
                       <div className="flex items-center gap-1.5 text-foreground/70">
                         <Users size={12} className="text-savanna" />
                         {r.going_count}
                       </div>
                     </td>
-                    <td className="px-4 py-3">
+                    <td className="px-4 py-3 hidden md:table-cell">
                       {r.featured ? (
                         <Star size={14} className="text-gold fill-gold" />
                       ) : (

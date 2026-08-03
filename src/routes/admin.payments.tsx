@@ -91,8 +91,8 @@ export function AdminPayments() {
               <tr>
                 <th className="px-4 py-3">When</th>
                 <th className="px-4 py-3">Amount</th>
-                <th className="px-4 py-3">Phone</th>
-                <th className="px-4 py-3">M-Pesa receipt</th>
+                <th className="px-4 py-3 hidden sm:table-cell">Phone</th>
+                <th className="px-4 py-3 hidden md:table-cell">M-Pesa receipt</th>
                 <th className="px-4 py-3">Status</th>
                 <th className="px-4 py-3 text-right">Actions</th>
               </tr>
@@ -106,8 +106,10 @@ export function AdminPayments() {
                   <td className="px-4 py-3 font-medium">
                     {r.currency} {Number(r.amount).toLocaleString()}
                   </td>
-                  <td className="px-4 py-3 text-foreground/70">{r.phone ?? "—"}</td>
-                  <td className="px-4 py-3 font-mono text-xs">{r.mpesa_receipt ?? "—"}</td>
+                  <td className="px-4 py-3 text-foreground/70 hidden sm:table-cell">{r.phone ?? "—"}</td>
+                  <td className="px-4 py-3 font-mono text-xs hidden md:table-cell">
+                    {r.mpesa_receipt ?? "—"}
+                  </td>
                   <td className="px-4 py-3">
                     <span
                       className={`px-2 py-1 rounded-full text-[10px] uppercase tracking-wider ${TONE[r.status as Status]}`}
