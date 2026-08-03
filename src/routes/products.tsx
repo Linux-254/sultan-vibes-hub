@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { ShoppingBag, Crown, X, Minus, Plus, Smartphone } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
@@ -53,6 +53,7 @@ interface CartItem {
 }
 
 function ProductsPage() {
+  const navigate = useNavigate();
   const { user } = useAuth();
   const [products, setProducts] = useState<Product[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
@@ -121,6 +122,7 @@ function ProductsPage() {
   const checkout = async () => {
     if (!user) {
       toast.error("Sign in to place an order");
+      navigate({ to: "/auth" });
       return;
     }
     setCheckingOut(true);
@@ -293,12 +295,12 @@ function ProductsPage() {
 
       {/* Cart drawer */}
       {cartOpen && cart.length > 0 && (
-        <div className="fixed inset-0 z-50" role="dialog" aria-modal="true">
+        <div className="fixed inset-0 z-[55]" role="dialog" aria-modal="true">
           <div
             className="absolute inset-0 bg-black/60 backdrop-blur-sm"
             onClick={() => setCartOpen(false)}
           />
-          <aside className="absolute bottom-0 left-0 right-0 sm:left-auto sm:right-0 top-16 sm:top-16 sm:bottom-0 sm:w-full sm:max-w-md max-h-[85vh] sm:max-h-none w-full bg-night border-t sm:border-t-0 sm:border-l border-border/40 flex flex-col shadow-2xl rounded-t-3xl sm:rounded-none">
+          <aside className="absolute inset-x-0 bottom-0 sm:inset-x-auto sm:top-16 sm:right-0 sm:bottom-0 sm:w-full sm:max-w-md max-h-[70vh] sm:max-h-none w-full bg-night border-t sm:border-t-0 sm:border-l border-border/40 flex flex-col shadow-2xl rounded-t-3xl sm:rounded-none">
             <div className="shrink-0 flex items-center justify-between px-5 pt-5">
               <span className="font-display text-xl">Your Cart ({cartCount})</span>
               <button
@@ -345,7 +347,7 @@ function ProductsPage() {
                 </div>
               ))}
             </div>
-            <div className="shrink-0 px-5 pt-4 pb-5 border-t border-border/40 bg-night-deep/60">
+            <div className="shrink-0 px-5 pt-4 pb-[max(1.25rem,env(safe-area-inset-bottom))] border-t border-border/40 bg-night-deep/60">
               <div className="flex items-center justify-between mb-4">
                 <span className="text-sm text-foreground/60">Total</span>
                 <span className="font-display text-2xl text-gold-gradient">
