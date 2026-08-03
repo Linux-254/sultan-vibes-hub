@@ -14,7 +14,7 @@ const PASSKEY =
 const SHORTCODE = process.env.MPESA_SHORTCODE ?? "174379";
 const MPESA_API_BASE = process.env.MPESA_API_BASE ?? "https://sandbox.safaricom.co.ke";
 const CALLBACK_URL =
-  process.env.MPESA_CALLBACK_URL ?? "https://empire-kwa-sultan.com/api/mpesa-callback";
+  process.env.MPESA_CALLBACK_URL ?? "https://empirekwasultan.co.ke/api/mpesa-callback";
 
 let cachedToken: { token: string; expires: number } | null = null;
 
