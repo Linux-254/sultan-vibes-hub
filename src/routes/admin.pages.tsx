@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, redirect } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
@@ -18,7 +18,9 @@ export const Route = createFileRoute("/admin/pages")({
   head: () => ({
     meta: [{ title: "Site Pages — Empire Admin" }, { name: "robots", content: "noindex" }],
   }),
-  component: AdminPages,
+  beforeLoad: () => {
+    throw redirect({ to: "/admin/content" });
+  },
 });
 
 type PageContent = {
@@ -29,7 +31,7 @@ type PageContent = {
   updated_at: string;
 };
 
-function AdminPages() {
+export function AdminPages() {
   const [pages, setPages] = useState<PageContent[]>([]);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState<string | null>(null);

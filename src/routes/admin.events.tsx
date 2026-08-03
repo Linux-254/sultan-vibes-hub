@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, redirect } from "@tanstack/react-router";
 import { useEffect, useState, useRef } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/use-auth";
@@ -21,7 +21,9 @@ import { DjPicker, type DjEntry } from "@/components/DjPicker";
 import gsap from "gsap";
 
 export const Route = createFileRoute("/admin/events")({
-  component: AdminEvents,
+  beforeLoad: () => {
+    throw redirect({ to: "/admin/content" });
+  },
 });
 
 type SpecialEventRow = {
@@ -80,7 +82,7 @@ const STATUS_TONE: Record<string, string> = {
   cancelled: "bg-lava/15 text-lava",
 };
 
-function AdminEvents() {
+export function AdminEvents() {
   const { user } = useAuth();
   const [tab, setTab] = useState<"special" | "site">("special");
   const [sRows, setSRows] = useState<SpecialEventRow[]>([]);

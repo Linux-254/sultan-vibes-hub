@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, redirect } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/use-auth";
@@ -9,7 +9,9 @@ export const Route = createFileRoute("/admin/parking")({
   head: () => ({
     meta: [{ title: "Parking — Empire Admin" }, { name: "robots", content: "noindex" }],
   }),
-  component: AdminParking,
+  beforeLoad: () => {
+    throw redirect({ to: "/admin/guests" });
+  },
 });
 
 type ParkingSpot = {
@@ -57,7 +59,7 @@ const EMPTY_FORM: FormState = {
   price: 0,
 };
 
-function AdminParking() {
+export function AdminParking() {
   const { isStaff } = useAuth();
   const [spots, setSpots] = useState<ParkingSpot[]>([]);
   const [loading, setLoading] = useState(true);

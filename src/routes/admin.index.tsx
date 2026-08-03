@@ -45,7 +45,7 @@ interface Stats {
   lowStock: number;
 }
 
-function Dashboard() {
+export function Dashboard() {
   const [stats, setStats] = useState<Stats>({
     pendingRes: 0,
     approvedToday: 0,

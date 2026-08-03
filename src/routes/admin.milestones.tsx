@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, redirect } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/use-auth";
@@ -6,7 +6,9 @@ import { toast } from "sonner";
 import { Plus, Pencil, Trash2, Calendar, Hash } from "lucide-react";
 
 export const Route = createFileRoute("/admin/milestones")({
-  component: AdminMilestones,
+  beforeLoad: () => {
+    throw redirect({ to: "/admin/content" });
+  },
 });
 
 type MilestoneRow = {
@@ -32,7 +34,7 @@ const EMPTY_FORM: FormData = {
   sort_order: 0,
 };
 
-function AdminMilestones() {
+export function AdminMilestones() {
   const { user } = useAuth();
   const [rows, setRows] = useState<MilestoneRow[]>([]);
   const [loading, setLoading] = useState(true);

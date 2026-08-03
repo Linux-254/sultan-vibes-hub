@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, redirect } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/use-auth";
@@ -9,7 +9,9 @@ export const Route = createFileRoute("/admin/leads")({
   head: () => ({
     meta: [{ title: "Leads — Empire" }, { name: "robots", content: "noindex" }],
   }),
-  component: AdminLeads,
+  beforeLoad: () => {
+    throw redirect({ to: "/admin/guests" });
+  },
 });
 
 type LeadRow = {
@@ -49,7 +51,7 @@ const STATUS_DOT: Record<string, string> = {
   lost: "bg-lava",
 };
 
-function AdminLeads() {
+export function AdminLeads() {
   const { isStaff } = useAuth();
   const [rows, setRows] = useState<LeadRow[]>([]);
   const [loading, setLoading] = useState(true);

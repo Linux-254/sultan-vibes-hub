@@ -33,13 +33,27 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     const {
       data: { subscription },
-    } = supabase.auth.onAuthStateChange((_e, s) => {
+    } = supabase.auth.onAuthStateChange((event, s) => {
       setSession(s);
       if (s?.user) {
         // defer to avoid recursive auth calls
         setTimeout(() => fetchRoles(s.user.id), 0);
       } else {
         setRoles([]);
+      }
+      // If the persisted session is dropped or can't be refreshed anymore
+      // (expired or revoked), clear storage so the user is cleanly signed out
+      // instead of being stuck in a loop of 401s that make data look "missing".
+      if (event === "SIGNED_OUT") {
+        setRoles([]);
+        if (typeof window !== "undefined") {
+          try {
+            window.localStorage.clear();
+            window.sessionStorage.clear();
+          } catch {
+            // storage may be unavailable; session is still cleared in memory
+          }
+        }
       }
     });
     supabase.auth.getSession().then(({ data }) => {
@@ -72,6 +86,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     loading,
     signOut: async () => {
       await supabase.auth.signOut();
+      // Ensure a stale/invalid session can never lock the user into 401 loops
+      // even if the client failed to clear its persisted session.
+      if (typeof window !== "undefined") {
+        try {
+          window.localStorage.clear();
+          window.sessionStorage.clear();
+        } catch {
+          // storage may be unavailable; session is still cleared in memory
+        }
+      }
     },
   };
   return <Ctx.Provider value={value}>{children}</Ctx.Provider>;

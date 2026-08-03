@@ -95,11 +95,11 @@ function HomePage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessJsonLd()) }}
       />
       {/* ───────────────────────── HERO ───────────────────────── */}
-      <section className="relative min-h-[100svh] overflow-hidden">
+      <section className="relative flex flex-col min-h-[100svh] overflow-hidden">
         <HeroSlideshow slot="hero" />
         <div className="absolute inset-0 grain pointer-events-none" />
 
-        <div className="relative mx-auto max-w-7xl px-4 sm:px-5 lg:px-8 pt-28 sm:pt-32 pb-20 min-h-[100svh] flex flex-col justify-center">
+        <div className="relative mx-auto w-full max-w-7xl px-4 sm:px-5 lg:px-8 pt-24 sm:pt-28 pb-16 flex-1 flex flex-col justify-center">
           <h1 className="rise hero-title font-display text-[11.5vw] sm:text-7xl lg:text-[8.5rem] leading-[0.92] tracking-[-0.03em] max-w-5xl">
             <span className="text-gold-gradient">Where Nairobi</span>
             <br />

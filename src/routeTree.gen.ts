@@ -28,11 +28,14 @@ import { Route as TalentRouteImport } from './routes/talent'
 import { Route as VibeRouteImport } from './routes/vibe'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as AdminChatRouteImport } from './routes/admin.chat'
+import { Route as AdminContentRouteImport } from './routes/admin.content'
 import { Route as AdminEventsRouteImport } from './routes/admin.events'
 import { Route as AdminFaqsRouteImport } from './routes/admin.faqs'
+import { Route as AdminGuestsRouteImport } from './routes/admin.guests'
 import { Route as AdminInventoryRouteImport } from './routes/admin.inventory'
 import { Route as AdminLeadsRouteImport } from './routes/admin.leads'
 import { Route as AdminMilestonesRouteImport } from './routes/admin.milestones'
+import { Route as AdminMoneyRouteImport } from './routes/admin.money'
 import { Route as AdminOrdersRouteImport } from './routes/admin.orders'
 import { Route as AdminPagesRouteImport } from './routes/admin.pages'
 import { Route as AdminParkingRouteImport } from './routes/admin.parking'
@@ -43,6 +46,7 @@ import { Route as AdminRecapRouteImport } from './routes/admin.recap'
 import { Route as AdminReservationsRouteImport } from './routes/admin.reservations'
 import { Route as AdminRolesRouteImport } from './routes/admin.roles'
 import { Route as AdminSalesRouteImport } from './routes/admin.sales'
+import { Route as AdminShopRouteImport } from './routes/admin.shop'
 import { Route as AdminSlideshowRouteImport } from './routes/admin.slideshow'
 import { Route as AdminSosRouteImport } from './routes/admin.sos'
 import { Route as CollabsSlugRouteImport } from './routes/collabs.$slug'
@@ -143,6 +147,11 @@ const AdminChatRoute = AdminChatRouteImport.update({
   path: '/chat',
   getParentRoute: () => AdminRoute,
 } as any)
+const AdminContentRoute = AdminContentRouteImport.update({
+  id: '/content',
+  path: '/content',
+  getParentRoute: () => AdminRoute,
+} as any)
 const AdminEventsRoute = AdminEventsRouteImport.update({
   id: '/events',
   path: '/events',
@@ -151,6 +160,11 @@ const AdminEventsRoute = AdminEventsRouteImport.update({
 const AdminFaqsRoute = AdminFaqsRouteImport.update({
   id: '/faqs',
   path: '/faqs',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminGuestsRoute = AdminGuestsRouteImport.update({
+  id: '/guests',
+  path: '/guests',
   getParentRoute: () => AdminRoute,
 } as any)
 const AdminInventoryRoute = AdminInventoryRouteImport.update({
@@ -166,6 +180,11 @@ const AdminLeadsRoute = AdminLeadsRouteImport.update({
 const AdminMilestonesRoute = AdminMilestonesRouteImport.update({
   id: '/milestones',
   path: '/milestones',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminMoneyRoute = AdminMoneyRouteImport.update({
+  id: '/money',
+  path: '/money',
   getParentRoute: () => AdminRoute,
 } as any)
 const AdminOrdersRoute = AdminOrdersRouteImport.update({
@@ -218,6 +237,11 @@ const AdminSalesRoute = AdminSalesRouteImport.update({
   path: '/sales',
   getParentRoute: () => AdminRoute,
 } as any)
+const AdminShopRoute = AdminShopRouteImport.update({
+  id: '/shop',
+  path: '/shop',
+  getParentRoute: () => AdminRoute,
+} as any)
 const AdminSlideshowRoute = AdminSlideshowRouteImport.update({
   id: '/slideshow',
   path: '/slideshow',
@@ -258,11 +282,14 @@ export interface FileRoutesByFullPath {
   '/talent': typeof TalentRouteWithChildren
   '/vibe': typeof VibeRoute
   '/admin/chat': typeof AdminChatRoute
+  '/admin/content': typeof AdminContentRoute
   '/admin/events': typeof AdminEventsRoute
   '/admin/faqs': typeof AdminFaqsRoute
+  '/admin/guests': typeof AdminGuestsRoute
   '/admin/inventory': typeof AdminInventoryRoute
   '/admin/leads': typeof AdminLeadsRoute
   '/admin/milestones': typeof AdminMilestonesRoute
+  '/admin/money': typeof AdminMoneyRoute
   '/admin/orders': typeof AdminOrdersRoute
   '/admin/pages': typeof AdminPagesRoute
   '/admin/parking': typeof AdminParkingRoute
@@ -273,6 +300,7 @@ export interface FileRoutesByFullPath {
   '/admin/reservations': typeof AdminReservationsRoute
   '/admin/roles': typeof AdminRolesRoute
   '/admin/sales': typeof AdminSalesRoute
+  '/admin/shop': typeof AdminShopRoute
   '/admin/slideshow': typeof AdminSlideshowRoute
   '/admin/sos': typeof AdminSosRoute
   '/collabs/$slug': typeof CollabsSlugRoute
@@ -297,11 +325,14 @@ export interface FileRoutesByTo {
   '/talent': typeof TalentRouteWithChildren
   '/vibe': typeof VibeRoute
   '/admin/chat': typeof AdminChatRoute
+  '/admin/content': typeof AdminContentRoute
   '/admin/events': typeof AdminEventsRoute
   '/admin/faqs': typeof AdminFaqsRoute
+  '/admin/guests': typeof AdminGuestsRoute
   '/admin/inventory': typeof AdminInventoryRoute
   '/admin/leads': typeof AdminLeadsRoute
   '/admin/milestones': typeof AdminMilestonesRoute
+  '/admin/money': typeof AdminMoneyRoute
   '/admin/orders': typeof AdminOrdersRoute
   '/admin/pages': typeof AdminPagesRoute
   '/admin/parking': typeof AdminParkingRoute
@@ -312,6 +343,7 @@ export interface FileRoutesByTo {
   '/admin/reservations': typeof AdminReservationsRoute
   '/admin/roles': typeof AdminRolesRoute
   '/admin/sales': typeof AdminSalesRoute
+  '/admin/shop': typeof AdminShopRoute
   '/admin/slideshow': typeof AdminSlideshowRoute
   '/admin/sos': typeof AdminSosRoute
   '/collabs/$slug': typeof CollabsSlugRoute
@@ -338,11 +370,14 @@ export interface FileRoutesById {
   '/talent': typeof TalentRouteWithChildren
   '/vibe': typeof VibeRoute
   '/admin/chat': typeof AdminChatRoute
+  '/admin/content': typeof AdminContentRoute
   '/admin/events': typeof AdminEventsRoute
   '/admin/faqs': typeof AdminFaqsRoute
+  '/admin/guests': typeof AdminGuestsRoute
   '/admin/inventory': typeof AdminInventoryRoute
   '/admin/leads': typeof AdminLeadsRoute
   '/admin/milestones': typeof AdminMilestonesRoute
+  '/admin/money': typeof AdminMoneyRoute
   '/admin/orders': typeof AdminOrdersRoute
   '/admin/pages': typeof AdminPagesRoute
   '/admin/parking': typeof AdminParkingRoute
@@ -353,6 +388,7 @@ export interface FileRoutesById {
   '/admin/reservations': typeof AdminReservationsRoute
   '/admin/roles': typeof AdminRolesRoute
   '/admin/sales': typeof AdminSalesRoute
+  '/admin/shop': typeof AdminShopRoute
   '/admin/slideshow': typeof AdminSlideshowRoute
   '/admin/sos': typeof AdminSosRoute
   '/collabs/$slug': typeof CollabsSlugRoute
@@ -380,11 +416,14 @@ export interface FileRouteTypes {
     | '/talent'
     | '/vibe'
     | '/admin/chat'
+    | '/admin/content'
     | '/admin/events'
     | '/admin/faqs'
+    | '/admin/guests'
     | '/admin/inventory'
     | '/admin/leads'
     | '/admin/milestones'
+    | '/admin/money'
     | '/admin/orders'
     | '/admin/pages'
     | '/admin/parking'
@@ -395,6 +434,7 @@ export interface FileRouteTypes {
     | '/admin/reservations'
     | '/admin/roles'
     | '/admin/sales'
+    | '/admin/shop'
     | '/admin/slideshow'
     | '/admin/sos'
     | '/collabs/$slug'
@@ -419,11 +459,14 @@ export interface FileRouteTypes {
     | '/talent'
     | '/vibe'
     | '/admin/chat'
+    | '/admin/content'
     | '/admin/events'
     | '/admin/faqs'
+    | '/admin/guests'
     | '/admin/inventory'
     | '/admin/leads'
     | '/admin/milestones'
+    | '/admin/money'
     | '/admin/orders'
     | '/admin/pages'
     | '/admin/parking'
@@ -434,6 +477,7 @@ export interface FileRouteTypes {
     | '/admin/reservations'
     | '/admin/roles'
     | '/admin/sales'
+    | '/admin/shop'
     | '/admin/slideshow'
     | '/admin/sos'
     | '/collabs/$slug'
@@ -459,11 +503,14 @@ export interface FileRouteTypes {
     | '/talent'
     | '/vibe'
     | '/admin/chat'
+    | '/admin/content'
     | '/admin/events'
     | '/admin/faqs'
+    | '/admin/guests'
     | '/admin/inventory'
     | '/admin/leads'
     | '/admin/milestones'
+    | '/admin/money'
     | '/admin/orders'
     | '/admin/pages'
     | '/admin/parking'
@@ -474,6 +521,7 @@ export interface FileRouteTypes {
     | '/admin/reservations'
     | '/admin/roles'
     | '/admin/sales'
+    | '/admin/shop'
     | '/admin/slideshow'
     | '/admin/sos'
     | '/collabs/$slug'
@@ -636,6 +684,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminChatRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/admin/content': {
+      id: '/admin/content'
+      path: '/content'
+      fullPath: '/admin/content'
+      preLoaderRoute: typeof AdminContentRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/admin/events': {
       id: '/admin/events'
       path: '/events'
@@ -648,6 +703,13 @@ declare module '@tanstack/react-router' {
       path: '/faqs'
       fullPath: '/admin/faqs'
       preLoaderRoute: typeof AdminFaqsRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/guests': {
+      id: '/admin/guests'
+      path: '/guests'
+      fullPath: '/admin/guests'
+      preLoaderRoute: typeof AdminGuestsRouteImport
       parentRoute: typeof AdminRoute
     }
     '/admin/inventory': {
@@ -669,6 +731,13 @@ declare module '@tanstack/react-router' {
       path: '/milestones'
       fullPath: '/admin/milestones'
       preLoaderRoute: typeof AdminMilestonesRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/money': {
+      id: '/admin/money'
+      path: '/money'
+      fullPath: '/admin/money'
+      preLoaderRoute: typeof AdminMoneyRouteImport
       parentRoute: typeof AdminRoute
     }
     '/admin/orders': {
@@ -741,6 +810,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminSalesRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/admin/shop': {
+      id: '/admin/shop'
+      path: '/shop'
+      fullPath: '/admin/shop'
+      preLoaderRoute: typeof AdminShopRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/admin/slideshow': {
       id: '/admin/slideshow'
       path: '/slideshow'
@@ -774,11 +850,14 @@ declare module '@tanstack/react-router' {
 
 interface AdminRouteChildren {
   AdminChatRoute: typeof AdminChatRoute
+  AdminContentRoute: typeof AdminContentRoute
   AdminEventsRoute: typeof AdminEventsRoute
   AdminFaqsRoute: typeof AdminFaqsRoute
+  AdminGuestsRoute: typeof AdminGuestsRoute
   AdminInventoryRoute: typeof AdminInventoryRoute
   AdminLeadsRoute: typeof AdminLeadsRoute
   AdminMilestonesRoute: typeof AdminMilestonesRoute
+  AdminMoneyRoute: typeof AdminMoneyRoute
   AdminOrdersRoute: typeof AdminOrdersRoute
   AdminPagesRoute: typeof AdminPagesRoute
   AdminParkingRoute: typeof AdminParkingRoute
@@ -789,6 +868,7 @@ interface AdminRouteChildren {
   AdminReservationsRoute: typeof AdminReservationsRoute
   AdminRolesRoute: typeof AdminRolesRoute
   AdminSalesRoute: typeof AdminSalesRoute
+  AdminShopRoute: typeof AdminShopRoute
   AdminSlideshowRoute: typeof AdminSlideshowRoute
   AdminSosRoute: typeof AdminSosRoute
   AdminIndexRoute: typeof AdminIndexRoute
@@ -796,11 +876,14 @@ interface AdminRouteChildren {
 
 const AdminRouteChildren: AdminRouteChildren = {
   AdminChatRoute: AdminChatRoute,
+  AdminContentRoute: AdminContentRoute,
   AdminEventsRoute: AdminEventsRoute,
   AdminFaqsRoute: AdminFaqsRoute,
+  AdminGuestsRoute: AdminGuestsRoute,
   AdminInventoryRoute: AdminInventoryRoute,
   AdminLeadsRoute: AdminLeadsRoute,
   AdminMilestonesRoute: AdminMilestonesRoute,
+  AdminMoneyRoute: AdminMoneyRoute,
   AdminOrdersRoute: AdminOrdersRoute,
   AdminPagesRoute: AdminPagesRoute,
   AdminParkingRoute: AdminParkingRoute,
@@ -811,6 +894,7 @@ const AdminRouteChildren: AdminRouteChildren = {
   AdminReservationsRoute: AdminReservationsRoute,
   AdminRolesRoute: AdminRolesRoute,
   AdminSalesRoute: AdminSalesRoute,
+  AdminShopRoute: AdminShopRoute,
   AdminSlideshowRoute: AdminSlideshowRoute,
   AdminSosRoute: AdminSosRoute,
   AdminIndexRoute: AdminIndexRoute,

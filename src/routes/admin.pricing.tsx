@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, redirect } from "@tanstack/react-router";
 import { useEffect, useState, useRef } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
@@ -17,7 +17,9 @@ import {
 import gsap from "gsap";
 
 export const Route = createFileRoute("/admin/pricing")({
-  component: AdminPricing,
+  beforeLoad: () => {
+    throw redirect({ to: "/admin/money" });
+  },
 });
 
 type PricingConfig = Record<string, any>;
@@ -59,7 +61,7 @@ const DISCOUNT_EMPTY = {
   max_uses: 0,
 };
 
-function AdminPricing() {
+export function AdminPricing() {
   const [tab, setTab] = useState<string>("packages");
   const [config, setConfig] = useState<PricingConfig>({});
   const [discounts, setDiscounts] = useState<Discount[]>([]);

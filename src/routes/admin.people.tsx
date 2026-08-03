@@ -18,13 +18,43 @@ import {
   EyeOff,
   Handshake,
   Image,
+  Shield,
+  HelpCircle,
+  Users,
 } from "lucide-react";
 import { ImageUpload } from "@/components/ImageUpload";
 import gsap from "gsap";
+import { AdminHub, canAccessTab, type AdminHubTab } from "@/components/admin/AdminHub";
+import { RolesPage } from "./admin.roles";
+import { AdminFaqs } from "./admin.faqs";
 
 export const Route = createFileRoute("/admin/people")({
-  component: AdminPeople,
+  component: PeopleHub,
 });
+
+function PeopleHub() {
+  const { roles, isAdmin } = useAuth();
+  const tabs: AdminHubTab[] = [
+    {
+      id: "people",
+      label: "People",
+      icon: Users,
+      component: AdminPeople,
+      roles: ["content_manager"],
+    },
+    { id: "roles", label: "Roles & access", icon: Shield, component: RolesPage, adminOnly: true },
+    { id: "faqs", label: "FAQs", icon: HelpCircle, component: AdminFaqs },
+  ];
+  const visible = tabs.filter((t) => canAccessTab(roles, isAdmin, t.adminOnly, t.roles));
+  return (
+    <AdminHub
+      eyebrow="People"
+      title="People & access"
+      description="Talent, collabs, roles and FAQ content."
+      tabs={visible}
+    />
+  );
+}
 
 type TalentRow = {
   id: string;
@@ -110,7 +140,7 @@ const TYPE_TONE: Record<string, string> = {
   Agencies: "bg-orange-500/15 text-orange-400",
 };
 
-function AdminPeople() {
+export function AdminPeople() {
   const { user } = useAuth();
   const [tab, setTab] = useState<"talent" | "collab">("talent");
   const [tRows, setTRows] = useState<TalentRow[]>([]);

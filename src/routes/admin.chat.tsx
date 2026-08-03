@@ -22,7 +22,7 @@ interface Member {
   phone: string | null;
 }
 
-function CrewChat() {
+export function CrewChat() {
   const { user } = useAuth();
   const [msgs, setMsgs] = useState<Msg[]>([]);
   const [text, setText] = useState("");

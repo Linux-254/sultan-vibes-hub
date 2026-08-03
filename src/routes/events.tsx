@@ -10,6 +10,7 @@ import { toast } from "sonner";
 type SiteEvent = {
   slug: string;
   title: string;
+  description?: string | null;
   event_date: string;
   image_url: string | null;
   tags: string[];
@@ -167,6 +168,11 @@ function EventsPage() {
                     <span className="text-gold-gradient">{featured.title}</span>
                   </h2>
                   <p className="mt-4 text-foreground/70">{formatDjs(featured.djs)}</p>
+                  {featured.description && (
+                    <p className="mt-3 text-sm text-foreground/60 leading-relaxed">
+                      {featured.description}
+                    </p>
+                  )}
                   <div className="flex flex-wrap gap-2 mt-5">
                     {(featured.tags || []).map((t: string) => (
                       <span
@@ -217,6 +223,11 @@ function EventsPage() {
                 <div className="eyebrow">{e.event_date}</div>
                 <h3 className="font-display text-3xl mt-2 text-foreground">{e.title}</h3>
                 <p className="text-sm text-foreground/70 mt-1">{formatDjs(e.djs)}</p>
+                {e.description && (
+                  <p className="mt-2 text-xs text-foreground/60 leading-relaxed line-clamp-3">
+                    {e.description}
+                  </p>
+                )}
                 <div className="flex flex-wrap gap-2 mt-4">
                   {(e.tags || []).map((t: string) => (
                     <span

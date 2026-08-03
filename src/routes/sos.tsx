@@ -4,6 +4,7 @@ import { Siren, MapPin, Check, Clock, AlertTriangle } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { RequireAuth } from "@/components/RequireAuth";
+import { notifySosResponders } from "@/hooks/use-sos-notifications";
 
 export const Route = createFileRoute("/sos")({
   head: () => ({
@@ -112,16 +113,21 @@ function SosPageInner() {
       data: { user },
     } = await supabase.auth.getUser();
     const coords = shareLoc ? await getCoords() : null;
-    const { error } = await supabase.from("sos_incidents").insert({
-      user_id: user?.id ?? null,
-      level: code,
-      note: note.trim() ? note.trim().slice(0, 140) : null,
-      share_location: shareLoc,
-      location_lat: coords?.lat ?? null,
-      location_lng: coords?.lng ?? null,
-    });
+    const { data: incident, error } = await supabase
+      .from("sos_incidents")
+      .insert({
+        user_id: user?.id ?? null,
+        level: code,
+        note: note.trim() ? note.trim().slice(0, 140) : null,
+        share_location: shareLoc,
+        location_lat: coords?.lat ?? null,
+        location_lng: coords?.lng ?? null,
+      })
+      .select("id")
+      .single();
     setBusy(false);
     if (error) return toast.error(error.message);
+    if (incident?.id) notifySosResponders(incident.id).catch(() => {});
     setSubmitted(true);
     if (userId) {
       const { data } = await supabase

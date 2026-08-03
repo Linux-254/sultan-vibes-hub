@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, redirect } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/use-auth";
@@ -9,7 +9,9 @@ export const Route = createFileRoute("/admin/orders")({
   head: () => ({
     meta: [{ title: "Orders — Empire Admin" }, { name: "robots", content: "noindex" }],
   }),
-  component: AdminOrders,
+  beforeLoad: () => {
+    throw redirect({ to: "/admin/money" });
+  },
 });
 
 type OrderItem = {
@@ -57,7 +59,7 @@ const STATUS_LABELS: { key: StatusFilter; label: string }[] = [
   { key: "cancelled", label: "Cancelled" },
 ];
 
-function AdminOrders() {
+export function AdminOrders() {
   const { isStaff } = useAuth();
   const [orders, setOrders] = useState<OrderRow[]>([]);
   const [loading, setLoading] = useState(true);

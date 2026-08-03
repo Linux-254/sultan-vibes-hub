@@ -1,11 +1,13 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, redirect } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { Plus, Pencil, Trash2, Check, X, HelpCircle, GripVertical } from "lucide-react";
 
 export const Route = createFileRoute("/admin/faqs")({
-  component: AdminFaqs,
+  beforeLoad: () => {
+    throw redirect({ to: "/admin/people" });
+  },
 });
 
 type Faq = {
@@ -17,7 +19,7 @@ type Faq = {
   created_at: string;
 };
 
-function AdminFaqs() {
+export function AdminFaqs() {
   const [rows, setRows] = useState<Faq[]>([]);
   const [loading, setLoading] = useState(true);
   const [editing, setEditing] = useState<string | null>(null);

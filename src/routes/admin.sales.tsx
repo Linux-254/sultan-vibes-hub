@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, redirect } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/use-auth";
@@ -16,7 +16,9 @@ export const Route = createFileRoute("/admin/sales")({
   head: () => ({
     meta: [{ title: "Sales Dashboard — Empire" }, { name: "robots", content: "noindex" }],
   }),
-  component: AdminSales,
+  beforeLoad: () => {
+    throw redirect({ to: "/admin/money" });
+  },
 });
 
 type Period = "today" | "week" | "month" | "year" | "custom";
@@ -99,7 +101,7 @@ function getDateRange(
   }
 }
 
-function AdminSales() {
+export function AdminSales() {
   const { user, isAdmin, isStaff } = useAuth();
   const [period, setPeriod] = useState<Period>("month");
   const [customFrom, setCustomFrom] = useState("");

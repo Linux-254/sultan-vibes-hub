@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, redirect } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
 import { toast } from "sonner";
@@ -18,7 +18,9 @@ import { listUsersWithRoles, grantRole, revokeRole } from "@/lib/admin-users.fun
 import { useAuth } from "@/hooks/use-auth";
 
 export const Route = createFileRoute("/admin/roles")({
-  component: RolesPage,
+  beforeLoad: () => {
+    throw redirect({ to: "/admin/people" });
+  },
 });
 
 type Row = Awaited<ReturnType<typeof listUsersWithRoles>>[number];
@@ -76,7 +78,7 @@ const AREAS: { role: Role; label: string; desc: string; icon: React.ElementType 
   },
 ];
 
-function RolesPage() {
+export function RolesPage() {
   const { user } = useAuth();
   const list = useServerFn(listUsersWithRoles);
   const grant = useServerFn(grantRole);

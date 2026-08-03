@@ -1,11 +1,13 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, redirect } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { Check, X, UtensilsCrossed, Ban } from "lucide-react";
 
 export const Route = createFileRoute("/admin/reservations")({
-  component: AdminReservations,
+  beforeLoad: () => {
+    throw redirect({ to: "/admin/guests" });
+  },
 });
 
 type Status = "pending" | "approved" | "seated" | "cancelled" | "no_show";
@@ -18,7 +20,7 @@ const TONE: Record<Status, string> = {
   no_show: "bg-foreground/10 text-foreground/60",
 };
 
-function AdminReservations() {
+export function AdminReservations() {
   const [rows, setRows] = useState<any[]>([]);
   const [filter, setFilter] = useState<Status | "all">("pending");
 

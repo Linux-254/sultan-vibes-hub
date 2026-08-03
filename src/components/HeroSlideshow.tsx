@@ -70,7 +70,6 @@ export function HeroSlideshow({ slot = "hero" }: HeroSlideshowProps) {
           className="absolute inset-0"
           style={{
             opacity: i === current ? 1 : 0,
-            willChange: "opacity",
             transition: "opacity 1s ease-in-out",
           }}
         >
@@ -78,12 +77,7 @@ export function HeroSlideshow({ slot = "hero" }: HeroSlideshowProps) {
             <img
               src={slide.url}
               alt={slide.alt}
-              className="h-full w-full object-cover kenburns"
-              style={{
-                transform: i === current ? "scale(1.08)" : "scale(1)",
-                willChange: "transform",
-                transition: "transform 6s ease-in-out",
-              }}
+              className={`h-full w-full object-cover ${i === current ? "kenburns" : ""}`}
               loading={i === 0 ? "eager" : "lazy"}
             />
           )}

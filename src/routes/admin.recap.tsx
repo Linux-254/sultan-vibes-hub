@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, redirect } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/use-auth";
@@ -24,7 +24,9 @@ export const Route = createFileRoute("/admin/recap")({
   head: () => ({
     meta: [{ title: "Recap — Empire Admin" }, { name: "robots", content: "noindex" }],
   }),
-  component: AdminRecap,
+  beforeLoad: () => {
+    throw redirect({ to: "/admin/content" });
+  },
 });
 
 type RecapRow = {
@@ -76,7 +78,7 @@ const TABS = [
   { key: "media", label: "Media" },
 ] as const;
 
-function AdminRecap() {
+export function AdminRecap() {
   const { user } = useAuth();
   const [tab, setTab] = useState<"events" | "media">("events");
 

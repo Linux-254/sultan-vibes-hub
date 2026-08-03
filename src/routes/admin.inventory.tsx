@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, redirect } from "@tanstack/react-router";
 import { useEffect, useState, useRef } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/use-auth";
@@ -8,7 +8,9 @@ import { ImageUpload } from "@/components/ImageUpload";
 import gsap from "gsap";
 
 export const Route = createFileRoute("/admin/inventory")({
-  component: AdminInventory,
+  beforeLoad: () => {
+    throw redirect({ to: "/admin/shop" });
+  },
 });
 
 type ProductRow = {
@@ -76,7 +78,7 @@ const TAG_TONE: Record<string, string> = {
   Tickets: "bg-[#f472b6]/15 text-[#f472b6]",
 };
 
-function AdminInventory() {
+export function AdminInventory() {
   const { user } = useAuth();
   const [tab, setTab] = useState<"products" | "categories">("products");
   const [pRows, setPRows] = useState<ProductRow[]>([]);

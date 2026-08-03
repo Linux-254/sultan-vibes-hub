@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, redirect } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/use-auth";
@@ -10,7 +10,9 @@ export const Route = createFileRoute("/admin/slideshow")({
   head: () => ({
     meta: [{ title: "Slideshow — Empire Admin" }, { name: "robots", content: "noindex" }],
   }),
-  component: AdminSlideshow,
+  beforeLoad: () => {
+    throw redirect({ to: "/admin/content" });
+  },
 });
 
 interface SiteImage {
@@ -23,7 +25,7 @@ interface SiteImage {
   created_at: string;
 }
 
-function AdminSlideshow() {
+export function AdminSlideshow() {
   const { user } = useAuth();
   const [heroImages, setHeroImages] = useState<SiteImage[]>([]);
   const [authImages, setAuthImages] = useState<SiteImage[]>([]);

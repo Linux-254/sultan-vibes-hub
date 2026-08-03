@@ -44,6 +44,7 @@ type Product = {
   sort_order: number;
   category_id: string | null;
   subcategory: string | null;
+  stock: number;
 };
 
 interface CartItem {
@@ -206,12 +207,12 @@ function ProductsPage() {
         )}
       </div>
 
-      <div className="mt-8 flex gap-2 overflow-x-auto pb-2">
+      <div className="mt-8 flex flex-wrap gap-2">
         {tabNames.map((t) => (
           <button
             key={t}
             onClick={() => setTab(t)}
-            className={`text-xs uppercase tracking-wider px-4 py-2 rounded-full border transition shrink-0 ${tab === t ? "bg-gold text-night-deep border-gold" : "border-border/40 hover:border-gold text-foreground/70"}`}
+            className={`text-xs uppercase tracking-wider px-4 py-2 rounded-full border transition ${tab === t ? "bg-gold text-night-deep border-gold" : "border-border/40 hover:border-gold text-foreground/70"}`}
           >
             {t}
           </button>
@@ -248,18 +249,35 @@ function ProductsPage() {
                 </div>
                 <div className="font-display text-base mt-1 leading-snug">{p.name}</div>
                 {p.description && (
-                  <p className="text-xs text-foreground/50 mt-1 line-clamp-2">{p.description}</p>
+                  <p className="text-xs text-foreground/65 mt-1.5 leading-relaxed line-clamp-3">
+                    {p.description}
+                  </p>
                 )}
-                <div className="mt-3 flex items-center justify-between">
+                <div className="mt-3 flex items-center justify-between gap-2">
                   <span className="text-gold font-mono text-sm">
                     KES {p.price.toLocaleString()}
                   </span>
-                  <button
-                    onClick={() => addToCart(p)}
-                    className={`text-xs uppercase tracking-wider px-3 py-1.5 rounded-full border transition ${inCart ? "bg-gold text-night-deep border-gold" : "border-gold/40 text-gold hover:bg-gold hover:text-night-deep"}`}
-                  >
-                    {inCart ? `Add (${inCart.quantity})` : "Add"}
-                  </button>
+                  {p.stock > 0 ? (
+                    <button
+                      onClick={() => addToCart(p)}
+                      className={`text-xs uppercase tracking-wider px-3 py-1.5 rounded-full border transition whitespace-nowrap ${inCart ? "bg-gold text-night-deep border-gold" : "border-gold/40 text-gold hover:bg-gold hover:text-night-deep"}`}
+                    >
+                      {inCart ? `Add (${inCart.quantity})` : "Add"}
+                    </button>
+                  ) : (
+                    <span className="text-[10px] uppercase tracking-wider px-3 py-1.5 rounded-full border border-lava/40 text-lava/80 whitespace-nowrap">
+                      Out of Stock
+                    </span>
+                  )}
+                </div>
+                <div className="mt-2 text-[10px] uppercase tracking-wider font-mono">
+                  {p.stock <= 0 ? (
+                    <span className="text-lava/70">Sold out</span>
+                  ) : p.stock <= 5 ? (
+                    <span className="text-gold/80">Only {p.stock} left</span>
+                  ) : (
+                    <span className="text-foreground/40">In stock · {p.stock}</span>
+                  )}
                 </div>
               </div>
             </article>

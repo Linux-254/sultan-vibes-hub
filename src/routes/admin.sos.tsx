@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/use-auth";
+import { useSosNotifications } from "@/hooks/use-sos-notifications";
 import { toast } from "sonner";
 import { Siren, Search, MapPin, Check, X, BellRing, BellOff, UserCheck } from "lucide-react";
 
@@ -66,8 +67,9 @@ function beep() {
   } catch {}
 }
 
-function AdminSos() {
+export function AdminSos() {
   const { user } = useAuth();
+  const { markAllRead } = useSosNotifications(user?.id);
   const [rows, setRows] = useState<Incident[]>([]);
   const [profiles, setProfiles] = useState<Record<string, { name: string; phone: string | null }>>(
     {},
@@ -140,6 +142,7 @@ function AdminSos() {
   useEffect(() => {
     load();
     loadStaff();
+    markAllRead();
     if (notify && typeof Notification !== "undefined" && Notification.permission === "default") {
       Notification.requestPermission().catch(() => {});
     }
