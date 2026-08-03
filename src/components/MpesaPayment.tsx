@@ -72,12 +72,25 @@ export function MpesaPayment({
 
   useEffect(() => {
     if (step !== "polling" || !checkoutId) return;
+    let polled = 0;
     const interval = setInterval(async () => {
       try {
         const { mpesaQueryStatus } = await import("@/lib/mpesa.functions");
         const res = await mpesaQueryStatus({ data: { checkoutRequestID: checkoutId } });
-        if (res.ResultCode === "0" || res.ResultCode === 0) {
-          const receipt = res.MpesaReceiptNumber ?? res.ResultDesc ?? "";
+        const code = res?.ResultCode;
+        // While the STK prompt is still awaiting the customer's PIN the query
+        // endpoint answers with errorCode 500.001.1001 ("transaction is being
+        // processed") and no ResultCode — that is pending, not a failure.
+        const processing =
+          res?.errorCode === "500.001.1001" ||
+          (code == null && /process/i.test(res?.errorMessage ?? ""));
+        if (code === "0" || code === 0) {
+          const item = res?.CallbackMetadata?.Item ?? [];
+          const receipt =
+            item.find((i: any) => i.Name === "MpesaReceiptNumber")?.Value ??
+            res?.MpesaReceiptNumber ??
+            res?.ResultDesc ??
+            "";
           const { data: pay, error: payErr } = await supabase
             .from("payments")
             .insert({
@@ -94,8 +107,24 @@ export function MpesaPayment({
           setStep("success");
           onSuccess(pay.id);
           clearInterval(interval);
-        } else if (res.ResultCode !== "1037") {
-          setErrMsg(res.ResultDesc ?? "Payment failed");
+        } else if (processing || code === "1037" || code === 1037) {
+          polled += 1;
+          if (polled >= 40) {
+            setErrMsg("We couldn't confirm your payment. Check your M-Pesa or try again.");
+            setStep("failed");
+            clearInterval(interval);
+          }
+        } else {
+          const messages: Record<string, string> = {
+            "1": "Not enough funds in M-Pesa. Top up and try again.",
+            "1032": "You cancelled the payment. Try again if you still want to pay.",
+            "2001": "Wrong PIN entered. Try again.",
+            "1001": "Another payment is running on this number. Wait a moment.",
+            "17": "M-Pesa hit a system error. Try again shortly.",
+          };
+          setErrMsg(
+            messages[String(code)] ?? res?.ResultDesc ?? "Payment failed. Please try again.",
+          );
           setStep("failed");
           clearInterval(interval);
         }
