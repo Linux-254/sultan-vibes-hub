@@ -65,7 +65,33 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const fetchRoles = async (userId: string) => {
-    const { data } = await supabase.from("user_roles").select("role").eq("user_id", userId);
+    const { data, error } = await supabase.from("user_roles").select("role").eq("user_id", userId);
+    if (error) {
+      if (
+        typeof error === "object" &&
+        error !== null &&
+        "status" in error &&
+        (error.status === 401 || error.status === 403)
+      ) {
+        // Session is stale/revoked — clear it so the user can sign in again
+        // instead of being stuck in a loop of 401s that make data look "missing".
+        try {
+          await supabase.auth.signOut();
+        } catch {
+          // signOut may fail on an already-dead token; clear storage manually below
+        }
+        if (typeof window !== "undefined") {
+          try {
+            window.localStorage.clear();
+            window.sessionStorage.clear();
+          } catch {
+            // storage may be unavailable; session is still cleared in memory
+          }
+        }
+      }
+      setRoles([]);
+      return;
+    }
     setRoles((data ?? []).map((r) => r.role as Role));
   };
 

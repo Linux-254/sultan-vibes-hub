@@ -23,6 +23,7 @@ type ProductRow = {
   image_url: string | null;
   active: boolean;
   sort_order: number;
+  stock: number;
   category_id: string | null;
   subcategory: string | null;
   created_at: string;
@@ -62,6 +63,7 @@ const PROD_EMPTY = {
   image_url: "",
   active: true,
   sort_order: 0,
+  stock: 0,
 };
 
 const CAT_EMPTY = { name: "", subtitle: "", icon: "wine", sort_order: 0, active: true };
@@ -147,6 +149,7 @@ export function AdminInventory() {
         image_url: r.image_url ?? "",
         active: r.active,
         sort_order: r.sort_order ?? 0,
+        stock: r.stock ?? 0,
       });
     } else {
       setCForm({
@@ -176,6 +179,7 @@ export function AdminInventory() {
         image_url: pForm.image_url || null,
         active: pForm.active,
         sort_order: pForm.sort_order,
+        stock: pForm.stock,
       };
       const { error } = editing
         ? await supabase.from("products").update(payload).eq("id", editing)
@@ -348,6 +352,16 @@ export function AdminInventory() {
                   className="mt-2 w-full bg-night/60 border border-border/60 rounded-2xl px-4 py-3 text-sm focus:outline-none focus:border-gold"
                 />
               </label>
+              <label className="block">
+                <span className="eyebrow">Stock</span>
+                <input
+                  type="number"
+                  min={0}
+                  value={pForm.stock}
+                  onChange={(e) => setPForm((s) => ({ ...s, stock: Number(e.target.value) }))}
+                  className="mt-2 w-full bg-night/60 border border-border/60 rounded-2xl px-4 py-3 text-sm focus:outline-none focus:border-gold"
+                />
+              </label>
               <div className="block sm:col-span-2">
                 <ImageUpload
                   folder="products"
@@ -455,6 +469,7 @@ export function AdminInventory() {
                 <tr>
                   <th className="px-4 py-3">Product</th>
                   <th className="px-4 py-3">Price</th>
+                  <th className="px-4 py-3">Stock</th>
                   <th className="px-4 py-3">Category</th>
                   <th className="px-4 py-3">Sub</th>
                   <th className="px-4 py-3">Active</th>
@@ -487,6 +502,13 @@ export function AdminInventory() {
                       </td>
                       <td className="px-4 py-3 font-mono text-gold">
                         KES {Number(r.price).toLocaleString()}
+                      </td>
+                      <td className="px-4 py-3 font-mono">
+                        {Number(r.stock) > 0 ? (
+                          <span className="text-savanna">{r.stock}</span>
+                        ) : (
+                          <span className="text-lava/80">0</span>
+                        )}
                       </td>
                       <td className="px-4 py-3">
                         <span
@@ -535,7 +557,7 @@ export function AdminInventory() {
                 })}
                 {pRows.length === 0 && !loading && (
                   <tr>
-                    <td colSpan={6} className="px-4 py-12 text-center text-foreground/50 text-sm">
+                    <td colSpan={7} className="px-4 py-12 text-center text-foreground/50 text-sm">
                       No products yet.
                     </td>
                   </tr>
