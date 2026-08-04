@@ -3,6 +3,7 @@ import "./lib/error-capture";
 import { consumeLastCapturedError } from "./lib/error-capture";
 import { renderErrorPage } from "./lib/error-page";
 import { rateLimit, LIMITS } from "./lib/rate-limit";
+import { supabaseAdmin } from "./integrations/supabase/client.server";
 
 type ServerEntry = {
   fetch: (request: Request, env: unknown, ctx: unknown) => Promise<Response> | Response;
@@ -87,6 +88,76 @@ function applyRateLimit(request: Request): Response | null {
   }
 
   return null;
+}
+
+/**
+ * Daraja STK push callback (POST /api/mpesa-callback).
+ * Records the terminal result of an STK push into the payments table so a
+ * payment is confirmed even if the customer closes the tab before the client
+ * poll lands. Always acks with ResultCode 0 so Safaricom doesn't retry.
+ */
+async function handleMpesaCallback(request: Request): Promise<Response> {
+  const ack = () =>
+    new Response(JSON.stringify({ ResultCode: 0, ResultDesc: "Success" }), {
+      status: 200,
+      headers: { "content-type": "application/json" },
+    });
+
+  try {
+    let body: any;
+    try {
+      body = await request.json();
+    } catch {
+      return ack();
+    }
+
+    const stk = body?.Body?.stkCallback;
+    if (!stk?.CheckoutRequestID) return ack();
+
+    const items: { Name?: string; Value?: string | number }[] = Array.isArray(
+      stk.CallbackMetadata?.Item,
+    )
+      ? stk.CallbackMetadata.Item
+      : [];
+    const getItem = (name: string) => items.find((i) => i.Name === name)?.Value;
+
+    const receipt = getItem("MpesaReceiptNumber");
+    const phone = getItem("PhoneNumber");
+    const amount = getItem("Amount");
+    const resultCode = String(stk.ResultCode ?? "");
+    const status: "success" | "failed" = resultCode === "0" ? "success" : "failed";
+
+    const payload = {
+      checkout_request_id: stk.CheckoutRequestID,
+      merchant_request_id: stk.MerchantRequestID ?? null,
+      mpesa_receipt: receipt ? String(receipt) : null,
+      phone: phone ? String(phone) : null,
+      amount: amount != null ? Number(amount) : 0,
+      currency: "KES",
+      status,
+      raw_callback: body,
+      updated_at: new Date().toISOString(),
+    };
+
+    // The client poll may already have inserted this payment; update it if so.
+    const { data: existing } = await supabaseAdmin
+      .from("payments")
+      .select("id")
+      .eq("checkout_request_id", stk.CheckoutRequestID)
+      .maybeSingle();
+
+    if (existing) {
+      const { error } = await supabaseAdmin.from("payments").update(payload).eq("id", existing.id);
+      if (error) console.error("[mpesa-callback] update error", error.message);
+    } else {
+      const { error } = await supabaseAdmin.from("payments").insert(payload);
+      if (error) console.error("[mpesa-callback] insert error", error.message);
+    }
+  } catch (e) {
+    console.error("[mpesa-callback] handler error", e);
+  }
+
+  return ack();
 }
 
 function isCatastrophicSsrErrorBody(body: string, responseStatus: number): boolean {
@@ -181,6 +252,12 @@ export default {
       // Rate limiting
       const blocked = applyRateLimit(request);
       if (blocked) return blocked;
+
+      // M-Pesa STK push callback from Daraja — record the result server-side so
+      // payments are confirmed even if the checkout tab was closed mid-poll.
+      if (url.pathname === "/api/mpesa-callback") {
+        return await handleMpesaCallback(request);
+      }
 
       const handler = await getServerEntry();
       const response = await handler.fetch(request, env, ctx);
