@@ -146,8 +146,12 @@ function RootComponent() {
   const [ageConfirmed, setAgeConfirmed] = useState(false);
 
   useEffect(() => {
-    if (sessionStorage.getItem("empire_age_confirmed") === "true") {
-      setAgeConfirmed(true);
+    try {
+      if (sessionStorage.getItem("empire_age_confirmed") === "true") {
+        setAgeConfirmed(true);
+      }
+    } catch {
+      // storage blocked (private mode / embedded browser): keep the gate visible
     }
   }, []);
 
